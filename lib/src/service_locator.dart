@@ -4,6 +4,7 @@ import 'package:oportunidades_cce/src/api_client.dart';
 import 'package:oportunidades_cce/src/authentication/user_details_secure_storage.dart';
 import 'package:oportunidades_cce/src/authentication/user_details_storage.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
+import 'package:oportunidades_cce/src/home/notificacion_repository.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -14,4 +15,6 @@ void setupServiceLocator() {
   sl.registerSingleton(UsuarioRepository(apiClient: apiClient));
 
   sl.registerSingleton<UserDetailsStorage>(UserDetailsSecureStorage());
+
+  sl.registerSingleton(NotificacionRepository(apiClient: apiClient));
 }

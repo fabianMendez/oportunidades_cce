@@ -47,13 +47,12 @@ class APIClient {
     return parts.join('&');
   }
 
-  Future<APIResponse> post({
+  Future<http.Response> request({
     required String path,
     required Map<String, Object?> body,
   }) async {
     final uri = Uri.parse('$baseURL$path');
-    return await httpClient
-        .post(
+    return httpClient.post(
       uri,
       body: _encodeUrlParameters(body),
       headers: {
@@ -61,8 +60,14 @@ class APIClient {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       encoding: Encoding.getByName('utf8'),
-    )
-        .then<APIResponse>(
+    );
+  }
+
+  Future<APIResponse> post({
+    required String path,
+    required Map<String, Object?> body,
+  }) {
+    return request(path: path, body: body).then<APIResponse>(
       (http.Response response) {
         print(response.body);
         final map = json.decode(response.body);
