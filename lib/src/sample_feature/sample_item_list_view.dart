@@ -7,13 +7,14 @@ import 'package:oportunidades_cce/src/authentication/remove_account_view.dart';
 
 import '../settings/settings_view.dart';
 
-/// Displays a list of SampleItems.
 class SampleItemListView extends StatelessWidget {
   const SampleItemListView({
     Key? key,
+    required this.onRouteChanged,
   }) : super(key: key);
 
   static const routeName = '/';
+  final ValueChanged<String> onRouteChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,7 @@ class SampleItemListView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
+              onRouteChanged(SettingsView.routeName);
             },
           ),
         ],
@@ -52,62 +50,35 @@ class SampleItemListView extends StatelessWidget {
               // Navigate to the details page. If the user leaves and returns to
               // the app after it has been killed while running in the
               // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                LoginView.routeName,
-              );
+              onRouteChanged(LoginView.routeName);
             },
           ),
           ListTile(
             title: const Text('Crear cuenta'),
             leading: const Icon(Icons.app_registration),
             onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                RegisterView.routeName,
-              );
+              onRouteChanged(RegisterView.routeName);
             },
           ),
           ListTile(
             title: const Text('¿Olvidaste tu contraseña?'),
             leading: const Icon(Icons.password),
             onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                ForgotPasswordView.routeName,
-              );
+              onRouteChanged(ForgotPasswordView.routeName);
             },
           ),
           ListTile(
             title: const Text('Reactivar cuenta'),
             leading: const Icon(Icons.account_box),
             onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                ReactivateAccountView.routeName,
-              );
+              onRouteChanged(ReactivateAccountView.routeName);
             },
           ),
           ListTile(
             title: const Text('Eliminar cuenta'),
             leading: const Icon(Icons.delete_forever),
             onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                RemoveAccountView.routeName,
-              );
+              onRouteChanged(RemoveAccountView.routeName);
             },
           ),
         ],

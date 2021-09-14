@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 
 import 'authentication_bloc.dart';
@@ -37,7 +40,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
 
         if (response.successful) {
-          authenticationBloc.add(const LoggedIn());
+          final map = json.decode(response.objeto!);
+          final userDetails = UserDetails.fromJson(map);
+
+          authenticationBloc.add(LoggedIn(
+            userDetails: userDetails,
+          ));
+
           yield const LoginInitial();
         } else {
           yield LoginFailure(response.message);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
+import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
 
@@ -79,13 +80,8 @@ class _LoginFormState extends State<LoginForm> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 12),
-                TextField(
+                PasswordField(
                   enabled: !isLoading,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    label: Text('Contraseña'),
-                    border: OutlineInputBorder(),
-                  ),
                   onChanged: (value) {
                     setState(() {
                       password = value;

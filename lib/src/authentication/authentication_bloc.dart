@@ -22,22 +22,37 @@ class AuthenticationBloc
       } finally {
         yield const AuthenticationUnauthenticated();
       }
-      return;
-    }
+    } else if (event is LoggedIn) {
+      final userDetails = event.userDetails;
+      try {
+        yield const AuthenticationLoading();
 
-    final hasUserDetails = await userDetailsStorage.hasUserDetails();
-    if (!hasUserDetails) {
-      yield const AuthenticationUnauthenticated();
-      return;
-    }
+        await userDetailsStorage.saveUserDetails(userDetails);
+        yield AuthenticationSuccessful(userDetails: userDetails);
+      } catch (err, trace) {
+        print(err);
+        print(trace);
+        await userDetailsStorage.deleteUserDetails();
+        yield const AuthenticationUnauthenticated();
+      }
+    } else if (event is AppStarted) {
+      final hasUserDetails = await userDetailsStorage.hasUserDetails();
+      if (!hasUserDetails) {
+        yield const AuthenticationUnauthenticated();
+        return;
+      }
 
-    try {
-      yield const AuthenticationLoading();
+      try {
+        yield const AuthenticationLoading();
 
-      final userDetails = await userDetailsStorage.getUserDetails();
-      yield AuthenticationSuccessful(userDetails: userDetails);
-    } finally {
-      yield const AuthenticationUnauthenticated();
+        final userDetails = await userDetailsStorage.getUserDetails();
+        yield AuthenticationSuccessful(userDetails: userDetails);
+      } catch (err, trace) {
+        print(err);
+        print(trace);
+        await userDetailsStorage.deleteUserDetails();
+        yield const AuthenticationUnauthenticated();
+      }
     }
   }
 }
@@ -54,7 +69,12 @@ class AppStarted extends AuthenticationEvent {
 }
 
 class LoggedIn extends AuthenticationEvent {
-  const LoggedIn();
+  const LoggedIn({required this.userDetails});
+
+  final UserDetails userDetails;
+
+  @override
+  List<Object?> get props => [...super.props, userDetails];
 }
 
 class LoggedOut extends AuthenticationEvent {

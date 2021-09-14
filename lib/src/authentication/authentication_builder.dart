@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oportunidades_cce/src/authentication/authenticated_navigator.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/loading_view.dart';
-import 'package:oportunidades_cce/src/authentication/login_view.dart';
 import 'package:oportunidades_cce/src/authentication/splash_view.dart';
-import 'package:oportunidades_cce/src/home/home_view.dart';
+import 'package:oportunidades_cce/src/authentication/unauthenticated_navigator.dart';
 import 'package:provider/provider.dart';
 
 class AuthenticationBuilder extends StatelessWidget {
@@ -19,13 +19,13 @@ class AuthenticationBuilder extends StatelessWidget {
         }
 
         if (state is AuthenticationUnauthenticated) {
-          return const LoginView();
+          return const UnauthenticatedNavigator();
         }
 
         if (state is AuthenticationSuccessful) {
           return Provider.value(
             value: state.userDetails,
-            child: const HomeView(),
+            child: const AuthenticatedNavigator(),
           );
         }
 

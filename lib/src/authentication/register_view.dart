@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
+import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
 
@@ -118,21 +119,8 @@ class _RegisterFormState extends State<RegisterForm> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 12),
-                TextField(
+                PasswordField(
                   enabled: !isLoading,
-                  obscureText: obscurePassword,
-                  decoration: InputDecoration(
-                    label: const Text('Contraseña'),
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          obscurePassword = !obscurePassword;
-                        });
-                      },
-                      icon: const Icon(Icons.remove_red_eye),
-                    ),
-                  ),
                   onChanged: (value) {
                     setState(() {
                       password = value;
