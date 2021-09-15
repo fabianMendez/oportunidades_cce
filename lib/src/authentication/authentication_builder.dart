@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authenticated_navigator.dart';
+import 'package:oportunidades_cce/src/authentication/authenticated_navigator_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/loading_view.dart';
 import 'package:oportunidades_cce/src/authentication/splash_view.dart';
@@ -25,7 +26,12 @@ class AuthenticationBuilder extends StatelessWidget {
         if (state is AuthenticationSuccessful) {
           return Provider.value(
             value: state.userDetails,
-            child: const AuthenticatedNavigator(),
+            child: BlocProvider<AuthenticatedNavigatorBloc>(
+              create: (_) {
+                return AuthenticatedNavigatorBloc();
+              },
+              child: const AuthenticatedNavigator(),
+            ),
           );
         }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:oportunidades_cce/src/authentication/authenticated_navigator_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/notificacion_listado_bloc.dart';
 import 'package:oportunidades_cce/src/home/notificacion_repository.dart';
@@ -64,7 +65,10 @@ class NotificacionListado extends StatelessWidget {
                 ElevatedButton.icon(
                   icon: const Icon(Icons.settings),
                   label: const Text('Configura tus suscripciones'),
-                  onPressed: () {},
+                  onPressed: () {
+                    BlocProvider.of<AuthenticatedNavigatorBloc>(context)
+                        .add(const NotificacionesSettingsViewPushed());
+                  },
                 ),
               ],
             );
