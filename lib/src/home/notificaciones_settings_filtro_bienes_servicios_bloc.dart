@@ -70,6 +70,28 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
         segmentos: state.segmentos,
         termino: event.term,
       );
+    } else if (event is NotificacionesSettingsFamiliaSeleccionada) {
+      final isSelected = state.familiasSeleccionadas.contains(event.id);
+      final familiasSeleccionadas = isSelected
+          ? state.familiasSeleccionadas
+              .where((element) => element != event.id)
+              .toList()
+          : state.familiasSeleccionadas.followedBy([event.id]).toList();
+
+      await grupoUNSPSCRepository.inscribirseFamiliaUNSPSC(
+        codigo: userDetails.codigo,
+        idGrupo: state.grupoSeleccionado,
+        idFamilia: event.id,
+        inscribirse: !isSelected,
+      );
+
+      yield NotificacionesSettingsFiltroBienesServiciosState(
+        grupoSeleccionado: state.grupoSeleccionado,
+        gruposUNSPSC: state.gruposUNSPSC,
+        segmentos: state.segmentos,
+        termino: state.termino,
+        familiasSeleccionadas: familiasSeleccionadas,
+      );
     }
   }
 }
@@ -85,21 +107,6 @@ abstract class NotificacionesSettingsFiltroBienesServiciosEvent
 class NotificacionesSettingsFiltroStarted
     extends NotificacionesSettingsFiltroBienesServiciosEvent {
   const NotificacionesSettingsFiltroStarted();
-}
-
-class NotificacionesSettingsFiltroBienesServiciosFiltro extends Equatable {
-  const NotificacionesSettingsFiltroBienesServiciosFiltro({
-    required this.value,
-    required this.description,
-    required this.actionMessage,
-  });
-
-  final String value;
-  final String description;
-  final String actionMessage;
-
-  @override
-  List<Object?> get props => [value, description, actionMessage];
 }
 
 class NotificacionesSettingsFiltroBienesServiciosGrupoChanged
@@ -126,24 +133,37 @@ class NotificacionesSettingsFiltroBienesServiciosTermChanged
   List<Object?> get props => [...super.props, term];
 }
 
+class NotificacionesSettingsFamiliaSeleccionada
+    extends NotificacionesSettingsFiltroBienesServiciosEvent {
+  const NotificacionesSettingsFamiliaSeleccionada({required this.id});
+
+  final int id;
+
+  @override
+  List<Object?> get props => [...super.props, id];
+}
+
 class NotificacionesSettingsFiltroBienesServiciosState extends Equatable {
   const NotificacionesSettingsFiltroBienesServiciosState({
     this.grupoSeleccionado = 0,
     this.gruposUNSPSC = const [],
     this.segmentos = const [],
     this.termino = '',
+    this.familiasSeleccionadas = const [],
   });
 
   const NotificacionesSettingsFiltroBienesServiciosState.initial()
       : grupoSeleccionado = 0,
         gruposUNSPSC = const [],
         segmentos = const [],
-        termino = '';
+        termino = '',
+        familiasSeleccionadas = const [];
 
   final int grupoSeleccionado;
   final List<GrupoUNSPSC> gruposUNSPSC;
   final List<SegmentoUNSPSC> segmentos;
   final String termino;
+  final List<int> familiasSeleccionadas;
 
   List<SegmentoUNSPSC> get segmentosParaTermino {
     final terminoTemp = termino.toLowerCase();
@@ -166,8 +186,13 @@ class NotificacionesSettingsFiltroBienesServiciosState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [grupoSeleccionado, gruposUNSPSC, segmentos, termino];
+  List<Object?> get props => [
+        grupoSeleccionado,
+        gruposUNSPSC,
+        segmentos,
+        termino,
+        familiasSeleccionadas
+      ];
 }
 
 class NotificacionesSettingsFiltroBienesServiciosUninitialized

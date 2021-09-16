@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_filtro_bienes_servicios_bloc.dart';
@@ -56,6 +58,19 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
 
         final segmentos = state.segmentosParaTermino;
 
+        ImplicitlyAnimatedList<SegmentoUNSPSC>(
+          items: segmentos,
+          itemBuilder: (context, animation, SegmentoUNSPSC segmento, int i) {
+            return SizeFadeTransition(
+              key: ValueKey(segmento),
+              sizeFraction: 0.7,
+              animation: animation,
+              child: Text(segmento.nombre),
+            );
+          },
+          areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
+        );
+
         return Column(
           children: [
             DropdownInput(
@@ -63,8 +78,6 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
               items: gruposItems,
               hintText: 'Filtro',
               onChanged: (int? value) {
-                FocusScope.of(context).unfocus();
-
                 BlocProvider.of<
                             NotificacionesSettingsFiltroBienesServiciosBloc>(
                         context)
@@ -121,7 +134,20 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
                                         CrossAxisAlignment.stretch,
                                     children: [
                                       for (final familia in segmento.familias)
-                                        FamiliaCard(familia: familia),
+                                        FamiliaCard(
+                                          familia: familia,
+                                          selected: state.familiasSeleccionadas
+                                              .contains(familia.id),
+                                          onTap: () {
+                                            BlocProvider.of<
+                                                        NotificacionesSettingsFiltroBienesServiciosBloc>(
+                                                    context)
+                                                .add(
+                                              NotificacionesSettingsFamiliaSeleccionada(
+                                                  id: familia.id),
+                                            );
+                                          },
+                                        ),
                                     ],
                                   ),
                                 ],
@@ -143,11 +169,13 @@ class FamiliaCard extends StatelessWidget {
   const FamiliaCard({
     Key? key,
     required this.familia,
-    this.seleccionada = false,
+    this.selected = false,
+    this.onTap,
   }) : super(key: key);
 
   final GrupoUNSPSC familia;
-  final bool seleccionada;
+  final bool selected;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +187,8 @@ class FamiliaCard extends StatelessWidget {
             familia.nombre.split('\n')[0],
           ),
           subtitle: Text('Cod: ${familia.codigo}'),
-          trailing: const Icon(Icons.check),
+          trailing: selected ? const Icon(Icons.check) : null,
+          onTap: onTap,
         ),
         const Divider()
       ],

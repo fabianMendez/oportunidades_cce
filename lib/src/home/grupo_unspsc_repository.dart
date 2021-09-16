@@ -125,4 +125,21 @@ class GrupoUNSPSCRepository {
 
     return list.map((it) => FamiliaUNSPSC.fromJson(it)).toList();
   }
+
+  Future<APIResponse> inscribirseFamiliaUNSPSC({
+    required String codigo,
+    required int idGrupo,
+    required int idFamilia,
+    required bool inscribirse,
+  }) {
+    return apiClient.post(
+      path: '/ServletInscribirseFamilia',
+      body: {
+        'codigo': codigo,
+        'idGrupo': idGrupo,
+        'idFamilia': idFamilia,
+        'inscribirse': inscribirse
+      },
+    );
+  }
 }
