@@ -182,13 +182,20 @@ class FamiliaCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ListTile(
+        CheckboxListTile(
           title: Text(
             familia.nombre.split('\n')[0],
           ),
           subtitle: Text('Cod: ${familia.codigo}'),
-          trailing: selected ? const Icon(Icons.check) : null,
-          onTap: onTap,
+          // trailing: (value: value, onChanged: onChanged),
+          // trailing: selected ? const Icon(Icons.check) : null,
+          // onTap: onTap,
+          onChanged: (_) {
+            if (onTap != null) {
+              onTap!();
+            }
+          },
+          value: selected,
         ),
         const Divider()
       ],

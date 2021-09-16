@@ -29,6 +29,8 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
       grupoSeleccionado: state.grupoSeleccionado,
       gruposUNSPSC: state.gruposUNSPSC,
       segmentos: segmentos,
+      termino: state.termino,
+      familiasSeleccionadas: state.familiasSeleccionadas,
     );
 
     // las que están marcadas
@@ -50,6 +52,8 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
       final newState = NotificacionesSettingsFiltroBienesServiciosLoading(
         gruposUNSPSC: gruposUNSPSC,
         grupoSeleccionado: gruposUNSPSC[0].id,
+        familiasSeleccionadas: state.familiasSeleccionadas,
+        termino: state.termino,
       );
       yield newState;
 
@@ -59,6 +63,8 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
       final newState = NotificacionesSettingsFiltroBienesServiciosLoading(
         grupoSeleccionado: event.grupo,
         gruposUNSPSC: state.gruposUNSPSC,
+        familiasSeleccionadas: state.familiasSeleccionadas,
+        termino: state.termino,
       );
       yield newState;
       yield* _onGrupoChanged(newState);
@@ -68,6 +74,7 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
         grupoSeleccionado: state.grupoSeleccionado,
         gruposUNSPSC: state.gruposUNSPSC,
         segmentos: state.segmentos,
+        familiasSeleccionadas: state.familiasSeleccionadas,
         termino: event.term,
       );
     } else if (event is NotificacionesSettingsFamiliaSeleccionada) {
@@ -78,12 +85,12 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
               .toList()
           : state.familiasSeleccionadas.followedBy([event.id]).toList();
 
-      await grupoUNSPSCRepository.inscribirseFamiliaUNSPSC(
-        codigo: userDetails.codigo,
-        idGrupo: state.grupoSeleccionado,
-        idFamilia: event.id,
-        inscribirse: !isSelected,
-      );
+      // await grupoUNSPSCRepository.inscribirseFamiliaUNSPSC(
+      //   codigo: userDetails.codigo,
+      //   idGrupo: state.grupoSeleccionado,
+      //   idFamilia: event.id,
+      //   inscribirse: !isSelected,
+      // );
 
       yield NotificacionesSettingsFiltroBienesServiciosState(
         grupoSeleccionado: state.grupoSeleccionado,
@@ -205,8 +212,12 @@ class NotificacionesSettingsFiltroBienesServiciosLoading
   const NotificacionesSettingsFiltroBienesServiciosLoading({
     required int grupoSeleccionado,
     required List<GrupoUNSPSC> gruposUNSPSC,
+    String termino = '',
+    List<int> familiasSeleccionadas = const [],
   }) : super(
           grupoSeleccionado: grupoSeleccionado,
           gruposUNSPSC: gruposUNSPSC,
+          termino: termino,
+          familiasSeleccionadas: familiasSeleccionadas,
         );
 }

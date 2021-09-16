@@ -142,4 +142,34 @@ class GrupoUNSPSCRepository {
       },
     );
   }
+
+  Future<List<FamiliaUNSPSC>> getFamiliasClasesUsuario({
+    required String codigo,
+  }) async {
+    final res = await apiClient.request(
+      path: '/ServletFamiliasUNSPSCUsuario',
+      body: {'codigo': codigo},
+    );
+
+    print(res.body);
+    // final List<dynamic> list = json.decode(res.body);
+
+    // return list.map((it) => FamiliaUNSPSC.fromJson(it)).toList();
+    return [];
+  }
+
+  Future<List<SegmentoUNSPSC>> getSegmentosFamiliasUNSPSC({
+    required String codigo,
+    required int idGrupo,
+  }) async {
+    final res = await apiClient.request(
+      path: '/ServletSegmentosUNSPSCFamiliasUNSPSC',
+      body: {'codigo': codigo, 'idGrupo': idGrupo},
+    );
+
+    print(res.body);
+    final List<dynamic> list = json.decode(res.body);
+
+    return list.map((it) => SegmentoUNSPSC.fromJson(it)).toList();
+  }
 }
