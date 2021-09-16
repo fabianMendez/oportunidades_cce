@@ -52,9 +52,11 @@ class APIClient {
     required Map<String, Object?> body,
   }) async {
     final uri = Uri.parse('$baseURL$path');
+    final encodedBody = _encodeUrlParameters(body);
+    print(encodedBody);
     return httpClient.post(
       uri,
-      body: _encodeUrlParameters(body),
+      body: encodedBody,
       headers: {
         'Authorization': 'OAuth2: token',
         'Content-Type': 'application/x-www-form-urlencoded',

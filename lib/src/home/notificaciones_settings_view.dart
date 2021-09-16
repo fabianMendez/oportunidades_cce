@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authenticated_navigator_bloc.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_bloc.dart';
-import 'package:oportunidades_cce/src/home/widgets/dropdown_input.dart';
+import 'package:oportunidades_cce/src/widgets/dropdown_field.dart';
 
 class NotificacionesSettingsView extends StatelessWidget {
   const NotificacionesSettingsView({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class NotificacionesSettings extends StatelessWidget {
 
         return Column(
           children: [
-            DropdownInput(
+            DropdownField(
               required: true,
               items: items,
               hintText: 'Filtro',

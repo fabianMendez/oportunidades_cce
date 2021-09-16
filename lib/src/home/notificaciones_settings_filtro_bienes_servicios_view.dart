@@ -6,8 +6,8 @@ import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_filtro_bienes_servicios_bloc.dart';
-import 'package:oportunidades_cce/src/home/widgets/dropdown_input.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
+import 'package:oportunidades_cce/src/widgets/dropdown_field.dart';
 import 'package:oportunidades_cce/src/widgets/search_field.dart';
 import 'package:provider/provider.dart';
 
@@ -73,10 +73,11 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
 
         return Column(
           children: [
-            DropdownInput(
+            DropdownField(
               required: true,
               items: gruposItems,
               hintText: 'Filtro',
+              isDense: false,
               onChanged: (int? value) {
                 BlocProvider.of<
                             NotificacionesSettingsFiltroBienesServiciosBloc>(

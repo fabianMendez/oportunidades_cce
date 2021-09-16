@@ -38,6 +38,7 @@ class NotificacionRepository {
     );
 
     print(res.body);
+    // {"respuesta":"No_Exito"}
     final List<dynamic> list = json.decode(res.body);
 
     return list.map((it) => Notificacion.fromJson(it)).toList();
