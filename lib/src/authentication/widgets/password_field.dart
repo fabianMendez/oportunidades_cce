@@ -31,7 +31,9 @@ class _PasswordFieldState extends State<PasswordField> {
               obscureText = !obscureText;
             });
           },
-          icon: const Icon(Icons.remove_red_eye),
+          icon: obscureText
+              ? const Icon(Icons.visibility)
+              : const Icon(Icons.visibility_off),
         ),
       ),
       onChanged: widget.onChanged,
