@@ -30,18 +30,19 @@ class NotificacionesSettingsFiltroBienesServiciosView extends StatelessWidget {
             grupoUNSPSCRepository: sl.get<GrupoUNSPSCRepository>(),
           )..add(const NotificacionesSettingsFiltroStarted());
         },
-        child: const Padding(
-          padding: EdgeInsets.all(8),
-          child: NotificacionesSettingsFiltroBienesServicios(),
-        ),
+        child: const NotificacionesSettingsFiltroBienesServicios(),
       ),
     );
   }
 }
 
 class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
-  const NotificacionesSettingsFiltroBienesServicios({Key? key})
-      : super(key: key);
+  const NotificacionesSettingsFiltroBienesServicios({
+    Key? key,
+    this.contentPadding = const EdgeInsets.all(8),
+  }) : super(key: key);
+
+  final EdgeInsets contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -73,90 +74,101 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
 
         return Column(
           children: [
-            DropdownField(
-              required: true,
-              items: gruposItems,
-              hintText: 'Filtro',
-              isDense: false,
-              onChanged: (int? value) {
-                BlocProvider.of<
-                            NotificacionesSettingsFiltroBienesServiciosBloc>(
-                        context)
-                    .add(
-                  NotificacionesSettingsFiltroBienesServiciosGrupoChanged(
-                      grupo: value!),
-                );
-              },
-              value: state.grupoSeleccionado,
+            Padding(
+              padding: contentPadding,
+              child: Column(
+                children: [
+                  DropdownField(
+                    required: true,
+                    items: gruposItems,
+                    hintText: 'Filtro',
+                    isDense: false,
+                    onChanged: (int? value) {
+                      BlocProvider.of<
+                                  NotificacionesSettingsFiltroBienesServiciosBloc>(
+                              context)
+                          .add(
+                        NotificacionesSettingsFiltroBienesServiciosGrupoChanged(
+                            grupo: value!),
+                      );
+                    },
+                    value: state.grupoSeleccionado,
+                  ),
+                  const SizedBox(height: 12),
+                  SearchField(
+                    value: state.termino,
+                    onSubmitted: (value) {
+                      BlocProvider.of<
+                                  NotificacionesSettingsFiltroBienesServiciosBloc>(
+                              context)
+                          .add(
+                        NotificacionesSettingsFiltroBienesServiciosTermChanged(
+                            term: value),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 12),
-            SearchField(
-              value: state.termino,
-              onSubmitted: (value) {
-                BlocProvider.of<
-                            NotificacionesSettingsFiltroBienesServiciosBloc>(
-                        context)
-                    .add(
-                  NotificacionesSettingsFiltroBienesServiciosTermChanged(
-                      term: value),
-                );
-              },
-            ),
-            const SizedBox(height: 24),
+            const Divider(height: 4),
             Expanded(
               child: state is NotificacionesSettingsFiltroBienesServiciosLoading
                   ? const Center(child: CircularProgressIndicator.adaptive())
                   : segmentos.isEmpty
-                      ? const Text(
-                          'No hay familias con esa descripción',
-                          style: TextStyle(
-                            fontSize: 16,
+                      ? Padding(
+                          padding: contentPadding,
+                          child: const Text(
+                            'No hay familias con esa descripción',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListView.separated(
-                            itemCount: segmentos.length,
-                            itemBuilder: (context, index) {
-                              final segmento = segmentos[index];
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    segmento.nombre,
+                      : ListView.separated(
+                          itemCount: segmentos.length,
+                          itemBuilder: (context, index) {
+                            final segmento = segmentos[index];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Text(
+                                    segmento.nombre.replaceAll('?', ''),
                                     style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  const SizedBox(height: 12),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      for (final familia in segmento.familias)
-                                        FamiliaCard(
-                                          familia: familia,
-                                          selected: state.familiasSeleccionadas
-                                              .contains(familia.id),
-                                          onTap: () {
-                                            BlocProvider.of<
-                                                        NotificacionesSettingsFiltroBienesServiciosBloc>(
-                                                    context)
-                                                .add(
-                                              NotificacionesSettingsFamiliaSeleccionada(
-                                                  id: familia.id),
-                                            );
-                                          },
-                                        ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                            separatorBuilder: (_, __) =>
-                                const SizedBox(height: 16),
-                          ),
+                                ),
+                                const SizedBox(height: 12),
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    for (final familia in segmento.familias)
+                                      FamiliaCard(
+                                        familia: familia,
+                                        selected: state.familiasSeleccionadas
+                                            .contains(familia.id),
+                                        onTap: () {
+                                          BlocProvider.of<
+                                                      NotificacionesSettingsFiltroBienesServiciosBloc>(
+                                                  context)
+                                              .add(
+                                            NotificacionesSettingsFamiliaSeleccionada(
+                                                id: familia.id),
+                                          );
+                                        },
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 16),
                         ),
             ),
           ],
@@ -180,26 +192,20 @@ class FamiliaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        CheckboxListTile(
-          title: Text(
-            familia.nombre.split('\n')[0],
-          ),
-          subtitle: Text('Cod: ${familia.codigo}'),
-          // trailing: (value: value, onChanged: onChanged),
-          // trailing: selected ? const Icon(Icons.check) : null,
-          // onTap: onTap,
-          onChanged: (_) {
-            if (onTap != null) {
-              onTap!();
-            }
-          },
-          value: selected,
-        ),
-        const Divider()
-      ],
+    return SwitchListTile(
+      title: Text(
+        familia.nombre.split('\n')[0],
+      ),
+      subtitle: Text('Cod: ${familia.codigo}'),
+      // trailing: (value: value, onChanged: onChanged),
+      // trailing: selected ? const Icon(Icons.check) : null,
+      // onTap: onTap,
+      onChanged: (_) {
+        if (onTap != null) {
+          onTap!();
+        }
+      },
+      value: selected,
     );
   }
 }
