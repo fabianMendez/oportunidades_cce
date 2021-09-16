@@ -168,7 +168,7 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
                             );
                           },
                           separatorBuilder: (_, __) =>
-                              const SizedBox(height: 16),
+                              const Divider(height: 16),
                         ),
             ),
           ],
