@@ -11,7 +11,8 @@ class AuthenticatedNavigatorBloc
       AuthenticatedNavigatorEvent event) async* {
     if (event is AuthenticatedNavigatorPopped) {
       if (state.isNotificacionesSettingsFiltroBienesServicios ||
-          state.isNotificacionesSettingsMonto) {
+          state.isNotificacionesSettingsMonto ||
+          state.isNotificacionesSettingsKeyword) {
         yield const AuthenticatedNavigatorState(isNotificacionesSettings: true);
       } else {
         yield const AuthenticatedNavigatorState.initial();
@@ -27,6 +28,11 @@ class AuthenticatedNavigatorBloc
       yield const AuthenticatedNavigatorState(
         isNotificacionesSettings: true,
         isNotificacionesSettingsMonto: true,
+      );
+    } else if (event is NotificacionesSettingsKeywordViewPushed) {
+      yield const AuthenticatedNavigatorState(
+        isNotificacionesSettings: true,
+        isNotificacionesSettingsKeyword: true,
       );
     }
   }
@@ -57,26 +63,35 @@ class NotificacionesSettingsMontoViewPushed
   const NotificacionesSettingsMontoViewPushed();
 }
 
+class NotificacionesSettingsKeywordViewPushed
+    extends AuthenticatedNavigatorEvent {
+  const NotificacionesSettingsKeywordViewPushed();
+}
+
 class AuthenticatedNavigatorState extends Equatable {
   const AuthenticatedNavigatorState({
     this.isNotificacionesSettings = false,
     this.isNotificacionesSettingsFiltroBienesServicios = false,
     this.isNotificacionesSettingsMonto = false,
+    this.isNotificacionesSettingsKeyword = false,
   });
 
   const AuthenticatedNavigatorState.initial()
       : isNotificacionesSettings = false,
         isNotificacionesSettingsFiltroBienesServicios = false,
-        isNotificacionesSettingsMonto = false;
+        isNotificacionesSettingsMonto = false,
+        isNotificacionesSettingsKeyword = false;
 
   final bool isNotificacionesSettings;
   final bool isNotificacionesSettingsFiltroBienesServicios;
   final bool isNotificacionesSettingsMonto;
+  final bool isNotificacionesSettingsKeyword;
 
   @override
   List<Object?> get props => [
         isNotificacionesSettings,
         isNotificacionesSettingsFiltroBienesServicios,
         isNotificacionesSettingsMonto,
+        isNotificacionesSettingsKeyword,
       ];
 }

@@ -187,4 +187,14 @@ class GrupoUNSPSCRepository {
       },
     );
   }
+
+  Future<APIResponse> insertarTextoContratacion({
+    required String codigo,
+    required String texto,
+  }) {
+    return apiClient.post(
+      path: '/ServletInsertarTextoContratacion',
+      body: {'codigo': codigo, 'texto': texto},
+    );
+  }
 }
