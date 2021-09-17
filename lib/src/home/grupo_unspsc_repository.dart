@@ -70,6 +70,29 @@ class FamiliaUNSPSC extends Equatable {
   List<Object?> get props => [];
 }
 
+class ValueNotificationSetting extends Equatable {
+  const ValueNotificationSetting({
+    required this.estado,
+    required this.id,
+    required this.montoInferior,
+    required this.montoSuperior,
+  });
+
+  final int estado;
+  final int id;
+  final String montoInferior;
+  final String montoSuperior;
+
+  ValueNotificationSetting.fromJson(Map<String, dynamic> map)
+      : estado = map['estado'],
+        id = map['id'],
+        montoInferior = map['montoInferior'],
+        montoSuperior = map['montoSuperior'];
+
+  @override
+  List<Object?> get props => [estado, id, montoInferior, montoSuperior];
+}
+
 class GrupoUNSPSCRepository {
   GrupoUNSPSCRepository({
     required this.apiClient,
@@ -171,6 +194,19 @@ class GrupoUNSPSCRepository {
     final List<dynamic> list = json.decode(res.body);
 
     return list.map((it) => SegmentoUNSPSC.fromJson(it)).toList();
+  }
+
+  Future<List<ValueNotificationSetting>> getMontosConfiguracion(
+      {required String codigo}) async {
+    final res = await apiClient.request(
+      path: '/ServletMontoConfiguracions',
+      body: {'codigo': codigo},
+    );
+
+    print(res.body);
+    final List<dynamic> list = json.decode(res.body);
+
+    return list.map((it) => ValueNotificationSetting.fromJson(it)).toList();
   }
 
   Future<APIResponse> insertarMontosConfiguracion({
