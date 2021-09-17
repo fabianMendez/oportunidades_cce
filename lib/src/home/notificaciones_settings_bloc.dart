@@ -13,8 +13,28 @@ class NotificacionesSettingsBloc
   final UserDetails userDetails;
   final GrupoUNSPSCRepository grupoUNSPSCRepository;
 
+  Stream<NotificacionesSettingsState> _loadSavedSettingsFromCache(
+    Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
+    NotificacionesSettingsFiltro selectedFilter,
+  ) async* {
+    if (cache.containsKey(selectedFilter)) {
+      final List<ValueNotificationSetting> settings =
+          cache[selectedFilter]! as List<ValueNotificationSetting>;
+
+      yield NotificacionesSettingsReady(
+        selectedFilter: selectedFilter,
+        valueNotificationSettings: settings,
+        cache: cache,
+      );
+    } else {
+      yield* _loadSavedSettings(cache, selectedFilter);
+    }
+  }
+
   Stream<NotificacionesSettingsState> _loadSavedSettings(
-      NotificacionesSettingsFiltro selectedFilter) async* {
+    Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
+    NotificacionesSettingsFiltro selectedFilter,
+  ) async* {
     try {
       yield NotificacionesSettingsLoading(selectedFilter: selectedFilter);
 
@@ -23,9 +43,14 @@ class NotificacionesSettingsBloc
         codigo: userDetails.codigo,
       );
 
+      final newCache =
+          Map<NotificacionesSettingsFiltro, List<dynamic>>.from(cache)
+            ..addAll({selectedFilter: valueNotificationSettings});
+
       yield NotificacionesSettingsReady(
         selectedFilter: selectedFilter,
         valueNotificationSettings: valueNotificationSettings,
+        cache: newCache,
       );
     } catch (err, str) {
       print(err);
@@ -41,9 +66,20 @@ class NotificacionesSettingsBloc
   Stream<NotificacionesSettingsState> mapEventToState(
       NotificacionesSettingsEvent event) async* {
     if (event is NotificacionesSettingsStarted) {
-      yield* _loadSavedSettings(state.selectedFilter);
+      yield* _loadSavedSettingsFromCache(
+        state.notificationSettingsCache,
+        state.selectedFilter,
+      );
     } else if (event is NotificacionesSettingsFilterChanged) {
-      yield* _loadSavedSettings(event.selected);
+      yield* _loadSavedSettingsFromCache(
+        state.notificationSettingsCache,
+        event.selected,
+      );
+    } else if (event is NotificacionesSettingsUpdated) {
+      yield* _loadSavedSettings(
+        state.notificationSettingsCache,
+        state.selectedFilter,
+      );
     }
   }
 }
@@ -84,6 +120,10 @@ class NotificacionesSettingsFilterChanged extends NotificacionesSettingsEvent {
   List<Object?> get props => [...super.props, selected];
 }
 
+class NotificacionesSettingsUpdated extends NotificacionesSettingsEvent {
+  const NotificacionesSettingsUpdated();
+}
+
 const kFiltroBienesServicios = NotificacionesSettingsFiltro(
   value: 'bienesServicios',
   description: 'Bienes y servicios',
@@ -106,11 +146,13 @@ class NotificacionesSettingsState extends Equatable {
   const NotificacionesSettingsState({
     required this.selectedFilter,
     this.valueNotificationSettings = const [],
+    this.notificationSettingsCache = const {},
   });
 
   const NotificacionesSettingsState.initial()
       : selectedFilter = kFiltroBienesServicios,
-        valueNotificationSettings = const [];
+        valueNotificationSettings = const [],
+        notificationSettingsCache = const {};
 
   final List<NotificacionesSettingsFiltro> filters = const [
     kFiltroBienesServicios,
@@ -120,10 +162,16 @@ class NotificacionesSettingsState extends Equatable {
 
   final NotificacionesSettingsFiltro selectedFilter;
   final List<ValueNotificationSetting> valueNotificationSettings;
+  final Map<NotificacionesSettingsFiltro, List<dynamic>>
+      notificationSettingsCache;
 
   @override
-  List<Object?> get props =>
-      [filters, selectedFilter, valueNotificationSettings];
+  List<Object?> get props => [
+        filters,
+        selectedFilter,
+        valueNotificationSettings,
+        notificationSettingsCache,
+      ];
 }
 
 class NotificacionesSettingsLoading extends NotificacionesSettingsState {
@@ -138,9 +186,11 @@ class NotificacionesSettingsReady extends NotificacionesSettingsState {
   const NotificacionesSettingsReady({
     required NotificacionesSettingsFiltro selectedFilter,
     required List<ValueNotificationSetting> valueNotificationSettings,
+    required Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
   }) : super(
           selectedFilter: selectedFilter,
           valueNotificationSettings: valueNotificationSettings,
+          notificationSettingsCache: cache,
         );
 }
 
