@@ -59,6 +59,9 @@ class NotificacionesSettings extends StatelessWidget {
                 if (state.selectedFilter == kFiltroBienesServicios) {
                   BlocProvider.of<AuthenticatedNavigatorBloc>(context).add(
                       const NotificacionesSettingsFiltroBienesServiciosViewPushed());
+                } else if (state.selectedFilter == kFiltroValores) {
+                  BlocProvider.of<AuthenticatedNavigatorBloc>(context)
+                      .add(const NotificacionesSettingsMontoViewPushed());
                 }
               },
               icon: const Icon(Icons.add),

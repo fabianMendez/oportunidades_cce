@@ -34,11 +34,11 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
     );
 
     // las que están marcadas
-    final familias =
-        await grupoUNSPSCRepository.getFamiliasClasesUsuarioGrupoUNSPSC(
-      codigo: userDetails.codigo,
-      idGrupo: idGrupo,
-    );
+    // final familias =
+    //     await grupoUNSPSCRepository.getFamiliasClasesUsuarioGrupoUNSPSC(
+    //   codigo: userDetails.codigo,
+    //   idGrupo: idGrupo,
+    // );
   }
 
   @override

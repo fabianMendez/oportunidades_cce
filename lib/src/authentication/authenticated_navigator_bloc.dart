@@ -10,7 +10,8 @@ class AuthenticatedNavigatorBloc
   Stream<AuthenticatedNavigatorState> mapEventToState(
       AuthenticatedNavigatorEvent event) async* {
     if (event is AuthenticatedNavigatorPopped) {
-      if (state.isNotificacionesSettingsFiltroBienesServicios) {
+      if (state.isNotificacionesSettingsFiltroBienesServicios ||
+          state.isNotificacionesSettingsMonto) {
         yield const AuthenticatedNavigatorState(isNotificacionesSettings: true);
       } else {
         yield const AuthenticatedNavigatorState.initial();
@@ -21,6 +22,11 @@ class AuthenticatedNavigatorBloc
       yield const AuthenticatedNavigatorState(
         isNotificacionesSettings: true,
         isNotificacionesSettingsFiltroBienesServicios: true,
+      );
+    } else if (event is NotificacionesSettingsMontoViewPushed) {
+      yield const AuthenticatedNavigatorState(
+        isNotificacionesSettings: true,
+        isNotificacionesSettingsMonto: true,
       );
     }
   }
@@ -46,22 +52,31 @@ class NotificacionesSettingsFiltroBienesServiciosViewPushed
   const NotificacionesSettingsFiltroBienesServiciosViewPushed();
 }
 
+class NotificacionesSettingsMontoViewPushed
+    extends AuthenticatedNavigatorEvent {
+  const NotificacionesSettingsMontoViewPushed();
+}
+
 class AuthenticatedNavigatorState extends Equatable {
   const AuthenticatedNavigatorState({
     this.isNotificacionesSettings = false,
     this.isNotificacionesSettingsFiltroBienesServicios = false,
+    this.isNotificacionesSettingsMonto = false,
   });
 
   const AuthenticatedNavigatorState.initial()
       : isNotificacionesSettings = false,
-        isNotificacionesSettingsFiltroBienesServicios = false;
+        isNotificacionesSettingsFiltroBienesServicios = false,
+        isNotificacionesSettingsMonto = false;
 
   final bool isNotificacionesSettings;
   final bool isNotificacionesSettingsFiltroBienesServicios;
+  final bool isNotificacionesSettingsMonto;
 
   @override
   List<Object?> get props => [
         isNotificacionesSettings,
         isNotificacionesSettingsFiltroBienesServicios,
+        isNotificacionesSettingsMonto,
       ];
 }

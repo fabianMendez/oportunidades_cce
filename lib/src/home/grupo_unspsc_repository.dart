@@ -172,4 +172,19 @@ class GrupoUNSPSCRepository {
 
     return list.map((it) => SegmentoUNSPSC.fromJson(it)).toList();
   }
+
+  Future<APIResponse> insertarMontosConfiguracion({
+    required String codigo,
+    required double montoInferior,
+    required double montoSuperior,
+  }) {
+    return apiClient.post(
+      path: '/ServletInsertarMontoConfiguracion',
+      body: {
+        'codigo': codigo,
+        'montoInferior': montoInferior,
+        'montoSuperior': montoSuperior,
+      },
+    );
+  }
 }
