@@ -58,12 +58,24 @@ class NotificacionesSettingsBloc
     NotificacionesSettingsFiltro selectedFilter,
   ) async* {
     if (cache.containsKey(selectedFilter)) {
-      final List<ValueNotificationSetting> settings =
-          cache[selectedFilter]! as List<ValueNotificationSetting>;
+      final valueNotificationSettings = selectedFilter == kFiltroValores
+          ? cache[selectedFilter]! as List<ValueNotificationSetting>
+          : state.valueNotificationSettings;
+
+      final familyNotificationSettings =
+          selectedFilter == kFiltroBienesServicios
+              ? cache[selectedFilter]! as List<FamiliaUNSPSC>
+              : state.familyNotificationSettings;
+
+      final keywordNotificationSettings = selectedFilter == kFiltroPalabrasClave
+          ? cache[selectedFilter]! as List<KeywordNotificationSetting>
+          : state.keywordNotificationSettings;
 
       yield NotificacionesSettingsReady(
         selectedFilter: selectedFilter,
-        valueNotificationSettings: settings,
+        valueNotificationSettings: valueNotificationSettings,
+        familyNotificationSettings: familyNotificationSettings,
+        keywordNotificationSettings: keywordNotificationSettings,
         cache: cache,
       );
     } else {
@@ -78,19 +90,41 @@ class NotificacionesSettingsBloc
     try {
       yield NotificacionesSettingsLoading(selectedFilter: selectedFilter);
 
-      final valueNotificationSettings =
-          await grupoUNSPSCRepository.getMontosConfiguracion(
-        codigo: userDetails.codigo,
-      );
+      final valueNotificationSettings = selectedFilter == kFiltroValores
+          ? await grupoUNSPSCRepository.getMontosConfiguracion(
+              codigo: userDetails.codigo,
+            )
+          : state.valueNotificationSettings;
+
+      final familyNotificationSettings =
+          selectedFilter == kFiltroBienesServicios
+              ? await grupoUNSPSCRepository.getFamiliasClasesUsuario(
+                  codigo: userDetails.codigo,
+                )
+              : state.familyNotificationSettings;
+
+      final keywordNotificationSettings = selectedFilter == kFiltroPalabrasClave
+          ? await grupoUNSPSCRepository.getTextosConfiguracion(
+              codigo: userDetails.codigo,
+            )
+          : state.keywordNotificationSettings;
+
+      final cacheValue = selectedFilter == kFiltroValores
+          ? valueNotificationSettings
+          : selectedFilter == kFiltroPalabrasClave
+              ? keywordNotificationSettings
+              : familyNotificationSettings;
 
       final newCache =
           Map<NotificacionesSettingsFiltro, List<dynamic>>.from(cache)
-            ..addAll({selectedFilter: valueNotificationSettings});
+            ..addAll({selectedFilter: cacheValue});
 
       yield NotificacionesSettingsReady(
         selectedFilter: selectedFilter,
         valueNotificationSettings: valueNotificationSettings,
         cache: newCache,
+        familyNotificationSettings: familyNotificationSettings,
+        keywordNotificationSettings: keywordNotificationSettings,
       );
     } catch (err, str) {
       print(err);
@@ -136,6 +170,8 @@ class NotificacionesSettingsBloc
         notificationSettingsCache: state.notificationSettingsCache,
         selectedFilter: state.selectedFilter,
         valueNotificationSettings: state.valueNotificationSettings,
+        familyNotificationSettings: state.familyNotificationSettings,
+        keywordNotificationSettings: state.keywordNotificationSettings,
       );
     }
   }
@@ -208,12 +244,16 @@ class NotificacionesSettingsState extends Equatable {
     required this.selectedFilter,
     this.valueNotificationSettings = const [],
     this.notificationSettingsCache = const {},
+    this.familyNotificationSettings = const [],
+    this.keywordNotificationSettings = const [],
   });
 
   const NotificacionesSettingsState.initial()
       : selectedFilter = kFiltroBienesServicios,
         valueNotificationSettings = const [],
-        notificationSettingsCache = const {};
+        notificationSettingsCache = const {},
+        familyNotificationSettings = const [],
+        keywordNotificationSettings = const [];
 
   final List<NotificacionesSettingsFiltro> filters = const [
     kFiltroBienesServicios,
@@ -223,6 +263,8 @@ class NotificacionesSettingsState extends Equatable {
 
   final NotificacionesSettingsFiltro selectedFilter;
   final List<ValueNotificationSetting> valueNotificationSettings;
+  final List<FamiliaUNSPSC> familyNotificationSettings;
+  final List<KeywordNotificationSetting> keywordNotificationSettings;
   final Map<NotificacionesSettingsFiltro, List<dynamic>>
       notificationSettingsCache;
 
@@ -232,6 +274,8 @@ class NotificacionesSettingsState extends Equatable {
         selectedFilter,
         valueNotificationSettings,
         notificationSettingsCache,
+        familyNotificationSettings,
+        keywordNotificationSettings,
       ];
 }
 
@@ -248,10 +292,14 @@ class NotificacionesSettingsReady extends NotificacionesSettingsState {
     required NotificacionesSettingsFiltro selectedFilter,
     required List<ValueNotificationSetting> valueNotificationSettings,
     required Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
+    required List<FamiliaUNSPSC> familyNotificationSettings,
+    required List<KeywordNotificationSetting> keywordNotificationSettings,
   }) : super(
           selectedFilter: selectedFilter,
           valueNotificationSettings: valueNotificationSettings,
           notificationSettingsCache: cache,
+          familyNotificationSettings: familyNotificationSettings,
+          keywordNotificationSettings: keywordNotificationSettings,
         );
 }
 
@@ -273,11 +321,15 @@ class NotificacionesSettingsSelecting extends NotificacionesSettingsState {
   const NotificacionesSettingsSelecting({
     required NotificacionesSettingsFiltro selectedFilter,
     required List<ValueNotificationSetting> valueNotificationSettings,
+    required List<FamiliaUNSPSC> familyNotificationSettings,
+    required List<KeywordNotificationSetting> keywordNotificationSettings,
     required Map<NotificacionesSettingsFiltro, List<dynamic>>
         notificationSettingsCache,
   }) : super(
           selectedFilter: selectedFilter,
           notificationSettingsCache: notificationSettingsCache,
           valueNotificationSettings: valueNotificationSettings,
+          familyNotificationSettings: familyNotificationSettings,
+          keywordNotificationSettings: keywordNotificationSettings,
         );
 }

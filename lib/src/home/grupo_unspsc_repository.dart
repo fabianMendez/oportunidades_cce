@@ -93,6 +93,26 @@ class ValueNotificationSetting extends Equatable {
   List<Object?> get props => [estado, id, montoInferior, montoSuperior];
 }
 
+class KeywordNotificationSetting extends Equatable {
+  const KeywordNotificationSetting({
+    required this.estado,
+    required this.id,
+    required this.texto,
+  });
+
+  final int estado;
+  final int id;
+  final String texto;
+
+  KeywordNotificationSetting.fromJson(Map<String, dynamic> map)
+      : estado = map['estado'],
+        id = map['id'],
+        texto = map['texto'];
+
+  @override
+  List<Object?> get props => [estado, id, texto];
+}
+
 class GrupoUNSPSCRepository {
   GrupoUNSPSCRepository({
     required this.apiClient,
@@ -222,6 +242,19 @@ class GrupoUNSPSCRepository {
         'montoSuperior': montoSuperior,
       },
     );
+  }
+
+  Future<List<KeywordNotificationSetting>> getTextosConfiguracion(
+      {required String codigo}) async {
+    final res = await apiClient.request(
+      path: '/ServletTextoContratacions',
+      body: {'codigo': codigo},
+    );
+
+    print(res.body);
+    final List<dynamic> list = json.decode(res.body);
+
+    return list.map((it) => KeywordNotificationSetting.fromJson(it)).toList();
   }
 
   Future<APIResponse> insertarTextoContratacion({

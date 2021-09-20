@@ -106,6 +106,14 @@ class NotificacionesSettingsListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (settingsState.selectedFilter == kFiltroValores) {
+      return ValueNotificationSettingsListing(settingsState: settingsState);
+    }
+
+    if (settingsState.selectedFilter == kFiltroPalabrasClave) {
+      return KeywordNotificationSettingsListing(settingsState: settingsState);
+    }
+
     if (settingsState.valueNotificationSettings.isEmpty) {
       return const Center(child: Text('No hay configuraciones'));
     }
@@ -117,6 +125,69 @@ class NotificacionesSettingsListing extends StatelessWidget {
         return ListTile(
           title: Text(setting.montoInferior),
           subtitle: Text(setting.montoSuperior),
+        );
+      },
+    );
+  }
+}
+
+class EmptyNotificationSettings extends StatelessWidget {
+  const EmptyNotificationSettings({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('No hay configuraciones'));
+  }
+}
+
+class ValueNotificationSettingsListing extends StatelessWidget {
+  const ValueNotificationSettingsListing({
+    Key? key,
+    required this.settingsState,
+  }) : super(key: key);
+
+  final NotificacionesSettingsState settingsState;
+
+  @override
+  Widget build(BuildContext context) {
+    if (settingsState.valueNotificationSettings.isEmpty) {
+      return const EmptyNotificationSettings();
+    }
+
+    return ListView.builder(
+      itemCount: settingsState.valueNotificationSettings.length,
+      itemBuilder: (_, index) {
+        final setting = settingsState.valueNotificationSettings[index];
+        return ListTile(
+          title: Text(setting.montoInferior),
+          subtitle: Text(setting.montoSuperior),
+        );
+      },
+    );
+  }
+}
+
+class KeywordNotificationSettingsListing extends StatelessWidget {
+  const KeywordNotificationSettingsListing({
+    Key? key,
+    required this.settingsState,
+  }) : super(key: key);
+
+  final NotificacionesSettingsState settingsState;
+
+  @override
+  Widget build(BuildContext context) {
+    if (settingsState.keywordNotificationSettings.isEmpty) {
+      return const EmptyNotificationSettings();
+    }
+
+    return ListView.builder(
+      itemCount: settingsState.keywordNotificationSettings.length,
+      itemBuilder: (_, index) {
+        final setting = settingsState.keywordNotificationSettings[index];
+        return ListTile(
+          title: Text(setting.texto),
+          subtitle: Text('${setting.estado}'),
         );
       },
     );
