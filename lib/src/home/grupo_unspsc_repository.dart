@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:oportunidades_cce/src/api_client.dart';
+import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
 
 final _unescape = HtmlUnescape();
 
@@ -436,5 +437,23 @@ class GrupoUNSPSCRepository {
     final List<dynamic> list = json.decode(res.body);
 
     return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
+  }
+
+  Future<List<EntitySearchResult>> buscarEntidades({
+    required String codigo,
+    required String texto,
+  }) async {
+    final res = await apiClient.request(
+      path: '/ServletBuscarEntidad',
+      body: {
+        'codigo': codigo,
+        'texto': texto,
+      },
+    );
+
+    print(res.body);
+    final List<dynamic> list = json.decode(res.body);
+
+    return list.map((it) => EntitySearchResult.fromJson(it)).toList();
   }
 }

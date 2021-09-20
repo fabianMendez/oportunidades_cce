@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oportunidades_cce/src/home/buscar_entidades_view.dart';
 import 'package:oportunidades_cce/src/home/buscar_procesos_view.dart';
 import 'package:oportunidades_cce/src/home/mis_oportunidades_view.dart';
 import 'package:oportunidades_cce/src/home/mis_procesos_view.dart';
@@ -22,6 +23,7 @@ class _HomeViewState extends State<HomeView> {
           MisOportunidadesView(),
           BuscarProcesosView(),
           MisProcesosView(),
+          BuscarEntidadesView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -31,6 +33,10 @@ class _HomeViewState extends State<HomeView> {
             _currentIndex = index;
           });
         },
+        unselectedItemColor: Theme.of(context).primaryColor,
+        selectedItemColor: Theme.of(context).primaryColor,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.feed),
@@ -43,6 +49,10 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Mis procesos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Buscar entidades',
           ),
         ],
       ),
