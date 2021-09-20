@@ -423,4 +423,18 @@ class GrupoUNSPSCRepository {
 
     return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
+
+  Future<List<ProcessSearchResult>> getMisProcesos({
+    required String codigo,
+  }) async {
+    final res = await apiClient.request(
+      path: '/ServletMisProcesos',
+      body: {'codigo': codigo},
+    );
+
+    // print(res.body);
+    final List<dynamic> list = json.decode(res.body);
+
+    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:oportunidades_cce/src/home/process_search_bloc.dart';
+import 'package:oportunidades_cce/src/home/widgets/process_result_tile.dart';
 import 'package:oportunidades_cce/src/widgets/search_field.dart';
 
 class ProcessSearch extends StatelessWidget {
@@ -9,8 +9,6 @@ class ProcessSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final moneyFmt = NumberFormat('#,##0', 'es_CO');
-
     return BlocBuilder<ProcessSearchBloc, ProcessSearchState>(
       builder: (context, state) {
         final isLoading = state is ProcessSearchLoading;
@@ -62,94 +60,7 @@ class ProcessSearch extends StatelessWidget {
                               itemCount: state.results.length,
                               itemBuilder: (context, index) {
                                 final result = state.results[index];
-                                return ExpansionTile(
-                                  title: Text(
-                                    result.nombreEntidad,
-                                  ),
-                                  subtitle: Text(
-                                    '\$${moneyFmt.format(result.proceso.tender.value.amount)} ${result.moneda}',
-                                  ),
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          // if (result.nitEntidad != null)
-                                          //   Text('NIT: ${result.nitEntidad}'),
-                                          // if (result.nitEntidad != null)
-                                          //   const SizedBox(height: 4),
-                                          // Text(
-                                          //     'Fecha inicial: ${result.proceso.date}'),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const Text(
-                                                    'Inicia',
-                                                    style: TextStyle(
-                                                        color: Colors.black54),
-                                                  ),
-                                                  Text(
-                                                    result.proceso.date,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ],
-                                              ),
-                                              if (result.nitEntidad != null)
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'NIT',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black54),
-                                                    ),
-                                                    Text(
-                                                      result.nitEntidad!,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
-                                                  ],
-                                                ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(result.descripcion),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {},
-                                            tooltip: 'Ver',
-                                            icon: const Icon(Icons.open_in_new),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                );
+                                return ProcessResultTile(result: result);
                               },
                               // separatorBuilder: (_, __) =>
                               //     const Divider(height: 16),
