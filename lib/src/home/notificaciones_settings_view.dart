@@ -23,6 +23,8 @@ class NotificacionesSettingsView extends StatelessWidget {
         create: (context) {
           return NotificacionesSettingsBloc(
             userDetails: userDetails,
+            authenticatedNavigatorBloc:
+                BlocProvider.of<AuthenticatedNavigatorBloc>(context),
             grupoUNSPSCRepository: sl.get<GrupoUNSPSCRepository>(),
           )..add(const NotificacionesSettingsStarted());
         },
@@ -70,16 +72,9 @@ class NotificacionesSettings extends StatelessWidget {
                   const SizedBox(height: 24),
                   ElevatedButton.icon(
                     onPressed: () {
-                      if (state.selectedFilter == kFiltroBienesServicios) {
-                        BlocProvider.of<AuthenticatedNavigatorBloc>(context).add(
-                            const NotificacionesSettingsFiltroBienesServiciosViewPushed());
-                      } else if (state.selectedFilter == kFiltroValores) {
-                        BlocProvider.of<AuthenticatedNavigatorBloc>(context)
-                            .add(const NotificacionesSettingsMontoViewPushed());
-                      } else if (state.selectedFilter == kFiltroPalabrasClave) {
-                        BlocProvider.of<AuthenticatedNavigatorBloc>(context).add(
-                            const NotificacionesSettingsKeywordViewPushed());
-                      }
+                      BlocProvider.of<NotificacionesSettingsBloc>(context).add(
+                        const NotificacionesSettingsFilterPressed(),
+                      );
                     },
                     icon: const Icon(Icons.add),
                     label: Text(state.selectedFilter.actionMessage),

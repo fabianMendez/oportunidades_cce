@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:oportunidades_cce/src/authentication/authenticated_navigator_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 
@@ -7,11 +10,48 @@ class NotificacionesSettingsBloc
     extends Bloc<NotificacionesSettingsEvent, NotificacionesSettingsState> {
   NotificacionesSettingsBloc({
     required this.userDetails,
+    required this.authenticatedNavigatorBloc,
     required this.grupoUNSPSCRepository,
-  }) : super(const NotificacionesSettingsState.initial());
+  }) : super(const NotificacionesSettingsState.initial()) {
+    authenticatedNavigatorSubscription = authenticatedNavigatorBloc.stream
+        .listen(_authenticatedNavigatorListener);
+  }
 
   final UserDetails userDetails;
+  final AuthenticatedNavigatorBloc authenticatedNavigatorBloc;
   final GrupoUNSPSCRepository grupoUNSPSCRepository;
+
+  late StreamSubscription<AuthenticatedNavigatorState>
+      authenticatedNavigatorSubscription;
+
+  @override
+  Future<void> close() {
+    authenticatedNavigatorSubscription.cancel();
+    return super.close();
+  }
+
+  static bool _hasFinishedSelecting(
+      AuthenticatedNavigatorState prev, AuthenticatedNavigatorState state) {
+    return ((prev.isNotificacionesSettingsFiltroBienesServicios &&
+            prev.isNotificacionesSettingsFiltroBienesServicios !=
+                state.isNotificacionesSettingsFiltroBienesServicios) ||
+        (prev.isNotificacionesSettingsKeyword &&
+            prev.isNotificacionesSettingsKeyword !=
+                state.isNotificacionesSettingsKeyword) ||
+        (prev.isNotificacionesSettingsMonto &&
+            prev.isNotificacionesSettingsMonto !=
+                state.isNotificacionesSettingsMonto));
+  }
+
+  void _authenticatedNavigatorListener(AuthenticatedNavigatorState state) {
+    if (state is AuthenticatedNavigatorResult &&
+        _hasFinishedSelecting(state.previous, state)) {
+      add(const NotificacionesSettingsUpdated());
+    }
+    // if (state.history.isNotEmpty && _hasFinishedSelecting(state.history.last, state)) {
+    //   print('auth nav: $state');
+    // }
+  }
 
   Stream<NotificacionesSettingsState> _loadSavedSettingsFromCache(
     Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
@@ -80,6 +120,23 @@ class NotificacionesSettingsBloc
         state.notificationSettingsCache,
         state.selectedFilter,
       );
+    } else if (event is NotificacionesSettingsFilterPressed) {
+      if (state.selectedFilter == kFiltroBienesServicios) {
+        authenticatedNavigatorBloc
+            .add(const NotificacionesSettingsFiltroBienesServiciosViewPushed());
+      } else if (state.selectedFilter == kFiltroValores) {
+        authenticatedNavigatorBloc
+            .add(const NotificacionesSettingsMontoViewPushed());
+      } else if (state.selectedFilter == kFiltroPalabrasClave) {
+        authenticatedNavigatorBloc
+            .add(const NotificacionesSettingsKeywordViewPushed());
+      }
+
+      yield NotificacionesSettingsSelecting(
+        notificationSettingsCache: state.notificationSettingsCache,
+        selectedFilter: state.selectedFilter,
+        valueNotificationSettings: state.valueNotificationSettings,
+      );
     }
   }
 }
@@ -122,6 +179,10 @@ class NotificacionesSettingsFilterChanged extends NotificacionesSettingsEvent {
 
 class NotificacionesSettingsUpdated extends NotificacionesSettingsEvent {
   const NotificacionesSettingsUpdated();
+}
+
+class NotificacionesSettingsFilterPressed extends NotificacionesSettingsEvent {
+  const NotificacionesSettingsFilterPressed();
 }
 
 const kFiltroBienesServicios = NotificacionesSettingsFiltro(
@@ -206,4 +267,17 @@ class NotificacionesSettingsFailure extends NotificacionesSettingsState {
 
   @override
   List<Object?> get props => [...super.props, error];
+}
+
+class NotificacionesSettingsSelecting extends NotificacionesSettingsState {
+  const NotificacionesSettingsSelecting({
+    required NotificacionesSettingsFiltro selectedFilter,
+    required List<ValueNotificationSetting> valueNotificationSettings,
+    required Map<NotificacionesSettingsFiltro, List<dynamic>>
+        notificationSettingsCache,
+  }) : super(
+          selectedFilter: selectedFilter,
+          notificationSettingsCache: notificationSettingsCache,
+          valueNotificationSettings: valueNotificationSettings,
+        );
 }

@@ -6,17 +6,20 @@ class AuthenticatedNavigatorBloc
   AuthenticatedNavigatorBloc()
       : super(const AuthenticatedNavigatorState.initial());
 
-  @override
-  Stream<AuthenticatedNavigatorState> mapEventToState(
+  Stream<AuthenticatedNavigatorState> mapEventToStateInternal(
       AuthenticatedNavigatorEvent event) async* {
     if (event is AuthenticatedNavigatorPopped) {
-      if (state.isNotificacionesSettingsFiltroBienesServicios ||
-          state.isNotificacionesSettingsMonto ||
-          state.isNotificacionesSettingsKeyword) {
-        yield const AuthenticatedNavigatorState(isNotificacionesSettings: true);
-      } else {
-        yield const AuthenticatedNavigatorState.initial();
-      }
+      final currState = state;
+      final newState = (state.isNotificacionesSettingsFiltroBienesServicios ||
+              state.isNotificacionesSettingsMonto ||
+              state.isNotificacionesSettingsKeyword)
+          ? const AuthenticatedNavigatorState(isNotificacionesSettings: true)
+          : const AuthenticatedNavigatorState.initial();
+
+      yield AuthenticatedNavigatorResult(
+        previous: currState,
+        state: newState,
+      );
     } else if (event is NotificacionesSettingsViewPushed) {
       yield const AuthenticatedNavigatorState(isNotificacionesSettings: true);
     } else if (event is NotificacionesSettingsFiltroBienesServiciosViewPushed) {
@@ -36,6 +39,26 @@ class AuthenticatedNavigatorBloc
       );
     }
   }
+
+  @override
+  Stream<AuthenticatedNavigatorState> mapEventToState(
+      AuthenticatedNavigatorEvent event) async* {
+    // var prevState = state;
+    yield* mapEventToStateInternal(
+            event) /*.map((state) {
+      state = AuthenticatedNavigatorState(
+        history: state.history.followedBy([prevState]).toList(),
+        isNotificacionesSettings: state.isNotificacionesSettings,
+        isNotificacionesSettingsFiltroBienesServicios:
+            state.isNotificacionesSettingsFiltroBienesServicios,
+        isNotificacionesSettingsKeyword: state.isNotificacionesSettingsKeyword,
+        isNotificacionesSettingsMonto: state.isNotificacionesSettingsMonto,
+      );
+      prevState = state;
+      return state;
+    })*/
+        ;
+  }
 }
 
 abstract class AuthenticatedNavigatorEvent extends Equatable {
@@ -46,7 +69,14 @@ abstract class AuthenticatedNavigatorEvent extends Equatable {
 }
 
 class AuthenticatedNavigatorPopped extends AuthenticatedNavigatorEvent {
-  const AuthenticatedNavigatorPopped();
+  const AuthenticatedNavigatorPopped({
+    this.result,
+  });
+
+  final dynamic result;
+
+  @override
+  List<Object?> get props => [...super.props, result];
 }
 
 class NotificacionesSettingsViewPushed extends AuthenticatedNavigatorEvent {
@@ -74,18 +104,21 @@ class AuthenticatedNavigatorState extends Equatable {
     this.isNotificacionesSettingsFiltroBienesServicios = false,
     this.isNotificacionesSettingsMonto = false,
     this.isNotificacionesSettingsKeyword = false,
+    this.history = const [],
   });
 
   const AuthenticatedNavigatorState.initial()
       : isNotificacionesSettings = false,
         isNotificacionesSettingsFiltroBienesServicios = false,
         isNotificacionesSettingsMonto = false,
-        isNotificacionesSettingsKeyword = false;
+        isNotificacionesSettingsKeyword = false,
+        history = const [];
 
   final bool isNotificacionesSettings;
   final bool isNotificacionesSettingsFiltroBienesServicios;
   final bool isNotificacionesSettingsMonto;
   final bool isNotificacionesSettingsKeyword;
+  final List<AuthenticatedNavigatorState> history;
 
   @override
   List<Object?> get props => [
@@ -93,5 +126,22 @@ class AuthenticatedNavigatorState extends Equatable {
         isNotificacionesSettingsFiltroBienesServicios,
         isNotificacionesSettingsMonto,
         isNotificacionesSettingsKeyword,
+        history,
       ];
+}
+
+class AuthenticatedNavigatorResult extends AuthenticatedNavigatorState {
+  AuthenticatedNavigatorResult({
+    required this.previous,
+    required AuthenticatedNavigatorState state,
+  }) : super(
+          isNotificacionesSettings: state.isNotificacionesSettings,
+          isNotificacionesSettingsFiltroBienesServicios:
+              state.isNotificacionesSettingsFiltroBienesServicios,
+          isNotificacionesSettingsKeyword:
+              state.isNotificacionesSettingsKeyword,
+          isNotificacionesSettingsMonto: state.isNotificacionesSettingsMonto,
+        );
+
+  final AuthenticatedNavigatorState previous;
 }

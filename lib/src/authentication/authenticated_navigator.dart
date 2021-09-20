@@ -21,7 +21,7 @@ class AuthenticatedNavigator extends StatelessWidget {
             }
 
             BlocProvider.of<AuthenticatedNavigatorBloc>(context)
-                .add(const AuthenticatedNavigatorPopped());
+                .add(AuthenticatedNavigatorPopped(result: result));
 
             return true;
           },
