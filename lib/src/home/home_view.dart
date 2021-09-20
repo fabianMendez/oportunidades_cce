@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oportunidades_cce/src/home/buscar_entidades_view.dart';
 import 'package:oportunidades_cce/src/home/buscar_procesos_view.dart';
+import 'package:oportunidades_cce/src/home/mis_entidades_view.dart';
 import 'package:oportunidades_cce/src/home/mis_oportunidades_view.dart';
 import 'package:oportunidades_cce/src/home/mis_procesos_view.dart';
 
@@ -12,7 +13,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int _currentIndex = 2;
+  int _currentIndex = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class _HomeViewState extends State<HomeView> {
           BuscarProcesosView(),
           MisProcesosView(),
           BuscarEntidadesView(),
+          MisEntidadesView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -53,6 +55,10 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Buscar entidades',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.apartment),
+            label: 'Mis entidades',
           ),
         ],
       ),

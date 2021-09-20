@@ -55,6 +55,8 @@ class EntitySearch extends StatelessWidget {
                               },
                               // separatorBuilder: (_, __) =>
                               //     const Divider(height: 16),
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.onDrag,
                             ),
             ),
           ],
