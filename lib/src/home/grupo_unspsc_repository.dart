@@ -469,4 +469,22 @@ class GrupoUNSPSCRepository {
 
     return list.map((it) => EntitySearchResult.fromJson(it)).toList();
   }
+
+  Future<EntitySearchResult> getEntidad({
+    required String codigo,
+    required int idEntidad,
+  }) async {
+    final res = await apiClient.request(
+      path: '/ServletEntidad',
+      body: {
+        'codigo': codigo,
+        'idEntidad': idEntidad,
+      },
+    );
+
+    print(res.body);
+    final map = json.decode(res.body);
+
+    return EntitySearchResult.fromJson(map);
+  }
 }

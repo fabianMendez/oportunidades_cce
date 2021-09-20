@@ -37,6 +37,11 @@ class AuthenticatedNavigatorBloc
         isNotificacionesSettings: true,
         isNotificacionesSettingsKeyword: true,
       );
+    } else if (event is EntityDetailsPushed) {
+      yield AuthenticatedNavigatorState(
+        isEntityDetails: true,
+        entityDetailsId: event.id,
+      );
     }
   }
 
@@ -98,6 +103,17 @@ class NotificacionesSettingsKeywordViewPushed
   const NotificacionesSettingsKeywordViewPushed();
 }
 
+class EntityDetailsPushed extends AuthenticatedNavigatorEvent {
+  const EntityDetailsPushed({
+    required this.id,
+  });
+
+  final int id;
+
+  @override
+  List<Object?> get props => [...super.props, id];
+}
+
 class AuthenticatedNavigatorState extends Equatable {
   const AuthenticatedNavigatorState({
     this.isNotificacionesSettings = false,
@@ -105,6 +121,8 @@ class AuthenticatedNavigatorState extends Equatable {
     this.isNotificacionesSettingsMonto = false,
     this.isNotificacionesSettingsKeyword = false,
     this.history = const [],
+    this.isEntityDetails = false,
+    this.entityDetailsId = 0,
   });
 
   const AuthenticatedNavigatorState.initial()
@@ -112,13 +130,18 @@ class AuthenticatedNavigatorState extends Equatable {
         isNotificacionesSettingsFiltroBienesServicios = false,
         isNotificacionesSettingsMonto = false,
         isNotificacionesSettingsKeyword = false,
-        history = const [];
+        history = const [],
+        isEntityDetails = false,
+        entityDetailsId = 0;
 
   final bool isNotificacionesSettings;
   final bool isNotificacionesSettingsFiltroBienesServicios;
   final bool isNotificacionesSettingsMonto;
   final bool isNotificacionesSettingsKeyword;
   final List<AuthenticatedNavigatorState> history;
+
+  final bool isEntityDetails;
+  final int entityDetailsId;
 
   @override
   List<Object?> get props => [
@@ -127,6 +150,8 @@ class AuthenticatedNavigatorState extends Equatable {
         isNotificacionesSettingsMonto,
         isNotificacionesSettingsKeyword,
         history,
+        isEntityDetails,
+        entityDetailsId,
       ];
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authenticated_navigator_bloc.dart';
+import 'package:oportunidades_cce/src/home/entity_details_view.dart';
 import 'package:oportunidades_cce/src/home/home_view.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_filtro_bienes_servicios_view.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_keyword_view.dart';
@@ -37,6 +38,11 @@ class AuthenticatedNavigator extends StatelessWidget {
               const MaterialPage(child: NotificacionesSettingsMontoView()),
             if (state.isNotificacionesSettingsKeyword)
               const MaterialPage(child: NotificacionesSettingsKeywordView()),
+            if (state.isEntityDetails)
+              MaterialPage(
+                  child: EntityDetailsView(
+                id: state.entityDetailsId,
+              )),
           ],
         );
       },
