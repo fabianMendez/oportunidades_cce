@@ -187,7 +187,10 @@ class KeywordNotificationSettingsListing extends StatelessWidget {
         final setting = settingsState.keywordNotificationSettings[index];
         return ListTile(
           title: Text(setting.texto),
-          subtitle: Text('${setting.estado}'),
+          trailing: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.edit),
+          ),
         );
       },
     );

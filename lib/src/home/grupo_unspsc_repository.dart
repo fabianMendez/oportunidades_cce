@@ -113,6 +113,145 @@ class KeywordNotificationSetting extends Equatable {
   List<Object?> get props => [estado, id, texto];
 }
 
+class ProcessSearchResult extends Equatable {
+  const ProcessSearchResult({
+    required this.mongoId,
+    required this.descripcion,
+    required this.estado,
+    required this.codigoInterno,
+    required this.proceso,
+    required this.valor,
+    required this.ultimaFechaActualizacion,
+    required this.url,
+    required this.nitEntidad,
+    required this.fecha,
+    required this.plataforma,
+    required this.nombreEntidad,
+    required this.moneda,
+    required this.id,
+    required this.ocid,
+  });
+
+  final String mongoId;
+  final String descripcion;
+  final int estado;
+  final String codigoInterno;
+  final Proceso proceso;
+  final double valor;
+  final String ultimaFechaActualizacion;
+  final String url;
+  final String? nitEntidad;
+  final String fecha;
+  final String plataforma;
+  final String nombreEntidad;
+  final String moneda;
+  final int id;
+  final String ocid;
+
+  ProcessSearchResult.fromJson(Map<String, dynamic> map)
+      : mongoId = map['mongoId'],
+        descripcion = _unescape.convert(map['descripcion']),
+        estado = map['estado'],
+        codigoInterno = map['codigoInterno'],
+        proceso = Proceso.fromJson(map['proceso']),
+        valor = (map['valor'] as num).toDouble(),
+        ultimaFechaActualizacion = map['ultimaFechaActualizacion'],
+        url = map['url'],
+        nitEntidad = map['nitEntidad'],
+        fecha = map['fecha'],
+        plataforma = map['plataforma'],
+        nombreEntidad = _unescape.convert(map['nombreEntidad']),
+        moneda = map['moneda'],
+        id = map['id'],
+        ocid = map['ocid'];
+
+  @override
+  List<Object?> get props => [
+        mongoId,
+        descripcion,
+        estado,
+        codigoInterno,
+        proceso,
+        valor,
+        ultimaFechaActualizacion,
+        url,
+        nitEntidad,
+        fecha,
+        plataforma,
+        nombreEntidad,
+        moneda,
+        id,
+        ocid,
+      ];
+}
+
+class Proceso extends Equatable {
+  const Proceso({
+    required this.date,
+    required this.tender,
+    required this.buyer,
+  });
+
+  final String date;
+  final Tender tender;
+  final Buyer buyer;
+
+  Proceso.fromJson(Map<String, dynamic> map)
+      : date = map["date"],
+        tender = Tender.fromJson(map['tender']),
+        buyer = Buyer.fromJson(map['buyer']);
+
+  @override
+  List<Object?> get props => [date, tender, buyer];
+}
+
+class Buyer extends Equatable {
+  const Buyer({
+    required this.name,
+    required this.id,
+  });
+
+  final String name;
+  final String? id;
+
+  Buyer.fromJson(Map<String, dynamic> map)
+      : name = map['name'],
+        id = map['id'];
+
+  @override
+  List<Object?> get props => [name, id];
+}
+
+class Tender extends Equatable {
+  const Tender({
+    required this.title,
+    required this.value,
+  });
+  final String title;
+  final Value value;
+
+  Tender.fromJson(Map<String, dynamic> map)
+      : title = _unescape.convert(map['title']),
+        value = Value.fromJson(map['value']);
+
+  @override
+  List<Object?> get props => [title, value];
+}
+
+class Value extends Equatable {
+  const Value({
+    required this.amount,
+  });
+
+  final double amount;
+
+  Value.fromJson(Map<String, dynamic> map)
+      : amount = (map['amount'] as num).toDouble();
+
+  @override
+  List<Object?> get props => [amount];
+}
+
 class GrupoUNSPSCRepository {
   GrupoUNSPSCRepository({
     required this.apiClient,
@@ -265,5 +404,23 @@ class GrupoUNSPSCRepository {
       path: '/ServletInsertarTextoContratacion',
       body: {'codigo': codigo, 'texto': texto},
     );
+  }
+
+  Future<List<ProcessSearchResult>> getProcesosBusquedaRapida({
+    required String codigo,
+    required String texto,
+  }) async {
+    final res = await apiClient.request(
+      path: '/ServletBusquedaRapidaProcesos',
+      body: {
+        'codigo': codigo,
+        'texto': texto,
+      },
+    );
+
+    // print(res.body);
+    final List<dynamic> list = json.decode(res.body);
+
+    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
 }
