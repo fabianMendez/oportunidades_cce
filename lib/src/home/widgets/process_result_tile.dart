@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:oportunidades_cce/src/authentication/authenticated_navigator_bloc.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 
 class ProcessResultTile extends StatelessWidget {
@@ -81,7 +83,10 @@ class ProcessResultTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  BlocProvider.of<AuthenticatedNavigatorBloc>(context)
+                      .add(ProcessDetailsPushed(id: result.id));
+                },
                 tooltip: 'Ver',
                 icon: const Icon(Icons.open_in_new),
               ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:html/parser.dart' show parse, parseFragment;
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:oportunidades_cce/src/api_client.dart';
 import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
@@ -191,19 +192,39 @@ class Proceso extends Equatable {
     required this.date,
     required this.tender,
     required this.buyer,
+    required this.codigoInterno,
+    required this.plataforma,
+    required this.url,
   });
 
   final String date;
   final Tender tender;
   final Buyer buyer;
 
+  final String? codigoInterno;
+  final String? plataforma;
+  final String? url;
+
   Proceso.fromJson(Map<String, dynamic> map)
       : date = map["date"],
         tender = Tender.fromJson(map['tender']),
-        buyer = Buyer.fromJson(map['buyer']);
+        buyer = Buyer.fromJson(map['buyer']),
+        codigoInterno = map['codigoInterno'],
+        // url = map['url'],
+        url = map['url'] != null
+            ? parseFragment(map['url']).firstChild!.attributes['href']
+            : null,
+        plataforma = map['plataforma'];
 
   @override
-  List<Object?> get props => [date, tender, buyer];
+  List<Object?> get props => [
+        date,
+        tender,
+        buyer,
+        codigoInterno,
+        plataforma,
+        url,
+      ];
 }
 
 class Buyer extends Equatable {
@@ -216,7 +237,7 @@ class Buyer extends Equatable {
   final String? id;
 
   Buyer.fromJson(Map<String, dynamic> map)
-      : name = map['name'],
+      : name = _unescape.convert(map['name']),
         id = map['id'];
 
   @override
@@ -439,6 +460,24 @@ class GrupoUNSPSCRepository {
     return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
 
+  Future<Proceso> getProceso({
+    required String codigo,
+    required int idProceso,
+  }) async {
+    final res = await apiClient.request(
+      path: '/ServletProceso',
+      body: {
+        'codigo': codigo,
+        'idProceso': idProceso,
+      },
+    );
+
+    // print(res.body);
+    final map = json.decode(res.body);
+
+    return Proceso.fromJson(map);
+  }
+
   Future<List<EntitySearchResult>> buscarEntidades({
     required String codigo,
     required String texto,
@@ -482,7 +521,7 @@ class GrupoUNSPSCRepository {
       },
     );
 
-    print(res.body);
+    // print(res.body);
     final map = json.decode(res.body);
 
     return EntitySearchResult.fromJson(map);

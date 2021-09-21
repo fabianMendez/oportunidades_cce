@@ -7,6 +7,7 @@ import 'package:oportunidades_cce/src/home/notificaciones_settings_filtro_bienes
 import 'package:oportunidades_cce/src/home/notificaciones_settings_keyword_view.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_monto_view.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_view.dart';
+import 'package:oportunidades_cce/src/home/process_details_view.dart';
 
 class AuthenticatedNavigator extends StatelessWidget {
   const AuthenticatedNavigator({Key? key}) : super(key: key);
@@ -40,9 +41,16 @@ class AuthenticatedNavigator extends StatelessWidget {
               const MaterialPage(child: NotificacionesSettingsKeywordView()),
             if (state.isEntityDetails)
               MaterialPage(
-                  child: EntityDetailsView(
-                id: state.entityDetailsId,
-              )),
+                child: EntityDetailsView(
+                  id: state.entityDetailsId,
+                ),
+              ),
+            if (state.isProcessDetails)
+              MaterialPage(
+                child: ProcessDetailsView(
+                  id: state.processDetailsId,
+                ),
+              ),
           ],
         );
       },
