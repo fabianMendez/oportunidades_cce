@@ -28,6 +28,7 @@ dependencies:
   implicitly_animated_reorderable_list: ^0.4.1
   intl: ^0.17.0
   provider: ^6.0.0
+  share_plus: ^2.1.4
   url_launcher: ^6.0.11
 
 dev_dependencies:

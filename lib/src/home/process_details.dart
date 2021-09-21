@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/process_details_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProcessDetails extends StatelessWidget {
@@ -10,6 +13,7 @@ class ProcessDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userDetails = Provider.of<UserDetails>(context);
     final moneyFmt = NumberFormat('#,##0', 'es_CO');
 
     return BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
@@ -95,7 +99,7 @@ class ProcessDetails extends StatelessWidget {
                           );
                         }
                       },
-                      icon: const Icon(Icons.open_in_new),
+                      icon: const Icon(Icons.open_in_browser),
                       label: const Text(
                         'Ver',
                         style: TextStyle(
@@ -103,6 +107,25 @@ class ProcessDetails extends StatelessWidget {
                         ),
                       ),
                     ),
+                  const SizedBox(height: 4),
+                  TextButton.icon(
+                    onPressed: () async {
+                      final url =
+                          'https://oportunidades.colombiacompra.gov.co/compartir/proceso/${details.codigoInterno}/${userDetails.id}';
+
+                      await Share.share(
+                        'Revisa este proceso de contratación que te comparten desde la aplicación Oportunidades CCE: $url',
+                        subject: 'Proceso interesante',
+                      );
+                    },
+                    icon: const Icon(Icons.share),
+                    label: const Text(
+                      'Compartir',
+                      style: TextStyle(
+                        fontSize: fontSize,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
