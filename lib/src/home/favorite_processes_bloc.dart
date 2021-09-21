@@ -2,19 +2,17 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
+import 'package:oportunidades_cce/src/home/proceso_repository.dart';
 
 class FavoriteProcessesBloc
     extends Bloc<FavoriteProcessesEvent, FavoriteProcessesState> {
   FavoriteProcessesBloc({
     required this.userDetails,
-    required this.grupoUNSPSCRepository,
+    required this.procesoRepository,
   }) : super(const FavoriteProcessesUninitialized());
 
   final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
-
-  Stream<FavoriteProcessesState> _searchByTerm(
-      FavoriteProcessesState state) async* {}
+  final ProcesoRepository procesoRepository;
 
   @override
   Stream<FavoriteProcessesState> mapEventToState(
@@ -22,7 +20,7 @@ class FavoriteProcessesBloc
     if (event is FavoriteProcessesStarted) {
       try {
         yield FavoriteProcessesLoading(term: state.term);
-        final results = await grupoUNSPSCRepository.getMisProcesos(
+        final results = await procesoRepository.getMisProcesos(
           codigo: userDetails.codigo,
         );
 

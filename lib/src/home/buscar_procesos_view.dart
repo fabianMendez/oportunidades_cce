@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
-import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
+import 'package:oportunidades_cce/src/home/proceso_repository.dart';
 import 'package:oportunidades_cce/src/home/process_search.dart';
 import 'package:oportunidades_cce/src/home/process_search_bloc.dart';
 import 'package:oportunidades_cce/src/home/widgets/logout_button.dart';
@@ -24,7 +24,7 @@ class BuscarProcesosView extends StatelessWidget {
         create: (context) {
           return ProcessSearchBloc(
             userDetails: userDetails,
-            grupoUNSPSCRepository: sl.get<GrupoUNSPSCRepository>(),
+            procesoRepository: sl.get<ProcesoRepository>(),
           )..add(const ProcessSearchStarted());
         },
         child: const ProcessSearch(),

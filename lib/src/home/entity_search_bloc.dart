@@ -1,22 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
-import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
+import 'package:oportunidades_cce/src/home/entidad_repository.dart';
 import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
 
 class EntitySearchBloc extends Bloc<EntitySearchEvent, EntitySearchState> {
   EntitySearchBloc({
     required this.userDetails,
-    required this.grupoUNSPSCRepository,
+    required this.entidadRepository,
   }) : super(const EntitySearchUninitialized());
 
   final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
+  final EntidadRepository entidadRepository;
 
   Stream<EntitySearchState> _searchByTerm(EntitySearchState state) async* {
     try {
       yield EntitySearchLoading(term: state.term);
-      final results = await grupoUNSPSCRepository.buscarEntidades(
+      final results = await entidadRepository.buscarEntidades(
         codigo: userDetails.codigo,
         texto: state.term,
       );

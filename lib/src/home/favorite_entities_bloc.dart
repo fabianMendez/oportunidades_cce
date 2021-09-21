@@ -1,18 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
-import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
+import 'package:oportunidades_cce/src/home/entidad_repository.dart';
 import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
 
 class FavoriteEntitiesBloc
     extends Bloc<FavoriteEntitiesEvent, FavoriteEntitiesState> {
   FavoriteEntitiesBloc({
     required this.userDetails,
-    required this.grupoUNSPSCRepository,
+    required this.entidadRepository,
   }) : super(const FavoriteEntitiesLoading());
 
   final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
+  final EntidadRepository entidadRepository;
 
   @override
   Stream<FavoriteEntitiesState> mapEventToState(
@@ -20,7 +20,7 @@ class FavoriteEntitiesBloc
     if (event is FavoriteEntitiesStarted) {
       try {
         yield FavoriteEntitiesLoading(term: state.term);
-        final results = await grupoUNSPSCRepository.getMisEntidades(
+        final results = await entidadRepository.getMisEntidades(
           codigo: userDetails.codigo,
         );
 

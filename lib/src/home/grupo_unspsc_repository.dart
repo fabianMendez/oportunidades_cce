@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:html/parser.dart' show parse, parseFragment;
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:oportunidades_cce/src/api_client.dart';
-import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
 
 final _unescape = HtmlUnescape();
 
@@ -426,104 +425,5 @@ class GrupoUNSPSCRepository {
       path: '/ServletInsertarTextoContratacion',
       body: {'codigo': codigo, 'texto': texto},
     );
-  }
-
-  Future<List<ProcessSearchResult>> getProcesosBusquedaRapida({
-    required String codigo,
-    required String texto,
-  }) async {
-    final res = await apiClient.request(
-      path: '/ServletBusquedaRapidaProcesos',
-      body: {
-        'codigo': codigo,
-        'texto': texto,
-      },
-    );
-
-    // print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
-  }
-
-  Future<List<ProcessSearchResult>> getMisProcesos({
-    required String codigo,
-  }) async {
-    final res = await apiClient.request(
-      path: '/ServletMisProcesos',
-      body: {'codigo': codigo},
-    );
-
-    // print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
-  }
-
-  Future<Proceso> getProceso({
-    required String codigo,
-    required int idProceso,
-  }) async {
-    final res = await apiClient.request(
-      path: '/ServletProceso',
-      body: {
-        'codigo': codigo,
-        'idProceso': idProceso,
-      },
-    );
-
-    // print(res.body);
-    final map = json.decode(res.body);
-
-    return Proceso.fromJson(map);
-  }
-
-  Future<List<EntitySearchResult>> buscarEntidades({
-    required String codigo,
-    required String texto,
-  }) async {
-    final res = await apiClient.request(
-      path: '/ServletBuscarEntidad',
-      body: {
-        'codigo': codigo,
-        'texto': texto,
-      },
-    );
-
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => EntitySearchResult.fromJson(it)).toList();
-  }
-
-  Future<List<EntitySearchResult>> getMisEntidades({
-    required String codigo,
-  }) async {
-    final res = await apiClient.request(
-      path: '/ServletMisEntidades',
-      body: {'codigo': codigo},
-    );
-
-    // print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => EntitySearchResult.fromJson(it)).toList();
-  }
-
-  Future<EntitySearchResult> getEntidad({
-    required String codigo,
-    required int idEntidad,
-  }) async {
-    final res = await apiClient.request(
-      path: '/ServletEntidad',
-      body: {
-        'codigo': codigo,
-        'idEntidad': idEntidad,
-      },
-    );
-
-    // print(res.body);
-    final map = json.decode(res.body);
-
-    return EntitySearchResult.fromJson(map);
   }
 }

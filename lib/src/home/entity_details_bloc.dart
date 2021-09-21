@@ -1,18 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
-import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
+import 'package:oportunidades_cce/src/home/entidad_repository.dart';
 import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
 
 class EntityDetailsBloc extends Bloc<EntityDetailsEvent, EntityDetailsState> {
   EntityDetailsBloc({
     required this.userDetails,
-    required this.grupoUNSPSCRepository,
+    required this.entidadRepository,
     required this.id,
   }) : super(EntityDetailsLoading(id: id));
 
   final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
+  final EntidadRepository entidadRepository;
   final int id;
 
   @override
@@ -20,7 +20,7 @@ class EntityDetailsBloc extends Bloc<EntityDetailsEvent, EntityDetailsState> {
     if (event is EntityDetailsStarted) {
       try {
         yield EntityDetailsLoading(id: id);
-        final entidad = await grupoUNSPSCRepository.getEntidad(
+        final entidad = await entidadRepository.getEntidad(
           codigo: userDetails.codigo,
           idEntidad: id,
         );

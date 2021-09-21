@@ -2,20 +2,21 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
+import 'package:oportunidades_cce/src/home/proceso_repository.dart';
 
 class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
   ProcessSearchBloc({
     required this.userDetails,
-    required this.grupoUNSPSCRepository,
+    required this.procesoRepository,
   }) : super(const ProcessSearchUninitialized());
 
   final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
+  final ProcesoRepository procesoRepository;
 
   Stream<ProcessSearchState> _searchByTerm(ProcessSearchState state) async* {
     try {
       yield ProcessSearchLoading(term: state.term);
-      final results = await grupoUNSPSCRepository.getProcesosBusquedaRapida(
+      final results = await procesoRepository.getProcesosBusquedaRapida(
         codigo: userDetails.codigo,
         texto: state.term,
       );

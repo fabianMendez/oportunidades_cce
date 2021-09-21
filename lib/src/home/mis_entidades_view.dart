@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
+import 'package:oportunidades_cce/src/home/entidad_repository.dart';
 import 'package:oportunidades_cce/src/home/favorite_entities.dart';
 import 'package:oportunidades_cce/src/home/favorite_entities_bloc.dart';
-import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/widgets/logout_button.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ class MisEntidadesView extends StatelessWidget {
         create: (context) {
           return FavoriteEntitiesBloc(
             userDetails: userDetails,
-            grupoUNSPSCRepository: sl.get<GrupoUNSPSCRepository>(),
+            entidadRepository: sl.get<EntidadRepository>(),
           )..add(const FavoriteEntitiesStarted());
         },
         child: const FavoriteEntities(),
