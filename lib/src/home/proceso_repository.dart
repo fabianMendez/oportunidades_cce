@@ -108,7 +108,7 @@ class ProcesoRepository {
       },
     );
 
-    // print(res.body);
+    print(res.body);
     final map = json.decode(res.body);
 
     return Proceso.fromJson(map);
@@ -126,7 +126,7 @@ class ProcesoRepository {
       },
     );
 
-    // print(res.body);
+    print(res.body);
     final map = json.decode(res.body);
 
     return map['esSeguidor'];

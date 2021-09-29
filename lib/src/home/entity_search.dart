@@ -43,7 +43,7 @@ class EntitySearch extends StatelessWidget {
                       : state.results.isEmpty
                           ? const Center(
                               child: Text(
-                                'No hay procesos que coincidan con el texto',
+                                'No hay entidades que coincidan con el texto',
                                 style: TextStyle(fontSize: 16),
                               ),
                             )

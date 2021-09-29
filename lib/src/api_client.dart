@@ -54,6 +54,20 @@ class APIClient {
     final uri = Uri.parse('$baseURL$path');
     final encodedBody = _encodeUrlParameters(body);
     print(encodedBody);
+    /*
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    InternetAddress.lookup('host');
+    curl -I https://oportunidades.colombiacompra.gov.co/app
+HTTP/2 502
+content-type: text/html
+server: ZENEDGE
+x-cache-status: NOTCACHED
+content-length: 145
+date: Wed, 22 Sep 2021 20:57:39 GMT
+x-zen-fury: cf2b98b8aca4c6a635eb08572486412a17695675
+x-cdn: Served-By-Zenedge
+*/
+
     return httpClient.post(
       uri,
       body: encodedBody,

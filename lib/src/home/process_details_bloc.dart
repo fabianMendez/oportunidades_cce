@@ -27,7 +27,7 @@ class ProcessDetailsBloc
           idProceso: id,
         );
 
-        yield ProcessDetailsReady(details: proceso);
+        yield ProcessDetailsReady(id: id, details: proceso);
       } catch (err, str) {
         print(err);
         print(str);
@@ -72,9 +72,10 @@ class ProcessDetailsLoading extends ProcessDetailsState {
 }
 
 class ProcessDetailsReady extends ProcessDetailsState {
-  ProcessDetailsReady({
+  const ProcessDetailsReady({
+    required int id,
     required this.details,
-  }) : super(id: 0 /*TODO(fmendez): pass id*/);
+  }) : super(id: id);
 
   final Proceso details;
 }

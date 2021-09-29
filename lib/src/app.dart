@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_builder.dart';
 import 'package:oportunidades_cce/src/authentication/user_details_storage.dart';
@@ -62,10 +63,13 @@ class OportunidadesCCEApp extends StatelessWidget {
         // preferred ThemeMode (light, dark, or system default) from the
         // SettingsController to display the correct theme.
         theme: ThemeData(
-            // textTheme: GoogleFonts.workSansTextTheme(
-            //   Theme.of(context).textTheme,
-            // ),
-            ),
+          // textTheme: GoogleFonts.workSansTextTheme(
+          //   Theme.of(context).textTheme,
+          // ),
+          textTheme: GoogleFonts.montserratTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
         darkTheme: ThemeData.dark(),
         // themeMode: settingsController.themeMode,
       ),

@@ -53,11 +53,11 @@ class _HomeViewState extends State<HomeView> {
             label: 'Mis procesos',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.manage_search),
             label: 'Buscar entidades',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.apartment),
+            icon: Icon(Icons.business),
             label: 'Mis entidades',
           ),
         ],

@@ -32,9 +32,12 @@ class ProcessSearch extends StatelessWidget {
               child: SearchField(
                 value: state.term,
                 onSubmitted: (value) {
-                  BlocProvider.of<ProcessSearchBloc>(context).add(
-                    ProcessSearchTermChanged(term: value),
-                  );
+                  // BlocProvider.of<ProcessSearchBloc>(context).add(
+                  //   ProcessSearchTermChanged(term: value),
+                  // );
+                  context
+                      .read<ProcessSearchBloc>()
+                      .add(ProcessSearchTermChanged(term: value));
                 },
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
+import 'package:oportunidades_cce/src/home/favorite_process_button.dart';
 import 'package:oportunidades_cce/src/home/process_details_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -126,6 +127,8 @@ class ProcessDetails extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  FavoriteProcessButton(idProceso: state.id),
                 ],
               ),
             ),

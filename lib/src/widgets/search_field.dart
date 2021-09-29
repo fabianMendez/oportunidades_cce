@@ -42,7 +42,7 @@ class _SearchFieldState extends State<SearchField> {
   }
 
   void _onValueChanged() {
-    if (widget.onChanged != null) {
+    if (widget.onChanged != null && widget.value != _controller.text) {
       widget.onChanged!(_controller.text);
     }
   }
