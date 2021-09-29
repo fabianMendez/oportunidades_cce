@@ -16,7 +16,7 @@ class FavoriteProcessButtonBloc
 
         final esSeguidor = await procesoRepository.esSeguidorProceso(
           codigo: userDetails.codigo,
-          idProceso: '$idProceso',
+          idProceso: idProceso,
         );
 
         emit(FavoriteProcessButtonReady(isFavorite: esSeguidor));
@@ -33,7 +33,7 @@ class FavoriteProcessButtonBloc
 
         final response = await procesoRepository.seguirNoSeguirProceso(
           codigo: userDetails.codigo,
-          idProceso: '$idProceso',
+          idProceso: idProceso,
           insertar: event.isFavorite,
         );
 

@@ -116,7 +116,7 @@ class ProcesoRepository {
 
   Future<bool> esSeguidorProceso({
     required String codigo,
-    required String idProceso,
+    required int idProceso,
   }) async {
     final res = await apiClient.request(
       path: '/ServletEsSeguidorProceso',
@@ -126,7 +126,7 @@ class ProcesoRepository {
       },
     );
 
-    print(res.body);
+    // print(res.body);
     final map = json.decode(res.body);
 
     return map['esSeguidor'];
@@ -134,7 +134,7 @@ class ProcesoRepository {
 
   Future<APIResponse> seguirNoSeguirProceso({
     required String codigo,
-    required String idProceso,
+    required int idProceso,
     required bool insertar,
   }) {
     return apiClient.post(
