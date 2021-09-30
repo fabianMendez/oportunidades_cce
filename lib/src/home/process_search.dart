@@ -175,7 +175,9 @@ class ProcessSearch extends StatelessWidget {
                                 context,
                                 title: 'Agregar rango',
                               );
-                              if (range != null && range.isValid) {
+                              if (range != null &&
+                                  range.isValid &&
+                                  range.max > 0) {
                                 final newRanges =
                                     ranges.followedBy([range]).toList();
 

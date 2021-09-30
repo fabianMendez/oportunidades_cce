@@ -81,19 +81,21 @@ class _XTextFieldState extends State<XTextField> {
           animation: _controller,
           builder: (_, child) {
             return Visibility(
-              // duration: const Duration(milliseconds: 250),
               visible: _controller.text.isNotEmpty,
               child: child!,
             );
             // return AnimatedSwitcher(
-            //   duration: const Duration(milliseconds: 250),
+            //   duration: const Duration(milliseconds: 100),
             //   child: _controller.text.isEmpty ? const SizedBox() : child,
             // );
           },
-          child: GestureDetector(
-            child: const Icon(Icons.clear),
-            // onPressed: _onClearPressed,
-            onTap: _onClearPressed,
+          child: Focus(
+            descendantsAreFocusable: false,
+            skipTraversal: true,
+            child: IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: _onClearPressed,
+            ),
           ),
         ),
       ),

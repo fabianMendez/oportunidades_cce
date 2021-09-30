@@ -38,7 +38,11 @@ Future<String?> showPrompt(
           onChanged: (newValue) {
             value = newValue;
           },
-          onSubmitted: (value) => Navigator.of(context).pop(value),
+          onSubmitted: (value) {
+            if (value.isNotEmpty) {
+              Navigator.of(context).pop(value);
+            }
+          },
         ),
         actions: <Widget>[
           TextButton(

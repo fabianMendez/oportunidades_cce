@@ -5,6 +5,7 @@
  - [ ] Check connection to the server
  - [ ] Check server availability (ie: a HEAD request returns 200)
  - [ ] Sort results
+ - [ ] Implement navigator 2.0/autoroute?
 
 ## Mandatory
 

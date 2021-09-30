@@ -184,7 +184,7 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
                               right: 8,
                               bottom:
                                   state.familiasSeleccionadas.isEmpty ? -50 : 8,
-                              duration: const Duration(milliseconds: 250),
+                              duration: const Duration(milliseconds: 100),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(),
                                 onPressed: () {
