@@ -32,6 +32,8 @@ class GrupoUNSPSC extends Equatable {
   final int id;
   final String nombre;
 
+  String get titulo => nombre.split('\n')[0].trim();
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -177,7 +179,7 @@ class ProcessSearchResult extends Equatable {
 
   ProcessSearchResult.fromJson(Map<String, dynamic> map)
       : mongoId = map['mongoId'],
-        descripcion = _unescape.convert(map['descripcion']),
+        descripcion = _unescape.convert(map['descripcion'] ?? ''),
         estado = map['estado'],
         codigoInterno = map['codigoInterno'],
         proceso = Proceso.fromJson(map['proceso']),

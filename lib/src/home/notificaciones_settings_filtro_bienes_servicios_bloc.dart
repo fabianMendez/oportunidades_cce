@@ -78,12 +78,12 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
         termino: event.term,
       );
     } else if (event is NotificacionesSettingsFamiliaSeleccionada) {
-      final isSelected = state.familiasSeleccionadas.contains(event.id);
+      final isSelected = state.familiasSeleccionadas.contains(event.familia);
       final familiasSeleccionadas = isSelected
           ? state.familiasSeleccionadas
-              .where((element) => element != event.id)
+              .where((it) => it != event.familia)
               .toList()
-          : state.familiasSeleccionadas.followedBy([event.id]).toList();
+          : state.familiasSeleccionadas.followedBy([event.familia]).toList();
 
       // await grupoUNSPSCRepository.inscribirseFamiliaUNSPSC(
       //   codigo: userDetails.codigo,
@@ -142,12 +142,12 @@ class NotificacionesSettingsFiltroBienesServiciosTermChanged
 
 class NotificacionesSettingsFamiliaSeleccionada
     extends NotificacionesSettingsFiltroBienesServiciosEvent {
-  const NotificacionesSettingsFamiliaSeleccionada({required this.id});
+  const NotificacionesSettingsFamiliaSeleccionada(this.familia);
 
-  final int id;
+  final GrupoUNSPSC familia;
 
   @override
-  List<Object?> get props => [...super.props, id];
+  List<Object?> get props => [...super.props, familia];
 }
 
 class NotificacionesSettingsFiltroBienesServiciosState extends Equatable {
@@ -170,7 +170,7 @@ class NotificacionesSettingsFiltroBienesServiciosState extends Equatable {
   final List<GrupoUNSPSC> gruposUNSPSC;
   final List<SegmentoUNSPSC> segmentos;
   final String termino;
-  final List<int> familiasSeleccionadas;
+  final List<GrupoUNSPSC> familiasSeleccionadas;
 
   List<SegmentoUNSPSC> get segmentosParaTermino {
     final terminoTemp = termino.toLowerCase();
@@ -213,7 +213,7 @@ class NotificacionesSettingsFiltroBienesServiciosLoading
     required int grupoSeleccionado,
     required List<GrupoUNSPSC> gruposUNSPSC,
     String termino = '',
-    List<int> familiasSeleccionadas = const [],
+    List<GrupoUNSPSC> familiasSeleccionadas = const [],
   }) : super(
           grupoSeleccionado: grupoSeleccionado,
           gruposUNSPSC: gruposUNSPSC,

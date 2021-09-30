@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
@@ -21,7 +22,7 @@ class NotificacionesSettingsFiltroBienesServiciosView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Suscribirme a bienes y servicios'),
+        title: const Text('Seleccionar bienes y servicios'),
       ),
       body: BlocProvider<NotificacionesSettingsFiltroBienesServiciosBloc>(
         create: (context) {
@@ -124,51 +125,84 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
                             ),
                           ),
                         )
-                      : ListView.separated(
-                          itemCount: segmentos.length,
-                          itemBuilder: (context, index) {
-                            final segmento = segmentos[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0),
-                                  child: Text(
-                                    segmento.nombre.replaceAll('?', ''),
-                                    style: const TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Column(
+                      : Stack(
+                          children: [
+                            ListView.separated(
+                              itemCount: segmentos.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index == segmentos.length) {
+                                  return const SizedBox(height: 50);
+                                }
+
+                                final segmento = segmentos[index];
+                                return Column(
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    for (final familia in segmento.familias)
-                                      FamiliaCard(
-                                        familia: familia,
-                                        selected: state.familiasSeleccionadas
-                                            .contains(familia.id),
-                                        onTap: () {
-                                          BlocProvider.of<
-                                                      NotificacionesSettingsFiltroBienesServiciosBloc>(
-                                                  context)
-                                              .add(
-                                            NotificacionesSettingsFamiliaSeleccionada(
-                                                id: familia.id),
-                                          );
-                                        },
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      child: Text(
+                                        segmento.nombre.replaceAll('?', ''),
+                                        style: const TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        for (final familia in segmento.familias)
+                                          FamiliaCard(
+                                            familia: familia,
+                                            selected: state
+                                                .familiasSeleccionadas
+                                                .contains(familia),
+                                            onTap: () {
+                                              context
+                                                  .read<
+                                                      NotificacionesSettingsFiltroBienesServiciosBloc>()
+                                                  .add(
+                                                    NotificacionesSettingsFamiliaSeleccionada(
+                                                        familia),
+                                                  );
+                                            },
+                                          ),
+                                      ],
+                                    ),
                                   ],
+                                );
+                              },
+                              separatorBuilder: (_, __) =>
+                                  const Divider(height: 16),
+                            ),
+                            AnimatedPositioned(
+                              left: 8,
+                              right: 8,
+                              bottom:
+                                  state.familiasSeleccionadas.isEmpty ? -50 : 8,
+                              duration: const Duration(milliseconds: 250),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(state.familiasSeleccionadas);
+                                },
+                                child: const SizedBox(
+                                  height: 44,
+                                  child: Center(
+                                    child: Text(
+                                      'Aceptar',
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  ),
                                 ),
-                              ],
-                            );
-                          },
-                          separatorBuilder: (_, __) =>
-                              const Divider(height: 16),
+                              ),
+                            )
+                          ],
                         ),
             ),
           ],

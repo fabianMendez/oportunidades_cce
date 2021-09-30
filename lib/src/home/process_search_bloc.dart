@@ -133,6 +133,22 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         results: state.results,
         term: state.term,
       ));
+    } else if (event is ProcessSearchFamiliesChanged) {
+      final filter = SavedFilter(
+        id: state.filter.id,
+        nombre: state.filter.nombre,
+        textos: state.filter.textos,
+        rangos: state.filter.rangos,
+        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
+        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
+        familias: event.families,
+      );
+
+      yield* _search(ProcessSearchState(
+        filter: filter,
+        results: state.results,
+        term: state.term,
+      ));
     }
   }
 }
@@ -190,6 +206,17 @@ class ProcessSearchRangesChanged extends ProcessSearchEvent {
 
   @override
   List<Object?> get props => [...super.props, ranges];
+}
+
+class ProcessSearchFamiliesChanged extends ProcessSearchEvent {
+  const ProcessSearchFamiliesChanged(
+    this.families,
+  );
+
+  final List<GrupoUNSPSC> families;
+
+  @override
+  List<Object?> get props => [...super.props, families];
 }
 
 class NotificacionesSettingsFamiliaSeleccionada extends ProcessSearchEvent {
