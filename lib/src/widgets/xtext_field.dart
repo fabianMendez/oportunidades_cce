@@ -6,11 +6,15 @@ class XTextField extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
     required this.value,
+    this.autofocus = false,
+    this.textInputAction,
   }) : super(key: key);
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
   final String value;
+  final bool autofocus;
+  final TextInputAction? textInputAction;
 
   @override
   State<XTextField> createState() => _XTextFieldState();
@@ -62,6 +66,7 @@ class _XTextFieldState extends State<XTextField> {
       autocorrect: false,
       onChanged: widget.onChanged,
       onSubmitted: widget.onSubmitted,
+      autofocus: widget.autofocus,
       decoration: InputDecoration(
         // label: const Text('Buscar'),
         border: const OutlineInputBorder(),
@@ -80,7 +85,7 @@ class _XTextFieldState extends State<XTextField> {
           ),
         ),
       ),
-      textInputAction: TextInputAction.search,
+      textInputAction: widget.textInputAction,
     );
   }
 }

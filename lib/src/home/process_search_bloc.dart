@@ -50,6 +50,14 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
           rangos: stt.filter.rangos,
           textos: stt.filter.textos,
         );
+
+        if (stt.term.isNotEmpty) {
+          final termLowerCase = stt.term.toLowerCase();
+          results = results.where((it) {
+            return it.nombreEntidad.toLowerCase().contains(termLowerCase) ||
+                it.descripcion.toLowerCase().contains(termLowerCase);
+          }).toList();
+        }
       } else if (stt.term.isNotEmpty) {
         results = await procesoRepository.getProcesosBusquedaRapida(
           codigo: userDetails.codigo,
@@ -73,19 +81,16 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
   @override
   Stream<ProcessSearchState> mapEventToState(ProcessSearchEvent event) async* {
     if (event is ProcessSearchStarted) {
-      final filters =
-          await filtroRepository.getFiltros(codigo: userDetails.codigo);
-      print(filters);
+      // final filters =
+      //     await filtroRepository.getFiltros(codigo: userDetails.codigo);
+      // print(filters);
       // yield* _searchByTerm(state);
     } else if (event is ProcessSearchTermChanged) {
-      if (event.term.isEmpty) {
-        yield const ProcessSearchUninitialized();
-      } else {
-        yield* _search(ProcessSearchState(
-          results: state.results,
-          term: event.term,
-        ));
-      }
+      yield* _search(ProcessSearchState(
+        results: state.results,
+        term: event.term,
+        filter: state.filter,
+      ));
     } else if (event is ProcessSearchKeywordsChanged) {
       final filter = SavedFilter(
         id: state.filter.id,
