@@ -1,0 +1,84 @@
+[
+    {
+        "recibirNotificacionesCorreo": false,
+        "estado": 1,
+        "familias": [
+            {
+                "codigo": "1010      ",
+                "estado": 1,
+                "id": 1,
+                "nombre": "<b>Animales vivos</b><br/>Cod: 1010      "
+            }
+        ],
+        "textos": [],
+        "id": 155,
+        "recibirNotificacionesApp": true,
+        "nombre": "Prueba",
+        "rangos": []
+    },
+    {
+        "recibirNotificacionesCorreo": false,
+        "estado": 1,
+        "familias": [
+            {
+                "codigo": "1010      ",
+                "estado": 1,
+                "id": 1,
+                "nombre": "<b>Animales vivos</b><br/>Cod: 1010      "
+            }
+        ],
+        "textos": [],
+        "id": 156,
+        "recibirNotificacionesApp": true,
+        "nombre": "Prueba 2",
+        "rangos": [
+            {
+                "montoInferior": "$ 10",
+                "id": 1633012658100,
+                "montoSuperior": "$ 200.000"
+            },
+            {
+                "montoInferior": "$ 1.000.000",
+                "id": 1633012675892,
+                "montoSuperior": "$ 2.500.000.000"
+            }
+        ]
+    },
+    {
+        "recibirNotificacionesCorreo": false,
+        "estado": 1,
+        "familias": [
+            {
+                "codigo": "1010      ",
+                "estado": 1,
+                "id": 1,
+                "nombre": "<b>Animales vivos</b><br/>Cod: 1010      "
+            }
+        ],
+        "textos": [
+            {
+                "texto": "Abc",
+                "id": 1633012813749
+            },
+            {
+                "texto": "Def",
+                "id": 1633012828560
+            }
+        ],
+        "id": 157,
+        "recibirNotificacionesApp": true,
+        "nombre": "Prueba 3",
+        "rangos": [
+            {
+                "montoInferior": "$ 10",
+                "id": 1633012658100,
+                "montoSuperior": "$ 200.000"
+            },
+            {
+                "montoInferior": "$ 1.000.000",
+                "id": 1633012675892,
+                "montoSuperior": "$ 2.500.000.000"
+            }
+        ]
+    }
+]

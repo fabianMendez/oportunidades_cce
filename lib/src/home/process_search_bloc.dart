@@ -4,6 +4,7 @@ import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/filtro_repository.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/proceso_repository.dart';
+import 'package:oportunidades_cce/src/utils/dialogs.dart';
 
 class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
   ProcessSearchBloc({
@@ -109,6 +110,29 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         results: state.results,
         term: state.term,
       ));
+    } else if (event is ProcessSearchRangesChanged) {
+      final filter = SavedFilter(
+        id: state.filter.id,
+        familias: state.filter.familias,
+        nombre: state.filter.nombre,
+        textos: state.filter.textos,
+        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
+        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
+        rangos: event.ranges.map((range) {
+          return ValueNotificationSetting(
+            estado: 0,
+            id: 0,
+            montoInferior: '${range.min.toInt()}',
+            montoSuperior: '${range.max.toInt()}',
+          );
+        }).toList(),
+      );
+
+      yield* _search(ProcessSearchState(
+        filter: filter,
+        results: state.results,
+        term: state.term,
+      ));
     }
   }
 }
@@ -155,6 +179,17 @@ class ProcessSearchKeywordsChanged extends ProcessSearchEvent {
 
   @override
   List<Object?> get props => [...super.props, keywords];
+}
+
+class ProcessSearchRangesChanged extends ProcessSearchEvent {
+  const ProcessSearchRangesChanged(
+    this.ranges,
+  );
+
+  final List<Range> ranges;
+
+  @override
+  List<Object?> get props => [...super.props, ranges];
 }
 
 class NotificacionesSettingsFamiliaSeleccionada extends ProcessSearchEvent {

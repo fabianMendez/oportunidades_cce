@@ -4,6 +4,7 @@
  - [ ] Hide/show eye on password field only when the value is not empty
  - [ ] Check connection to the server
  - [ ] Check server availability (ie: a HEAD request returns 200)
+ - [ ] Sort results
 
 ## Mandatory
 

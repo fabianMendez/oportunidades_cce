@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:oportunidades_cce/src/home/process_search_bloc.dart';
 import 'package:oportunidades_cce/src/home/widgets/process_result_tile.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
@@ -10,12 +12,20 @@ class ProcessSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final moneyFmt = NumberFormat('#,##0', 'es_CO');
+
     return BlocBuilder<ProcessSearchBloc, ProcessSearchState>(
       builder: (context, state) {
         final isLoading = state is ProcessSearchLoading;
         final isUninitialized = state is ProcessSearchUninitialized;
 
         final keywords = state.filter.textos.map((it) => it.texto).toList();
+        final ranges = state.filter.rangos
+            .map((it) => Range(
+                  min: double.parse(it.montoInferior),
+                  max: double.parse(it.montoSuperior),
+                ))
+            .toList();
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -32,12 +42,37 @@ class ProcessSearch extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 4),
+            const Divider(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text('Palabras clave'),
+                  Row(
+                    children: [
+                      const Text(
+                        'Palabras clave',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () async {
+                          final keyword = await showPrompt(
+                            context,
+                            title: 'Agregar palabra clave',
+                          );
+                          if (keyword != null && keyword.isNotEmpty) {
+                            final newKeywords =
+                                keywords.followedBy([keyword]).toList();
+
+                            context
+                                .read<ProcessSearchBloc>()
+                                .add(ProcessSearchKeywordsChanged(newKeywords));
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                   Wrap(
                     children: [
                       for (int i = 0; i < keywords.length; i++)
@@ -53,38 +88,67 @@ class ProcessSearch extends StatelessWidget {
                             },
                           ),
                         ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // const SizedBox(height: 4),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Rangos de precio',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
                       IconButton(
                         icon: const Icon(Icons.add),
                         onPressed: () async {
-                          final keyword = await showPrompt(
+                          final range = await showValueRangePrompt(
                             context,
-                            title: 'Agregar palabra clave',
-                            message: 'Hello',
+                            title: 'Agregar rango',
                           );
-                          if (keyword != null && keyword.isNotEmpty) {
-                            final newKeywords =
-                                keywords.followedBy([keyword]).toList();
+                          if (range != null && range.isValid) {
+                            final newRanges =
+                                ranges.followedBy([range]).toList();
 
                             context
                                 .read<ProcessSearchBloc>()
-                                .add(ProcessSearchKeywordsChanged(newKeywords));
+                                .add(ProcessSearchRangesChanged(newRanges));
                           }
                         },
                       ),
                     ],
                   ),
-                  // MultiTextField(
-                  //   onChanged: (keywords) {
-                  //     context
-                  //         .read<ProcessSearchBloc>()
-                  //         .add(ProcessSearchKeywordsChanged(keywords));
-                  //   },
-                  //   values: state.filter.textos.map((it) => it.texto).toList(),
-                  // ),
+                  Wrap(
+                    children: [
+                      for (int i = 0; i < ranges.length; i++)
+                        Container(
+                          margin: const EdgeInsets.only(right: 4),
+                          child: Chip(
+                            label: Text(
+                                '\$${moneyFmt.format(ranges[i].min)}-\$${moneyFmt.format(ranges[i].max)}'),
+                            onDeleted: () {
+                              final newRanges = removeAt(ranges, i);
+
+                              context
+                                  .read<ProcessSearchBloc>()
+                                  .add(ProcessSearchRangesChanged(newRanges));
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+            const Divider(),
+            // const SizedBox(height: 12),
             Expanded(
               child: state.isEmpty
                   ? const Center(

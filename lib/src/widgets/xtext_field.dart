@@ -8,6 +8,9 @@ class XTextField extends StatefulWidget {
     required this.value,
     this.autofocus = false,
     this.textInputAction,
+    this.textInputType,
+    this.label,
+    this.prefixIcon,
   }) : super(key: key);
 
   final ValueChanged<String>? onChanged;
@@ -15,6 +18,9 @@ class XTextField extends StatefulWidget {
   final String value;
   final bool autofocus;
   final TextInputAction? textInputAction;
+  final TextInputType? textInputType;
+  final String? label;
+  final Widget? prefixIcon;
 
   @override
   State<XTextField> createState() => _XTextFieldState();
@@ -68,24 +74,31 @@ class _XTextFieldState extends State<XTextField> {
       onSubmitted: widget.onSubmitted,
       autofocus: widget.autofocus,
       decoration: InputDecoration(
-        // label: const Text('Buscar'),
+        label: widget.label != null ? Text(widget.label!) : null,
         border: const OutlineInputBorder(),
-        // prefixIcon: const Icon(Icons.search),
+        prefixIcon: widget.prefixIcon,
         suffixIcon: AnimatedBuilder(
           animation: _controller,
           builder: (_, child) {
-            return AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: _controller.text.isEmpty ? const SizedBox() : child,
+            return Visibility(
+              // duration: const Duration(milliseconds: 250),
+              visible: _controller.text.isNotEmpty,
+              child: child!,
             );
+            // return AnimatedSwitcher(
+            //   duration: const Duration(milliseconds: 250),
+            //   child: _controller.text.isEmpty ? const SizedBox() : child,
+            // );
           },
-          child: IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: _onClearPressed,
+          child: GestureDetector(
+            child: const Icon(Icons.clear),
+            // onPressed: _onClearPressed,
+            onTap: _onClearPressed,
           ),
         ),
       ),
       textInputAction: widget.textInputAction,
+      keyboardType: widget.textInputType,
     );
   }
 }
