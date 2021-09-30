@@ -20,44 +20,50 @@ class UnauthenticatedNavigator extends StatefulWidget {
 class _UnauthenticatedNavigatorState extends State<UnauthenticatedNavigator> {
   String routeName = SampleItemListView.routeName;
 
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
+    return WillPopScope(
+      onWillPop: () async => !await _navigatorKey.currentState!.maybePop(),
+      child: Navigator(
+        key: _navigatorKey,
+        onPopPage: (route, result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
 
-        setState(() {
-          routeName = SampleItemListView.routeName;
-        });
+          setState(() {
+            routeName = SampleItemListView.routeName;
+          });
 
-        return true;
-      },
-      pages: [
-        MaterialPage(
-          child: SampleItemListView(
-            onRouteChanged: (newRoute) {
-              setState(() {
-                routeName = newRoute;
-              });
-            },
+          return true;
+        },
+        pages: [
+          MaterialPage(
+            child: SampleItemListView(
+              onRouteChanged: (newRoute) {
+                setState(() {
+                  routeName = newRoute;
+                });
+              },
+            ),
           ),
-        ),
-        if (routeName == LoginView.routeName)
-          const MaterialPage(child: LoginView()),
-        if (routeName == RegisterView.routeName)
-          const MaterialPage(child: RegisterView()),
-        if (routeName == ForgotPasswordView.routeName)
-          const MaterialPage(child: ForgotPasswordView()),
-        if (routeName == ReactivateAccountView.routeName)
-          const MaterialPage(child: ReactivateAccountView()),
-        if (routeName == RemoveAccountView.routeName)
-          const MaterialPage(child: RemoveAccountView()),
-        // if (routeName == SettingsView.routeName)
-        //   MaterialPage(
-        //       child: SettingsView(controller: widget.settingsController)),
-      ],
+          if (routeName == LoginView.routeName)
+            const MaterialPage(child: LoginView()),
+          if (routeName == RegisterView.routeName)
+            const MaterialPage(child: RegisterView()),
+          if (routeName == ForgotPasswordView.routeName)
+            const MaterialPage(child: ForgotPasswordView()),
+          if (routeName == ReactivateAccountView.routeName)
+            const MaterialPage(child: ReactivateAccountView()),
+          if (routeName == RemoveAccountView.routeName)
+            const MaterialPage(child: RemoveAccountView()),
+          // if (routeName == SettingsView.routeName)
+          //   MaterialPage(
+          //       child: SettingsView(controller: widget.settingsController)),
+        ],
+      ),
     );
   }
 }

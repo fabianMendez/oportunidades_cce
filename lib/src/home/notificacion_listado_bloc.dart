@@ -20,7 +20,10 @@ class NotificacionListadoBloc
       try {
         final notificaciones = await notificacionRepository.getNotificaciones(
           codigo: userDetails.codigo,
-          tipoNotificacion: 'Todos',
+          // tipoNotificacion: 'Todos',
+          // tipoNotificacion: 'CreacionProceso',
+          // tipoNotificacion: 'CreacionProcesoEntidad',
+          tipoNotificacion: 'ActualizacionProceso',
         );
 
         yield NotificacionListadoSuccess(notificaciones);

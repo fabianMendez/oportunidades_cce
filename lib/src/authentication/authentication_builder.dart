@@ -30,7 +30,7 @@ class AuthenticationBuilder extends StatelessWidget {
               create: (_) {
                 return AuthenticatedNavigatorBloc();
               },
-              child: const AuthenticatedNavigator(),
+              child: AuthenticatedNavigator(),
             ),
           );
         }

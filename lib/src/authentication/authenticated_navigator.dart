@@ -10,50 +10,57 @@ import 'package:oportunidades_cce/src/home/notificaciones_settings_view.dart';
 import 'package:oportunidades_cce/src/home/process_details_view.dart';
 
 class AuthenticatedNavigator extends StatelessWidget {
-  const AuthenticatedNavigator({Key? key}) : super(key: key);
+  AuthenticatedNavigator({Key? key}) : super(key: key);
+
+  final _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticatedNavigatorBloc, AuthenticatedNavigatorState>(
-      builder: (context, state) {
-        return Navigator(
-          onPopPage: (route, result) {
-            if (!route.didPop(result)) {
-              return false;
-            }
+    return WillPopScope(
+      onWillPop: () async => !await _navigatorKey.currentState!.maybePop(),
+      child:
+          BlocBuilder<AuthenticatedNavigatorBloc, AuthenticatedNavigatorState>(
+        builder: (context, state) {
+          return Navigator(
+            key: _navigatorKey,
+            onPopPage: (route, result) {
+              if (!route.didPop(result)) {
+                return false;
+              }
 
-            BlocProvider.of<AuthenticatedNavigatorBloc>(context)
-                .add(AuthenticatedNavigatorPopped(result: result));
+              BlocProvider.of<AuthenticatedNavigatorBloc>(context)
+                  .add(AuthenticatedNavigatorPopped(result: result));
 
-            return true;
-          },
-          pages: [
-            const MaterialPage(child: HomeView()),
-            if (state.isNotificacionesSettings)
-              const MaterialPage(child: NotificacionesSettingsView()),
-            if (state.isNotificacionesSettingsFiltroBienesServicios)
-              const MaterialPage(
-                child: NotificacionesSettingsFiltroBienesServiciosView(),
-              ),
-            if (state.isNotificacionesSettingsMonto)
-              const MaterialPage(child: NotificacionesSettingsMontoView()),
-            if (state.isNotificacionesSettingsKeyword)
-              const MaterialPage(child: NotificacionesSettingsKeywordView()),
-            if (state.isEntityDetails)
-              MaterialPage(
-                child: EntityDetailsView(
-                  id: state.entityDetailsId,
+              return true;
+            },
+            pages: [
+              const MaterialPage(child: HomeView()),
+              if (state.isNotificacionesSettings)
+                const MaterialPage(child: NotificacionesSettingsView()),
+              if (state.isNotificacionesSettingsFiltroBienesServicios)
+                const MaterialPage(
+                  child: NotificacionesSettingsFiltroBienesServiciosView(),
                 ),
-              ),
-            if (state.isProcessDetails)
-              MaterialPage(
-                child: ProcessDetailsView(
-                  id: state.processDetailsId,
+              if (state.isNotificacionesSettingsMonto)
+                const MaterialPage(child: NotificacionesSettingsMontoView()),
+              if (state.isNotificacionesSettingsKeyword)
+                const MaterialPage(child: NotificacionesSettingsKeywordView()),
+              if (state.isEntityDetails)
+                MaterialPage(
+                  child: EntityDetailsView(
+                    id: state.entityDetailsId,
+                  ),
                 ),
-              ),
-          ],
-        );
-      },
+              if (state.isProcessDetails)
+                MaterialPage(
+                  child: ProcessDetailsView(
+                    id: state.processDetailsId,
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
