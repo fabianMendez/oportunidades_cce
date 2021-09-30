@@ -37,45 +37,60 @@ class NotificacionListado extends StatelessWidget {
           return const Center(child: CircularProgressIndicator.adaptive());
         }
 
-        if (state is NotificacionListadoSuccess) {
-          if (state.notificaciones.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  height: 200,
-                  child: Column(
-                    children: const [
-                      Text(
-                        'No hay oportunidades nuevas para tí, puedes configurar tus suscripciones para que te lleguen nuevas oportunidades.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      // const SizedBox(height: 12),
-                      // TextButton(
-                      //   onPressed: _fetchFirst,
-                      //   child: const Text('Reintentar'),
-                      // ),
-                    ],
-                  ),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (state is NotificacionListadoSuccess &&
+                state.notificaciones.isEmpty)
+              Container(
+                alignment: Alignment.center,
+                height: 200,
+                child: Column(
+                  children: const [
+                    Text(
+                      'No hay oportunidades nuevas para tí, puedes configurar tus suscripciones para que te lleguen nuevas oportunidades.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    // const SizedBox(height: 12),
+                    // TextButton(
+                    //   onPressed: _fetchFirst,
+                    //   child: const Text('Reintentar'),
+                    // ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.settings),
-                  label: const Text('Configura tus suscripciones'),
-                  onPressed: () {
-                    BlocProvider.of<AuthenticatedNavigatorBloc>(context)
-                        .add(const NotificacionesSettingsViewPushed());
-                  },
+              ),
+            if (state is NotificacionListadoFailure)
+              Container(
+                alignment: Alignment.center,
+                height: 200,
+                child: Column(
+                  children: [
+                    Text(
+                      state.error,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 17),
+                    ),
+                    // const SizedBox(height: 12),
+                    // TextButton(
+                    //   onPressed: _fetchFirst,
+                    //   child: const Text('Reintentar'),
+                    // ),
+                  ],
                 ),
-              ],
-            );
-          }
-        }
-
-        return Container();
+              ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.settings),
+              label: const Text('Configura tus suscripciones'),
+              onPressed: () {
+                BlocProvider.of<AuthenticatedNavigatorBloc>(context)
+                    .add(const NotificacionesSettingsViewPushed());
+              },
+            ),
+          ],
+        );
       },
     );
   }

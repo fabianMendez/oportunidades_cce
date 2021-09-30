@@ -12,10 +12,14 @@ class ProcesoRepository {
 
   Future<List<ProcessSearchResult>> busquedaProcesos({
     required String codigo,
-    required Map<String, dynamic> jfamilias,
-    required Map<String, dynamic> jrangos,
-    required Map<String, dynamic> jtextos,
+    required List<ValueNotificationSetting> rangos,
+    required List<KeywordNotificationSetting> textos,
+    required List<GrupoUNSPSC> familias,
   }) async {
+    final jfamilias = json.encode(familias);
+    final jrangos = json.encode(rangos);
+    final jtextos = json.encode(textos);
+
     final res = await apiClient.request(
       path: '/ServletBusquedaProcesos',
       body: {
@@ -26,7 +30,7 @@ class ProcesoRepository {
       },
     );
 
-    // print(res.body);
+    print(res.body);
     final List<dynamic> list = json.decode(res.body);
 
     return list.map((it) => ProcessSearchResult.fromJson(it)).toList();

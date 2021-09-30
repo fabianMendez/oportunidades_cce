@@ -5,6 +5,7 @@ import 'package:oportunidades_cce/src/authentication/user_details_secure_storage
 import 'package:oportunidades_cce/src/authentication/user_details_storage.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/home/entidad_repository.dart';
+import 'package:oportunidades_cce/src/home/filtro_repository.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/notificacion_repository.dart';
 import 'package:oportunidades_cce/src/home/proceso_repository.dart';
@@ -26,4 +27,6 @@ void setupServiceLocator() {
   sl.registerSingleton(ProcesoRepository(apiClient: apiClient));
 
   sl.registerSingleton(EntidadRepository(apiClient: apiClient));
+
+  sl.registerSingleton(FiltroRepository(apiClient: apiClient));
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/home/process_search_bloc.dart';
 import 'package:oportunidades_cce/src/home/widgets/process_result_tile.dart';
+import 'package:oportunidades_cce/src/widgets/multi_text_field.dart';
 import 'package:oportunidades_cce/src/widgets/search_field.dart';
 
 class ProcessSearch extends StatelessWidget {
@@ -20,35 +21,41 @@ class ProcessSearch extends StatelessWidget {
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Búsqueda rápida',
-                style: Theme.of(context).textTheme.headline5,
-                textAlign: TextAlign.left,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: SearchField(
                 value: state.term,
                 onSubmitted: (value) {
-                  // BlocProvider.of<ProcessSearchBloc>(context).add(
-                  //   ProcessSearchTermChanged(term: value),
-                  // );
                   context
                       .read<ProcessSearchBloc>()
                       .add(ProcessSearchTermChanged(term: value));
                 },
               ),
             ),
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: [
+                  const Text('Textos'),
+                  MultiTextField(
+                    onChanged: (keywords) {
+                      context
+                          .read<ProcessSearchBloc>()
+                          .add(ProcessSearchKeywordsChanged(keywords));
+                    },
+                    values: state.filter.textos.map((it) => it.texto).toList(),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 12),
             Expanded(
-              child: isUninitialized
+              child: state.isEmpty
                   ? const Center(
                       child: Text(
-                      'Ingresa un término de búsqueda',
-                      style: TextStyle(fontSize: 16),
-                    ))
+                        'Ingresa un término de búsqueda',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    )
                   : isLoading
                       ? const Center(
                           child: CircularProgressIndicator.adaptive())

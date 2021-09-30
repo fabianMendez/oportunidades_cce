@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SearchField extends StatefulWidget {
-  const SearchField({
+class XTextField extends StatefulWidget {
+  const XTextField({
     Key? key,
     this.onChanged,
     this.onSubmitted,
@@ -13,10 +13,10 @@ class SearchField extends StatefulWidget {
   final String value;
 
   @override
-  State<SearchField> createState() => _SearchFieldState();
+  State<XTextField> createState() => _XTextFieldState();
 }
 
-class _SearchFieldState extends State<SearchField> {
+class _XTextFieldState extends State<XTextField> {
   late TextEditingController _controller;
 
   @override
@@ -33,7 +33,7 @@ class _SearchFieldState extends State<SearchField> {
   }
 
   @override
-  void didUpdateWidget(covariant SearchField oldWidget) {
+  void didUpdateWidget(covariant XTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.value != widget.value && widget.value != _controller.text) {
@@ -63,9 +63,9 @@ class _SearchFieldState extends State<SearchField> {
       onChanged: widget.onChanged,
       onSubmitted: widget.onSubmitted,
       decoration: InputDecoration(
-        label: const Text('Buscar'),
+        // label: const Text('Buscar'),
         border: const OutlineInputBorder(),
-        prefixIcon: const Icon(Icons.search),
+        // prefixIcon: const Icon(Icons.search),
         suffixIcon: AnimatedBuilder(
           animation: _controller,
           builder: (_, child) {

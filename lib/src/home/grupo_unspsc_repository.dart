@@ -32,6 +32,15 @@ class GrupoUNSPSC extends Equatable {
   final int id;
   final String nombre;
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'codigo': codigo,
+      'estado': estado,
+      'nombre': nombre,
+    };
+  }
+
   @override
   List<Object?> get props => [codigo, estado, id, nombre];
 }
@@ -85,10 +94,19 @@ class ValueNotificationSetting extends Equatable {
   final String montoSuperior;
 
   ValueNotificationSetting.fromJson(Map<String, dynamic> map)
-      : estado = map['estado'],
+      : estado = map['estado'] ?? 0,
         id = map['id'],
         montoInferior = map['montoInferior'],
         montoSuperior = map['montoSuperior'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'estado': estado,
+      'id': id,
+      'montoInferior': montoInferior,
+      'montoSuperior': montoSuperior,
+    };
+  }
 
   @override
   List<Object?> get props => [estado, id, montoInferior, montoSuperior];
@@ -106,9 +124,17 @@ class KeywordNotificationSetting extends Equatable {
   final String texto;
 
   KeywordNotificationSetting.fromJson(Map<String, dynamic> map)
-      : estado = map['estado'],
+      : estado = map['estado'] ?? 0,
         id = map['id'],
         texto = map['texto'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'estado': estado,
+      'id': id,
+      'texto': texto,
+    };
+  }
 
   @override
   List<Object?> get props => [estado, id, texto];
