@@ -15,16 +15,16 @@ class FavoriteProcesses extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Procesos que tú sigues',
-                style: Theme.of(context).textTheme.headline5,
-                textAlign: TextAlign.left,
-              ),
-            ),
-            const SizedBox(height: 12),
+            // const SizedBox(height: 16),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16),
+            //   child: Text(
+            //     'Procesos que tú sigues',
+            //     style: Theme.of(context).textTheme.headline5,
+            //     textAlign: TextAlign.left,
+            //   ),
+            // ),
+            // const SizedBox(height: 12),
             Expanded(
               child: isLoading
                   ? const Center(child: CircularProgressIndicator.adaptive())

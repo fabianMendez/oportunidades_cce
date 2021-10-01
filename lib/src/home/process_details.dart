@@ -29,107 +29,109 @@ class ProcessDetails extends StatelessWidget {
                 '${details.plataforma} · ${details.codigoInterno}',
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    details.buyer.name,
-                    style: Theme.of(context).textTheme.headline6,
-                    textAlign: TextAlign.left,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    details.tender.title,
-                    style: const TextStyle(
-                      height: 1.2,
-                      fontSize: 15,
-                      // fontStyle: FontStyle.italic,
-                      // letterSpacing: 0.2,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      details.buyer.name,
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Text(
-                        'Fecha Inicial: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSize,
+                    const SizedBox(height: 12),
+                    Text(
+                      details.tender.title,
+                      style: const TextStyle(
+                        height: 1.2,
+                        fontSize: 15,
+                        // fontStyle: FontStyle.italic,
+                        // letterSpacing: 0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Text(
+                          'Fecha Inicial: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSize,
+                          ),
+                        ),
+                        Text(
+                          details.date,
+                          style: const TextStyle(
+                            fontSize: fontSize,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Text(
+                          'Monto: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSize,
+                          ),
+                        ),
+                        Text(
+                          '\$${moneyFmt.format(details.tender.value.amount)}',
+                          style: const TextStyle(
+                            fontSize: fontSize,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (details.url != null) const SizedBox(height: 4),
+                    if (details.url != null)
+                      TextButton.icon(
+                        onPressed: () async {
+                          final url = details.url!;
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('No fue posible abrir la URL'),
+                              ),
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.open_in_browser),
+                        label: const Text(
+                          'Ver',
+                          style: TextStyle(
+                            fontSize: fontSize,
+                          ),
                         ),
                       ),
-                      Text(
-                        details.date,
-                        style: const TextStyle(
-                          fontSize: fontSize,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Text(
-                        'Monto: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSize,
-                        ),
-                      ),
-                      Text(
-                        '\$${moneyFmt.format(details.tender.value.amount)}',
-                        style: const TextStyle(
-                          fontSize: fontSize,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (details.url != null) const SizedBox(height: 4),
-                  if (details.url != null)
+                    const SizedBox(height: 4),
                     TextButton.icon(
                       onPressed: () async {
-                        final url = details.url!;
-                        if (await canLaunch(url)) {
-                          await launch(url);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('No fue posible abrir la URL'),
-                            ),
-                          );
-                        }
+                        final url =
+                            'https://oportunidades.colombiacompra.gov.co/compartir/proceso/${details.codigoInterno}/${userDetails.id}';
+
+                        await Share.share(
+                          'Revisa este proceso de contratación que te comparten desde la aplicación Oportunidades CCE: $url',
+                          subject: 'Proceso interesante',
+                        );
                       },
-                      icon: const Icon(Icons.open_in_browser),
+                      icon: const Icon(Icons.share),
                       label: const Text(
-                        'Ver',
+                        'Compartir',
                         style: TextStyle(
                           fontSize: fontSize,
                         ),
                       ),
                     ),
-                  const SizedBox(height: 4),
-                  TextButton.icon(
-                    onPressed: () async {
-                      final url =
-                          'https://oportunidades.colombiacompra.gov.co/compartir/proceso/${details.codigoInterno}/${userDetails.id}';
-
-                      await Share.share(
-                        'Revisa este proceso de contratación que te comparten desde la aplicación Oportunidades CCE: $url',
-                        subject: 'Proceso interesante',
-                      );
-                    },
-                    icon: const Icon(Icons.share),
-                    label: const Text(
-                      'Compartir',
-                      style: TextStyle(
-                        fontSize: fontSize,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  FavoriteProcessButton(idProceso: state.id),
-                ],
+                    const SizedBox(height: 4),
+                    FavoriteProcessButton(idProceso: state.id),
+                  ],
+                ),
               ),
             ),
           );

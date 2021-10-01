@@ -15,7 +15,6 @@ class FavoriteEntities extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 16),
             Expanded(
               child: isLoading
                   ? const Center(child: CircularProgressIndicator.adaptive())
