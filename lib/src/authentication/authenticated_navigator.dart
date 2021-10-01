@@ -9,10 +9,10 @@ import 'package:oportunidades_cce/src/home/notificaciones_settings_monto_view.da
 import 'package:oportunidades_cce/src/home/notificaciones_settings_view.dart';
 import 'package:oportunidades_cce/src/home/process_details_view.dart';
 
-class AuthenticatedNavigator extends StatelessWidget {
-  AuthenticatedNavigator({Key? key}) : super(key: key);
+final _navigatorKey = GlobalKey<NavigatorState>();
 
-  final _navigatorKey = GlobalKey<NavigatorState>();
+class AuthenticatedNavigator extends StatelessWidget {
+  const AuthenticatedNavigator({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

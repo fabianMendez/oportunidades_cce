@@ -7,6 +7,8 @@ import '../sample_feature/sample_item_list_view.dart';
 import 'reactivate_account_view.dart';
 import 'remove_account_view.dart';
 
+final _navigatorKey = GlobalKey<NavigatorState>();
+
 class UnauthenticatedNavigator extends StatefulWidget {
   const UnauthenticatedNavigator({
     Key? key,
@@ -19,8 +21,6 @@ class UnauthenticatedNavigator extends StatefulWidget {
 
 class _UnauthenticatedNavigatorState extends State<UnauthenticatedNavigator> {
   String routeName = SampleItemListView.routeName;
-
-  final _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
