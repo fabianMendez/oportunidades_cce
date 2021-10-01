@@ -15,12 +15,12 @@ class ProcesoRepository {
     required List<ValueNotificationSetting> rangos,
     required List<KeywordNotificationSetting> textos,
     required List<GrupoUNSPSC> familias,
-  }) async {
+  }) {
     final jfamilias = json.encode(familias);
     final jrangos = json.encode(rangos);
     final jtextos = json.encode(textos);
 
-    final res = await apiClient.request(
+    return apiClient.requestList(
       path: '/ServletBusquedaProcesos',
       body: {
         'codigo': codigo,
@@ -28,112 +28,84 @@ class ProcesoRepository {
         'jrangos': jrangos,
         'jtextos': jtextos,
       },
+      convertFn: (it) => ProcessSearchResult.fromJson(it),
     );
-
-    print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
 
   Future<List<ProcessSearchResult>> getProcesosBusquedaRapida({
     required String codigo,
     required String texto,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletBusquedaRapidaProcesos',
       body: {
         'codigo': codigo,
         'texto': texto,
       },
+      convertFn: (it) => ProcessSearchResult.fromJson(it),
     );
-
-    // print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
 
   Future<List<ProcessSearchResult>> getProcesosEntidad({
     required String codigo,
     required String idEntidad,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletProcesosEntidad',
       body: {
         'codigo': codigo,
         'idEntidad': idEntidad,
       },
+      convertFn: (it) => ProcessSearchResult.fromJson(it),
     );
-
-    // print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
 
   Future<List<ProcessSearchResult>> getProcesosInteresantes({
     required String codigo,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletProcesosInteresantes',
       body: {'codigo': codigo},
+      convertFn: (it) => ProcessSearchResult.fromJson(it),
     );
-
-    // print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
 
   Future<List<ProcessSearchResult>> getMisProcesos({
     required String codigo,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletMisProcesos',
       body: {'codigo': codigo},
+      convertFn: (it) => ProcessSearchResult.fromJson(it),
     );
-
-    // print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ProcessSearchResult.fromJson(it)).toList();
   }
 
   Future<Proceso> getProceso({
     required String codigo,
     required int idProceso,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.request(
       path: '/ServletProceso',
       body: {
         'codigo': codigo,
         'idProceso': idProceso,
       },
+      convertFn: (map) => Proceso.fromJson(map),
     );
-
-    print(res.body);
-    final map = json.decode(res.body);
-
-    return Proceso.fromJson(map);
   }
 
   Future<bool> esSeguidorProceso({
     required String codigo,
     required int idProceso,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.request(
       path: '/ServletEsSeguidorProceso',
       body: {
         'codigo': codigo,
         'idProceso': idProceso,
       },
+      convertFn: (map) => map['esSeguidor'],
     );
-
-    // print(res.body);
-    final map = json.decode(res.body);
-
-    return map['esSeguidor'];
   }
 
   Future<APIResponse> seguirNoSeguirProceso({

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:html/parser.dart' show parse, parseFragment;
 import 'package:html_unescape/html_unescape_small.dart';
@@ -310,51 +308,39 @@ class GrupoUNSPSCRepository {
 
   Future<List<GrupoUNSPSC>> getGruposUNSPSC({
     required String codigo,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletGruposUNSPSC',
       body: {'codigo': codigo},
+      convertFn: (it) => GrupoUNSPSC.fromJson(it),
     );
-
-    print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => GrupoUNSPSC.fromJson(it)).toList();
   }
 
   Future<List<SegmentoUNSPSC>> buscarFamiliasUNSPSC({
     required String codigo,
     required String texto,
     required int idGrupo,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletBuscarSegmentosUNSPSCFamiliasUNSPSC',
       body: {
         'codigo': codigo,
         'texto': texto,
         'idGrupo': idGrupo,
       },
+      convertFn: (it) => SegmentoUNSPSC.fromJson(it),
     );
-
-    print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => SegmentoUNSPSC.fromJson(it)).toList();
   }
 
   Future<List<FamiliaUNSPSC>> getFamiliasClasesUsuarioGrupoUNSPSC({
     required String codigo,
     required int idGrupo,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletFamiliasUNSPSCGrupoUNSPSCUsuario',
       body: {'codigo': codigo, 'idGrupo': idGrupo},
+      convertFn: (it) => FamiliaUNSPSC.fromJson(it),
     );
-
-    print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => FamiliaUNSPSC.fromJson(it)).toList();
   }
 
   Future<APIResponse> inscribirseFamiliaUNSPSC({
@@ -376,45 +362,32 @@ class GrupoUNSPSCRepository {
 
   Future<List<FamiliaUNSPSC>> getFamiliasClasesUsuario({
     required String codigo,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletFamiliasUNSPSCUsuario',
       body: {'codigo': codigo},
+      convertFn: (it) => FamiliaUNSPSC.fromJson(it),
     );
-
-    print(res.body);
-    // final List<dynamic> list = json.decode(res.body);
-
-    // return list.map((it) => FamiliaUNSPSC.fromJson(it)).toList();
-    return [];
   }
 
   Future<List<SegmentoUNSPSC>> getSegmentosFamiliasUNSPSC({
     required String codigo,
     required int idGrupo,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletSegmentosUNSPSCFamiliasUNSPSC',
       body: {'codigo': codigo, 'idGrupo': idGrupo},
+      convertFn: (it) => SegmentoUNSPSC.fromJson(it),
     );
-
-    print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => SegmentoUNSPSC.fromJson(it)).toList();
   }
 
   Future<List<ValueNotificationSetting>> getMontosConfiguracion(
       {required String codigo}) async {
-    final res = await apiClient.request(
+    return apiClient.requestList(
       path: '/ServletMontoConfiguracions',
       body: {'codigo': codigo},
+      convertFn: (it) => ValueNotificationSetting.fromJson(it),
     );
-
-    print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => ValueNotificationSetting.fromJson(it)).toList();
   }
 
   Future<APIResponse> insertarMontosConfiguracion({
@@ -433,16 +406,12 @@ class GrupoUNSPSCRepository {
   }
 
   Future<List<KeywordNotificationSetting>> getTextosConfiguracion(
-      {required String codigo}) async {
-    final res = await apiClient.request(
+      {required String codigo}) {
+    return apiClient.requestList(
       path: '/ServletTextoContratacions',
       body: {'codigo': codigo},
+      convertFn: (it) => KeywordNotificationSetting.fromJson(it),
     );
-
-    print(res.body);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => KeywordNotificationSetting.fromJson(it)).toList();
   }
 
   Future<APIResponse> insertarTextoContratacion({

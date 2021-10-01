@@ -26,6 +26,17 @@ class APIResponse extends Equatable {
   List<Object?> get props => [message, successful, objeto];
 }
 
+class APIException extends Equatable implements Exception {
+  const APIException({
+    required this.message,
+  });
+
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class APIClient {
   APIClient({
     this.baseURL = 'https://oportunidades.colombiacompra.gov.co/app',
@@ -47,9 +58,10 @@ class APIClient {
     return parts.join('&');
   }
 
-  Future<http.Response> request({
+  Future<T> request<T>({
     required String path,
     required Map<String, Object?> body,
+    required T Function(dynamic) convertFn,
   }) async {
     final uri = Uri.parse('$baseURL$path');
     final encodedBody = _encodeUrlParameters(body);
@@ -68,7 +80,7 @@ x-zen-fury: cf2b98b8aca4c6a635eb08572486412a17695675
 x-cdn: Served-By-Zenedge
 */
 
-    return httpClient.post(
+    final response = await httpClient.post(
       uri,
       body: encodedBody,
       headers: {
@@ -77,18 +89,40 @@ x-cdn: Served-By-Zenedge
       },
       encoding: Encoding.getByName('utf8'),
     );
+
+    final obj = json.decode(response.body);
+    if (obj is Map<String, dynamic>) {
+      if (obj['respuesta'] == 'No_Exito') {
+        throw const APIException(message: 'No éxito');
+      }
+    }
+
+    return convertFn(obj);
+  }
+
+  Future<List<T>> requestList<T>({
+    required String path,
+    required Map<String, Object?> body,
+    required T Function(dynamic) convertFn,
+  }) {
+    return request(
+      path: path,
+      body: body,
+      convertFn: (dynamic obj) {
+        final List<dynamic> list = obj;
+        return list.map((it) => convertFn(it)).toList();
+      },
+    );
   }
 
   Future<APIResponse> post({
     required String path,
     required Map<String, Object?> body,
   }) {
-    return request(path: path, body: body).then<APIResponse>(
-      (http.Response response) {
-        print(response.body);
-        final map = json.decode(response.body);
-        return APIResponse.fromJson(map);
-      },
+    return request(
+      path: path,
+      body: body,
+      convertFn: (map) => APIResponse.fromJson(map),
     );
   }
 }

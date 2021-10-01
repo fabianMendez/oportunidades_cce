@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/api_client.dart';
 
@@ -28,19 +26,14 @@ class NotificacionRepository {
   Future<List<Notificacion>> getNotificaciones({
     required String codigo,
     required String tipoNotificacion,
-  }) async {
-    final res = await apiClient.request(
+  }) {
+    return apiClient.requestList(
       path: '/ServletNotificaciones',
       body: {
         'codigo': codigo,
         'tipoNotificacion': tipoNotificacion,
       },
+      convertFn: (it) => Notificacion.fromJson(it),
     );
-
-    print(res.body);
-    // {"respuesta":"No_Exito"}
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => Notificacion.fromJson(it)).toList();
   }
 }

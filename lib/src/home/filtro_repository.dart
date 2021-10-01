@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/api_client.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
@@ -66,18 +64,16 @@ class FiltroRepository {
 
   final APIClient apiClient;
 
-  Future<List<SavedFilter>> getFiltros({required String codigo}) async {
-    final res = await apiClient.request(
+  Future<List<SavedFilter>> getFiltros({required String codigo}) {
+    return apiClient.requestList(
       path: '/ServletFiltros',
       body: {'codigo': codigo},
+      convertFn: (it) => SavedFilter.fromJson(it),
     );
 
     // final c = JsonEncoder.withIndent('  ');
     // final obj = json.decode(resp.body);
     // final str = c.convert(obj);
     // str.split('\n').forEach(print);
-    final List<dynamic> list = json.decode(res.body);
-
-    return list.map((it) => SavedFilter.fromJson(it)).toList();
   }
 }
