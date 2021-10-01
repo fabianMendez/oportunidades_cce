@@ -20,19 +20,14 @@ class NotificacionesSettingsFiltroBienesServiciosView extends StatelessWidget {
   Widget build(BuildContext context) {
     final userDetails = Provider.of<UserDetails>(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Seleccionar bienes y servicios'),
-      ),
-      body: BlocProvider<NotificacionesSettingsFiltroBienesServiciosBloc>(
-        create: (context) {
-          return NotificacionesSettingsFiltroBienesServiciosBloc(
-            userDetails: userDetails,
-            grupoUNSPSCRepository: sl.get<GrupoUNSPSCRepository>(),
-          )..add(const NotificacionesSettingsFiltroStarted());
-        },
-        child: const NotificacionesSettingsFiltroBienesServicios(),
-      ),
+    return BlocProvider<NotificacionesSettingsFiltroBienesServiciosBloc>(
+      create: (context) {
+        return NotificacionesSettingsFiltroBienesServiciosBloc(
+          userDetails: userDetails,
+          grupoUNSPSCRepository: sl.get<GrupoUNSPSCRepository>(),
+        )..add(const NotificacionesSettingsFiltroStarted());
+      },
+      child: const _ScaffoldBuilder(),
     );
   }
 }
@@ -125,87 +120,92 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
                             ),
                           ),
                         )
-                      : Stack(
-                          children: [
-                            ListView.separated(
-                              itemCount: segmentos.length + 1,
-                              itemBuilder: (context, index) {
-                                if (index == segmentos.length) {
-                                  return const SizedBox(height: 50);
-                                }
+                      : ListView.separated(
+                          itemCount: segmentos.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == segmentos.length) {
+                              return const SizedBox(height: 50);
+                            }
 
-                                final segmento = segmentos[index];
-                                return Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      child: Text(
-                                        segmento.nombre.replaceAll('?', ''),
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        for (final familia in segmento.familias)
-                                          FamiliaCard(
-                                            familia: familia,
-                                            selected: state
-                                                .familiasSeleccionadas
-                                                .contains(familia),
-                                            onTap: () {
-                                              context
-                                                  .read<
-                                                      NotificacionesSettingsFiltroBienesServiciosBloc>()
-                                                  .add(
-                                                    NotificacionesSettingsFamiliaSeleccionada(
-                                                        familia),
-                                                  );
-                                            },
-                                          ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              },
-                              separatorBuilder: (_, __) =>
-                                  const Divider(height: 16),
-                            ),
-                            AnimatedPositioned(
-                              left: 8,
-                              right: 8,
-                              bottom:
-                                  state.familiasSeleccionadas.isEmpty ? -50 : 8,
-                              duration: const Duration(milliseconds: 100),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(),
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pop(state.familiasSeleccionadas);
-                                },
-                                child: const SizedBox(
-                                  height: 44,
-                                  child: Center(
-                                    child: Text(
-                                      'Aceptar',
-                                      style: TextStyle(fontSize: 15),
+                            final segmento = segmentos[index];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Text(
+                                    segmento.nombre.replaceAll('?', ''),
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                                const SizedBox(height: 12),
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    for (final familia in segmento.familias)
+                                      FamiliaCard(
+                                        familia: familia,
+                                        selected: state.familiasSeleccionadas
+                                            .contains(familia),
+                                        onTap: () {
+                                          context
+                                              .read<
+                                                  NotificacionesSettingsFiltroBienesServiciosBloc>()
+                                              .add(
+                                                NotificacionesSettingsFamiliaSeleccionada(
+                                                    familia),
+                                              );
+                                        },
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                          separatorBuilder: (_, __) =>
+                              const Divider(height: 16),
                         ),
             ),
           ],
+        );
+      },
+    );
+  }
+}
+
+class _ScaffoldBuilder extends StatelessWidget {
+  const _ScaffoldBuilder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NotificacionesSettingsFiltroBienesServiciosBloc,
+        NotificacionesSettingsFiltroBienesServiciosState>(
+      buildWhen: (prev, curr) =>
+          prev.familiasSeleccionadas.isEmpty !=
+          curr.familiasSeleccionadas.isEmpty,
+      builder: (context, state) {
+        final isVisible = state.familiasSeleccionadas.isNotEmpty;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Seleccionar bienes y servicios'),
+          ),
+          body: const NotificacionesSettingsFiltroBienesServicios(),
+          floatingActionButton: isVisible
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.of(context).pop(state.familiasSeleccionadas);
+                  },
+                  label: const Text('Aceptar'),
+                )
+              : null,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
         );
       },
     );
