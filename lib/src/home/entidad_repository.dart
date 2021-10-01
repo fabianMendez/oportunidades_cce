@@ -48,7 +48,7 @@ class EntidadRepository {
 
   Future<bool> esSeguidorEntidad({
     required String codigo,
-    required String idEntidad,
+    required int idEntidad,
   }) {
     return apiClient.request(
       path: '/ServletEsSeguidorEntidad',
@@ -62,7 +62,7 @@ class EntidadRepository {
 
   Future<APIResponse> seguirNoSeguirEntidad({
     required String codigo,
-    required String idEntidad,
+    required int idEntidad,
     required bool insertar,
   }) {
     return apiClient.post(

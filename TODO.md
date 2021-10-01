@@ -16,3 +16,5 @@
  - [ ] Use consistent padding
  - [ ] Refresh listings
  - [ ] Familiy notification subscriptions
+ - [ ] Update user preferences
+ - [ ] Show entity's processes

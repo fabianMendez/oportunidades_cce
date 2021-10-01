@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/home/entity_details_bloc.dart';
+import 'package:oportunidades_cce/src/home/widgets/favorite_entity_button.dart';
 
 class EntityDetails extends StatelessWidget {
   const EntityDetails({Key? key}) : super(key: key);
@@ -83,6 +84,8 @@ class EntityDetails extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 4),
+                    FavoriteEntityButton(idEntidad: state.id),
                   ],
                 ),
               ),
