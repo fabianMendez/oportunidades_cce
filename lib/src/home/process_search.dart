@@ -47,7 +47,7 @@ class ProcessSearch extends StatelessWidget {
             const SizedBox(height: 8),
             ExpansionTile(
               title: Text(
-                'Filtros (${state.filter.count})',
+                'Filtros${state.filter.count == 0 ? '' : ' (${state.filter.count})'}',
                 style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
@@ -219,6 +219,76 @@ class ProcessSearch extends StatelessWidget {
               ],
             ),
             // const SizedBox(height: 12),
+            if (!state.isEmpty && !isLoading && state.results.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Procesos (${state.results.length})',
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          children: [
+                            Text(
+                              state.sort.displayName,
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.1,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.sort,
+                              color: Colors.grey[600],
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        final newSort = await showDialog<ProcessSort>(
+                          context: context,
+                          builder: (context) {
+                            return SimpleDialog(
+                              title: const Text('Ordenar por'),
+                              children: [
+                                for (final value in ProcessSort.values)
+                                  RadioListTile(
+                                    title: Text(value.displayName),
+                                    value: value,
+                                    groupValue: state.sort,
+                                    onChanged: (ProcessSort? value) {
+                                      Navigator.of(context).pop(value);
+                                    },
+                                  ),
+                              ],
+                            );
+                          },
+                        );
+
+                        if (newSort != null) {
+                          context
+                              .read<ProcessSearchBloc>()
+                              .add(ProcessSearchSortChanged(newSort));
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
             Expanded(
               child: state.isEmpty
                   ? const Center(
@@ -245,10 +315,13 @@ class ProcessSearch extends StatelessWidget {
                                     .add(const ProcessSearchRefreshed());
                               },
                               child: ListView.builder(
-                                itemCount: state.results.length,
+                                itemCount: state.sortedResults.length,
                                 itemBuilder: (context, index) {
-                                  final result = state.results[index];
-                                  return ProcessResultTile(result: result);
+                                  final result = state.sortedResults[index];
+                                  return ProcessResultTile(
+                                    key: ValueKey(result.id),
+                                    result: result,
+                                  );
                                 },
                                 // separatorBuilder: (_, __) =>
                                 //     const Divider(height: 16),

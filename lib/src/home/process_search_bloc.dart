@@ -71,6 +71,7 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         results: state.results,
         term: event.term,
         filter: state.filter,
+        sort: state.sort,
       ));
     } else if (event is ProcessSearchKeywordsChanged) {
       final filter = SavedFilter(
@@ -89,6 +90,7 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         filter: filter,
         results: state.results,
         term: state.term,
+        sort: state.sort,
       ));
     } else if (event is ProcessSearchRangesChanged) {
       final filter = SavedFilter(
@@ -112,6 +114,7 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         filter: filter,
         results: state.results,
         term: state.term,
+        sort: state.sort,
       ));
     } else if (event is ProcessSearchFamiliesChanged) {
       final filter = SavedFilter(
@@ -128,9 +131,17 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         filter: filter,
         results: state.results,
         term: state.term,
+        sort: state.sort,
       ));
     } else if (event is ProcessSearchRefreshed) {
       yield* _search(state);
+    } else if (event is ProcessSearchSortChanged) {
+      yield ProcessSearchState(
+        filter: state.filter,
+        results: state.results,
+        term: state.term,
+        sort: event.sort,
+      );
     }
   }
 }
@@ -214,11 +225,59 @@ class ProcessSearchRefreshed extends ProcessSearchEvent {
   const ProcessSearchRefreshed();
 }
 
+enum ProcessSort { dateDesc, dateAsc, valueAsc, valueDesc }
+
+extension ProcessSortDisplayName on ProcessSort {
+  String get displayName {
+    switch (this) {
+      case (ProcessSort.dateDesc):
+        return 'Más recientes';
+      case (ProcessSort.dateAsc):
+        return 'Más antiguos';
+      case (ProcessSort.valueAsc):
+        return 'Mayor valor';
+      case (ProcessSort.valueDesc):
+        return 'Menor valor';
+
+      default:
+        return '';
+    }
+  }
+}
+
+extension ProcessSortCompare on ProcessSort {
+  int Function(ProcessSearchResult, ProcessSearchResult) get compare {
+    switch (this) {
+      case (ProcessSort.dateAsc):
+        return (a, b) => a.fecha.compareTo(b.fecha);
+      case (ProcessSort.dateDesc):
+        return (a, b) => b.fecha.compareTo(a.fecha);
+      case (ProcessSort.valueAsc):
+        return (a, b) => b.valor.compareTo(a.valor);
+      case (ProcessSort.valueDesc):
+        return (a, b) => a.valor.compareTo(b.valor);
+
+      default:
+        throw Error();
+    }
+  }
+}
+
+class ProcessSearchSortChanged extends ProcessSearchEvent {
+  const ProcessSearchSortChanged(this.sort);
+
+  final ProcessSort sort;
+
+  @override
+  List<Object?> get props => [...super.props, sort];
+}
+
 class ProcessSearchState extends Equatable {
   const ProcessSearchState({
     this.term = '',
     this.filter = const SavedFilter(),
     this.results = const [],
+    this.sort = ProcessSort.dateDesc,
   });
 
   static const initial = ProcessSearchState();
@@ -226,13 +285,21 @@ class ProcessSearchState extends Equatable {
   final String term;
   final SavedFilter filter;
   final List<ProcessSearchResult> results;
+  final ProcessSort sort;
 
   bool get isEmpty => term.isEmpty && filter.isEmpty;
+
+  List<ProcessSearchResult> get sortedResults {
+    final copy = List<ProcessSearchResult>.from(results);
+    copy.sort(sort.compare);
+    return copy;
+  }
 
   ProcessSearchLoading loading() {
     return ProcessSearchLoading(
       term: term,
       filter: filter,
+      sort: sort,
     );
   }
 
@@ -243,6 +310,7 @@ class ProcessSearchState extends Equatable {
       term: term,
       filter: filter,
       results: results,
+      sort: sort,
     );
   }
 
@@ -251,6 +319,7 @@ class ProcessSearchState extends Equatable {
       error,
       term: term,
       filter: filter,
+      sort: sort,
     );
   }
 
@@ -259,6 +328,7 @@ class ProcessSearchState extends Equatable {
         term,
         filter,
         results,
+        sort,
       ];
 }
 
@@ -270,9 +340,11 @@ class ProcessSearchLoading extends ProcessSearchState {
   const ProcessSearchLoading({
     String term = '',
     required SavedFilter filter,
+    required ProcessSort sort,
   }) : super(
           term: term,
           filter: filter,
+          sort: sort,
         );
 }
 
@@ -281,10 +353,12 @@ class ProcessSearchReady extends ProcessSearchState {
     String term = '',
     required SavedFilter filter,
     required List<ProcessSearchResult> results,
+    required ProcessSort sort,
   }) : super(
           term: term,
           filter: filter,
           results: results,
+          sort: sort,
         );
 }
 
@@ -293,7 +367,12 @@ class ProcessSearchFailure extends ProcessSearchState {
     this.error, {
     String term = '',
     required SavedFilter filter,
-  }) : super(term: term, filter: filter);
+    required ProcessSort sort,
+  }) : super(
+          term: term,
+          filter: filter,
+          sort: sort,
+        );
 
   final String error;
 
