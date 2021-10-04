@@ -47,16 +47,23 @@ class EntitySearch extends StatelessWidget {
                                 style: TextStyle(fontSize: 16),
                               ),
                             )
-                          : ListView.builder(
-                              itemCount: state.results.length,
-                              itemBuilder: (context, index) {
-                                final result = state.results[index];
-                                return EntityResultTile(result: result);
+                          : RefreshIndicator(
+                              onRefresh: () async {
+                                context
+                                    .read<EntitySearchBloc>()
+                                    .add(const EntitySearchRefreshed());
                               },
-                              // separatorBuilder: (_, __) =>
-                              //     const Divider(height: 16),
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              child: ListView.builder(
+                                itemCount: state.results.length,
+                                itemBuilder: (context, index) {
+                                  final result = state.results[index];
+                                  return EntityResultTile(result: result);
+                                },
+                                // separatorBuilder: (_, __) =>
+                                //     const Divider(height: 16),
+                                keyboardDismissBehavior:
+                                    ScrollViewKeyboardDismissBehavior.onDrag,
+                              ),
                             ),
             ),
           ],

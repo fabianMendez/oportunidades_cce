@@ -15,6 +15,11 @@ class EntitySearchBloc extends Bloc<EntitySearchEvent, EntitySearchState> {
 
   Stream<EntitySearchState> _searchByTerm(EntitySearchState state) async* {
     try {
+      if (state.term.isEmpty) {
+        yield const EntitySearchUninitialized();
+        return;
+      }
+
       yield EntitySearchLoading(term: state.term);
       final results = await entidadRepository.buscarEntidades(
         codigo: userDetails.codigo,
@@ -42,14 +47,12 @@ class EntitySearchBloc extends Bloc<EntitySearchEvent, EntitySearchState> {
     if (event is EntitySearchStarted) {
       // yield* _searchByTerm(state);
     } else if (event is EntitySearchTermChanged) {
-      if (event.term.isEmpty) {
-        yield const EntitySearchUninitialized();
-      } else {
-        yield* _searchByTerm(EntitySearchState(
-          results: state.results,
-          term: event.term,
-        ));
-      }
+      yield* _searchByTerm(EntitySearchState(
+        results: state.results,
+        term: event.term,
+      ));
+    } else if (event is EntitySearchRefreshed) {
+      yield* _searchByTerm(state);
     }
   }
 }
@@ -94,6 +97,10 @@ class NotificacionesSettingsFamiliaSeleccionada extends EntitySearchEvent {
 
   @override
   List<Object?> get props => [...super.props, id];
+}
+
+class EntitySearchRefreshed extends EntitySearchEvent {
+  const EntitySearchRefreshed();
 }
 
 class EntitySearchState extends Equatable {
