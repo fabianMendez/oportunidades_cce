@@ -45,6 +45,8 @@ class SavedFilter extends Equatable {
       familias.isEmpty;
   bool get isNotEmpty => !isEmpty;
 
+  int get count => familias.length + rangos.length + textos.length;
+
   @override
   List<Object?> get props => [
         id,

@@ -46,7 +46,13 @@ class ProcessSearch extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             ExpansionTile(
-              title: const Text('Filtros'),
+              title: Text(
+                'Filtros (${state.filter.count})',
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               // trailing: const Icon(Icons.filter_list),
               children: [
                 Padding(
