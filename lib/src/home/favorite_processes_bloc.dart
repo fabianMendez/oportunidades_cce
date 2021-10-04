@@ -17,9 +17,10 @@ class FavoriteProcessesBloc
   @override
   Stream<FavoriteProcessesState> mapEventToState(
       FavoriteProcessesEvent event) async* {
-    if (event is FavoriteProcessesStarted) {
+    if (event is FavoriteProcessesStarted ||
+        event is FavoriteProcessesRefreshed) {
       try {
-        yield FavoriteProcessesLoading(term: state.term);
+        yield const FavoriteProcessesLoading();
         final results = await procesoRepository.getMisProcesos(
           codigo: userDetails.codigo,
         );
@@ -27,7 +28,6 @@ class FavoriteProcessesBloc
         print(results.length);
 
         yield FavoriteProcessesReady(
-          term: state.term,
           results: results,
         );
       } catch (err, str) {
@@ -35,7 +35,6 @@ class FavoriteProcessesBloc
         print(str);
         yield FavoriteProcessesFailure(
           err.toString(),
-          term: state.term,
         );
       }
     }
@@ -53,22 +52,21 @@ class FavoriteProcessesStarted extends FavoriteProcessesEvent {
   const FavoriteProcessesStarted();
 }
 
+class FavoriteProcessesRefreshed extends FavoriteProcessesEvent {
+  const FavoriteProcessesRefreshed();
+}
+
 class FavoriteProcessesState extends Equatable {
   const FavoriteProcessesState({
-    this.term = '',
     this.results = const [],
   });
 
-  const FavoriteProcessesState.initial()
-      : term = '',
-        results = const [];
+  const FavoriteProcessesState.initial() : results = const [];
 
-  final String term;
   final List<ProcessSearchResult> results;
 
   @override
   List<Object?> get props => [
-        term,
         results,
       ];
 }
@@ -78,30 +76,19 @@ class FavoriteProcessesUninitialized extends FavoriteProcessesState {
 }
 
 class FavoriteProcessesLoading extends FavoriteProcessesState {
-  const FavoriteProcessesLoading({
-    String term = '',
-  }) : super(
-          term: term,
-        );
+  const FavoriteProcessesLoading() : super();
 }
 
 class FavoriteProcessesReady extends FavoriteProcessesState {
   const FavoriteProcessesReady({
-    String term = '',
     required List<ProcessSearchResult> results,
   }) : super(
-          term: term,
           results: results,
         );
 }
 
 class FavoriteProcessesFailure extends FavoriteProcessesState {
-  const FavoriteProcessesFailure(
-    this.error, {
-    String term = '',
-  }) : super(
-          term: term,
-        );
+  const FavoriteProcessesFailure(this.error) : super();
   final String error;
 
   @override
