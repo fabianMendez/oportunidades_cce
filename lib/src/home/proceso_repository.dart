@@ -48,7 +48,7 @@ class ProcesoRepository {
 
   Future<List<ProcessSearchResult>> getProcesosEntidad({
     required String codigo,
-    required String idEntidad,
+    required int idEntidad,
   }) {
     return apiClient.requestList(
       path: '/ServletProcesosEntidad',

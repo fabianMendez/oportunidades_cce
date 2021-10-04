@@ -2,17 +2,21 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/entidad_repository.dart';
+import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
+import 'package:oportunidades_cce/src/home/proceso_repository.dart';
 
 class EntityDetailsBloc extends Bloc<EntityDetailsEvent, EntityDetailsState> {
   EntityDetailsBloc({
     required this.userDetails,
     required this.entidadRepository,
+    required this.procesoRepository,
     required this.id,
   }) : super(EntityDetailsLoading(id: id));
 
   final UserDetails userDetails;
   final EntidadRepository entidadRepository;
+  final ProcesoRepository procesoRepository;
   final int id;
 
   @override
@@ -25,7 +29,15 @@ class EntityDetailsBloc extends Bloc<EntityDetailsEvent, EntityDetailsState> {
           idEntidad: id,
         );
 
-        yield EntityDetailsReady(details: entidad);
+        final procesos = await procesoRepository.getProcesosEntidad(
+          codigo: userDetails.codigo,
+          idEntidad: id,
+        );
+
+        yield EntityDetailsReady(
+          details: entidad,
+          procesos: procesos,
+        );
       } catch (err, str) {
         print(err);
         print(str);
@@ -72,9 +84,14 @@ class EntityDetailsLoading extends EntityDetailsState {
 class EntityDetailsReady extends EntityDetailsState {
   EntityDetailsReady({
     required this.details,
+    required this.procesos,
   }) : super(id: details.id);
 
   final EntitySearchResult details;
+  final List<ProcessSearchResult> procesos;
+
+  @override
+  List<Object?> get props => [...super.props, details, procesos];
 }
 
 class EntityDetailsFailure extends EntityDetailsState {
