@@ -15,6 +15,7 @@ class ProcessResultTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final moneyFmt = NumberFormat('#,##0', 'es_CO');
+    final dateFmt = DateFormat('d \'de\' MMMM \'de\' yyyy', 'es_CO');
 
     return ExpansionTile(
       title: Text(
@@ -48,7 +49,7 @@ class ProcessResultTile extends StatelessWidget {
                         style: TextStyle(color: Colors.black54),
                       ),
                       Text(
-                        result.proceso.date,
+                        dateFmt.format(result.proceso.date),
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                     ],

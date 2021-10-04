@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:html/parser.dart' show parse, parseFragment;
 import 'package:html_unescape/html_unescape_small.dart';
+import 'package:intl/intl.dart';
 import 'package:oportunidades_cce/src/api_client.dart';
 
 final _unescape = HtmlUnescape();
@@ -212,6 +213,8 @@ class ProcessSearchResult extends Equatable {
       ];
 }
 
+final _dateFormat = DateFormat('dd/MM/yyyy');
+
 class Proceso extends Equatable {
   const Proceso({
     required this.date,
@@ -222,7 +225,7 @@ class Proceso extends Equatable {
     required this.url,
   });
 
-  final String date;
+  final DateTime date;
   final Tender tender;
   final Buyer buyer;
 
@@ -231,7 +234,7 @@ class Proceso extends Equatable {
   final String? url;
 
   Proceso.fromJson(Map<String, dynamic> map)
-      : date = map["date"],
+      : date = _dateFormat.parse(map['date']),
         tender = Tender.fromJson(map['tender']),
         buyer = Buyer.fromJson(map['buyer']),
         codigoInterno = map['codigoInterno'],

@@ -249,9 +249,9 @@ extension ProcessSortCompare on ProcessSort {
   int Function(ProcessSearchResult, ProcessSearchResult) get compare {
     switch (this) {
       case (ProcessSort.dateAsc):
-        return (a, b) => a.fecha.compareTo(b.fecha);
+        return (a, b) => a.proceso.date.compareTo(b.proceso.date);
       case (ProcessSort.dateDesc):
-        return (a, b) => b.fecha.compareTo(a.fecha);
+        return (a, b) => b.proceso.date.compareTo(a.proceso.date);
       case (ProcessSort.valueAsc):
         return (a, b) => b.valor.compareTo(a.valor);
       case (ProcessSort.valueDesc):

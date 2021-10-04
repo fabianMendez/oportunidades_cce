@@ -16,6 +16,7 @@ class ProcessDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final userDetails = Provider.of<UserDetails>(context);
     final moneyFmt = NumberFormat('#,##0', 'es_CO');
+    final dateFmt = DateFormat('d \'de\' MMMM \'de\' yyyy', 'es_CO');
 
     return BlocBuilder<ProcessDetailsBloc, ProcessDetailsState>(
       builder: (context, state) {
@@ -61,7 +62,7 @@ class ProcessDetails extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          details.date,
+                          dateFmt.format(details.date),
                           style: const TextStyle(
                             fontSize: fontSize,
                           ),
