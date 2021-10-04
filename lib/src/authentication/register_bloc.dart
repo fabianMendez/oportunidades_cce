@@ -50,6 +50,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         return;
       }
 
+      if (!event.termsAndConditions) {
+        yield const RegisterFailure('Debes aceptar los términos y condiciones');
+        return;
+      }
+
+      if (!event.privacyPolicy) {
+        yield const RegisterFailure(
+            'Debe autorizar la política de tratamiento de datos');
+        return;
+      }
+
       try {
         final response = await usuarioRepository.crearCuenta(
           nombres: event.firstName,
@@ -86,15 +97,26 @@ class RegisterSubmitted extends RegisterEvent {
     required this.lastName,
     required this.email,
     required this.password,
+    required this.termsAndConditions,
+    required this.privacyPolicy,
   });
 
   final String firstName;
   final String lastName;
   final String email;
   final String password;
+  final bool termsAndConditions;
+  final bool privacyPolicy;
 
   @override
-  List<Object> get props => <Object>[firstName, lastName, email, password];
+  List<Object> get props => <Object>[
+        firstName,
+        lastName,
+        email,
+        password,
+        termsAndConditions,
+        privacyPolicy,
+      ];
 }
 
 abstract class RegisterState extends Equatable {

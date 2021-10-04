@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
+import 'package:oportunidades_cce/src/authentication/widgets/checkbox_link_field.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
@@ -42,6 +43,8 @@ class _RegisterFormState extends State<RegisterForm> {
   String lastName = '';
   String email = '';
   String password = '';
+  bool termsAndConditions = false;
+  bool privacyPolicy = false;
   bool obscurePassword = true;
 
   Future<void> _submit(BuildContext context) async {
@@ -53,6 +56,8 @@ class _RegisterFormState extends State<RegisterForm> {
         lastName: lastName,
         email: email,
         password: password,
+        privacyPolicy: privacyPolicy,
+        termsAndConditions: termsAndConditions,
       ),
     );
   }
@@ -124,6 +129,27 @@ class _RegisterFormState extends State<RegisterForm> {
                   onChanged: (value) {
                     setState(() {
                       password = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 12),
+                CheckboxLinkField(
+                  prefixText: 'He leído y acepto los ',
+                  linkText: 'Términos y condiciones',
+                  value: termsAndConditions,
+                  onChanged: (_) {
+                    setState(() {
+                      termsAndConditions = !termsAndConditions;
+                    });
+                  },
+                ),
+                CheckboxLinkField(
+                  prefixText: 'Autorizo el ',
+                  linkText: 'tratamiento de mis datos personales',
+                  value: privacyPolicy,
+                  onChanged: (_) {
+                    setState(() {
+                      privacyPolicy = !privacyPolicy;
                     });
                   },
                 ),
