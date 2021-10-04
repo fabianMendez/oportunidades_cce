@@ -29,11 +29,18 @@ class NotificacionListadoView extends StatelessWidget {
 class NotificacionListado extends StatelessWidget {
   const NotificacionListado({Key? key}) : super(key: key);
 
+  void _refresh(BuildContext context) {
+    context
+        .read<NotificacionListadoBloc>()
+        .add(const NotificacionListadoRefreshed());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotificacionListadoBloc, NotificacionListadoState>(
       builder: (context, state) {
-        if (state is NotificacionListadoUninitialized) {
+        if (state is NotificacionListadoUninitialized ||
+            state is NotificacionListadoLoading) {
           return const Center(child: CircularProgressIndicator.adaptive());
         }
 
@@ -72,11 +79,11 @@ class NotificacionListado extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 17),
                     ),
-                    // const SizedBox(height: 12),
-                    // TextButton(
-                    //   onPressed: _fetchFirst,
-                    //   child: const Text('Reintentar'),
-                    // ),
+                    const SizedBox(height: 12),
+                    TextButton(
+                      onPressed: () => _refresh(context),
+                      child: const Text('Reintentar'),
+                    ),
                   ],
                 ),
               ),

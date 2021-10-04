@@ -18,3 +18,4 @@
  - [ ] Familiy notification subscriptions
  - [ ] Update user preferences
  - [ ] Show entity's processes
+ - [ ] Update user information

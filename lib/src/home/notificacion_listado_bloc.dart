@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:oportunidades_cce/src/api_client.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/notificacion_repository.dart';
 
@@ -16,8 +17,11 @@ class NotificacionListadoBloc
   @override
   Stream<NotificacionListadoState> mapEventToState(
       NotificacionListadoEvent event) async* {
-    if (event is NotificacionListadoStarted) {
+    if (event is NotificacionListadoStarted ||
+        event is NotificacionListadoRefreshed) {
       try {
+        yield const NotificacionListadoLoading();
+
         final notificaciones = await notificacionRepository.getNotificaciones(
           codigo: userDetails.codigo,
           // tipoNotificacion: 'Todos',
@@ -31,7 +35,11 @@ class NotificacionListadoBloc
         print(err);
         print(str);
 
-        yield NotificacionListadoFailure(err.toString());
+        if (err is APIException) {
+          yield NotificacionListadoFailure(err.message);
+        } else {
+          yield NotificacionListadoFailure(err.toString());
+        }
       }
     }
   }
@@ -48,6 +56,10 @@ class NotificacionListadoStarted extends NotificacionListadoEvent {
   const NotificacionListadoStarted();
 }
 
+class NotificacionListadoRefreshed extends NotificacionListadoEvent {
+  const NotificacionListadoRefreshed();
+}
+
 abstract class NotificacionListadoState extends Equatable {
   const NotificacionListadoState();
 
@@ -57,6 +69,10 @@ abstract class NotificacionListadoState extends Equatable {
 
 class NotificacionListadoUninitialized extends NotificacionListadoState {
   const NotificacionListadoUninitialized();
+}
+
+class NotificacionListadoLoading extends NotificacionListadoState {
+  const NotificacionListadoLoading();
 }
 
 class NotificacionListadoFailure extends NotificacionListadoState {
