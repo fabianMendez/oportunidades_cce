@@ -232,14 +232,21 @@ class ProcessSearch extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                             )
-                          : ListView.builder(
-                              itemCount: state.results.length,
-                              itemBuilder: (context, index) {
-                                final result = state.results[index];
-                                return ProcessResultTile(result: result);
+                          : RefreshIndicator(
+                              onRefresh: () async {
+                                context
+                                    .read<ProcessSearchBloc>()
+                                    .add(const ProcessSearchRefreshed());
                               },
-                              // separatorBuilder: (_, __) =>
-                              //     const Divider(height: 16),
+                              child: ListView.builder(
+                                itemCount: state.results.length,
+                                itemBuilder: (context, index) {
+                                  final result = state.results[index];
+                                  return ProcessResultTile(result: result);
+                                },
+                                // separatorBuilder: (_, __) =>
+                                //     const Divider(height: 16),
+                              ),
                             ),
             ),
           ],

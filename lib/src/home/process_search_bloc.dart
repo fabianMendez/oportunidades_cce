@@ -17,26 +17,6 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
   final ProcesoRepository procesoRepository;
   final FiltroRepository filtroRepository;
 
-  Stream<ProcessSearchState> _searchByTerm(ProcessSearchState state) async* {
-    try {
-      final nstt = state.loading();
-      yield nstt;
-
-      final results = await procesoRepository.getProcesosBusquedaRapida(
-        codigo: userDetails.codigo,
-        texto: state.term,
-      );
-
-      print(results.length);
-
-      yield state.ready(results: results);
-    } catch (err, str) {
-      print(err);
-      print(str);
-      yield state.failure(err.toString());
-    }
-  }
-
   Stream<ProcessSearchState> _search(ProcessSearchState stt) async* {
     try {
       final nstt = stt.loading();
@@ -149,6 +129,8 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         results: state.results,
         term: state.term,
       ));
+    } else if (event is ProcessSearchRefreshed) {
+      yield* _search(state);
     }
   }
 }
@@ -226,6 +208,10 @@ class NotificacionesSettingsFamiliaSeleccionada extends ProcessSearchEvent {
 
   @override
   List<Object?> get props => [...super.props, id];
+}
+
+class ProcessSearchRefreshed extends ProcessSearchEvent {
+  const ProcessSearchRefreshed();
 }
 
 class ProcessSearchState extends Equatable {
