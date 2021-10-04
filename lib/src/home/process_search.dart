@@ -19,7 +19,6 @@ class ProcessSearch extends StatelessWidget {
     return BlocBuilder<ProcessSearchBloc, ProcessSearchState>(
       builder: (context, state) {
         final isLoading = state is ProcessSearchLoading;
-        final isUninitialized = state is ProcessSearchUninitialized;
 
         final keywords = state.filter.textos.map((it) => it.texto).toList();
         final ranges = state.filter.rangos
@@ -45,6 +44,7 @@ class ProcessSearch extends StatelessWidget {
                 },
               ),
             ),
+            const SizedBox(height: 8),
             ExpansionTile(
               title: const Text('Filtros'),
               // trailing: const Icon(Icons.filter_list),

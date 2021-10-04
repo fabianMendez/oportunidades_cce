@@ -25,14 +25,21 @@ class FavoriteEntities extends StatelessWidget {
                             style: TextStyle(fontSize: 16),
                           ),
                         )
-                      : ListView.builder(
-                          itemCount: state.results.length,
-                          itemBuilder: (context, index) {
-                            final result = state.results[index];
-                            return EntityResultTile(result: result);
+                      : RefreshIndicator(
+                          onRefresh: () async {
+                            context
+                                .read<FavoriteEntitiesBloc>()
+                                .add(const FavoriteEntitiesRefreshed());
                           },
-                          // separatorBuilder: (_, __) =>
-                          //     const Divider(height: 16),
+                          child: ListView.builder(
+                            itemCount: state.results.length,
+                            itemBuilder: (context, index) {
+                              final result = state.results[index];
+                              return EntityResultTile(result: result);
+                            },
+                            // separatorBuilder: (_, __) =>
+                            //     const Divider(height: 16),
+                          ),
                         ),
             ),
           ],

@@ -17,9 +17,10 @@ class FavoriteEntitiesBloc
   @override
   Stream<FavoriteEntitiesState> mapEventToState(
       FavoriteEntitiesEvent event) async* {
-    if (event is FavoriteEntitiesStarted) {
+    if (event is FavoriteEntitiesStarted ||
+        event is FavoriteEntitiesRefreshed) {
       try {
-        yield FavoriteEntitiesLoading(term: state.term);
+        yield const FavoriteEntitiesLoading();
         final results = await entidadRepository.getMisEntidades(
           codigo: userDetails.codigo,
         );
@@ -27,7 +28,6 @@ class FavoriteEntitiesBloc
         print(results.length);
 
         yield FavoriteEntitiesReady(
-          term: state.term,
           results: results,
         );
       } catch (err, str) {
@@ -35,7 +35,6 @@ class FavoriteEntitiesBloc
         print(str);
         yield FavoriteEntitiesFailure(
           err.toString(),
-          term: state.term,
         );
       }
     }
@@ -53,24 +52,21 @@ class FavoriteEntitiesStarted extends FavoriteEntitiesEvent {
   const FavoriteEntitiesStarted();
 }
 
+class FavoriteEntitiesRefreshed extends FavoriteEntitiesEvent {
+  const FavoriteEntitiesRefreshed();
+}
+
 class FavoriteEntitiesState extends Equatable {
   const FavoriteEntitiesState({
-    this.term = '',
     this.results = const [],
   });
 
-  const FavoriteEntitiesState.initial()
-      : term = '',
-        results = const [];
+  const FavoriteEntitiesState.initial() : results = const [];
 
-  final String term;
   final List<EntitySearchResult> results;
 
   @override
-  List<Object?> get props => [
-        term,
-        results,
-      ];
+  List<Object?> get props => [results];
 }
 
 class FavoriteEntitiesUninitialized extends FavoriteEntitiesState {
@@ -78,30 +74,17 @@ class FavoriteEntitiesUninitialized extends FavoriteEntitiesState {
 }
 
 class FavoriteEntitiesLoading extends FavoriteEntitiesState {
-  const FavoriteEntitiesLoading({
-    String term = '',
-  }) : super(
-          term: term,
-        );
+  const FavoriteEntitiesLoading() : super();
 }
 
 class FavoriteEntitiesReady extends FavoriteEntitiesState {
   const FavoriteEntitiesReady({
-    String term = '',
     required List<EntitySearchResult> results,
-  }) : super(
-          term: term,
-          results: results,
-        );
+  }) : super(results: results);
 }
 
 class FavoriteEntitiesFailure extends FavoriteEntitiesState {
-  const FavoriteEntitiesFailure(
-    this.error, {
-    String term = '',
-  }) : super(
-          term: term,
-        );
+  const FavoriteEntitiesFailure(this.error) : super();
   final String error;
 
   @override
