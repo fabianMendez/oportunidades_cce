@@ -14,7 +14,7 @@
  - [ ] Investigate weird bug when after loging in, the notifications repository
  returns an error.
  - [ ] Use consistent padding
- - [ ] Refresh listings
+ - [X] Refresh listings
  - [ ] Familiy notification subscriptions
  - [ ] Update user preferences
  - [ ] Show entity's processes

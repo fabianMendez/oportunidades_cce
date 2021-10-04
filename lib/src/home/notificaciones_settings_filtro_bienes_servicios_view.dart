@@ -138,7 +138,7 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
                                     segmento.nombre.replaceAll('?', ''),
                                     style: const TextStyle(
                                       fontSize: 17,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),
@@ -226,7 +226,7 @@ class FamiliaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
+    return CheckboxListTile(
       title: Text(
         familia.nombre.split('\n')[0],
       ),
