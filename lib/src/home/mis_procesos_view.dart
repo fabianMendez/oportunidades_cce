@@ -4,22 +4,25 @@ import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/favorite_processes.dart';
 import 'package:oportunidades_cce/src/home/favorite_processes_bloc.dart';
 import 'package:oportunidades_cce/src/home/proceso_repository.dart';
-import 'package:oportunidades_cce/src/home/widgets/logout_button.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
-class MisProcesosView extends StatelessWidget {
+class MisProcesosView extends StatefulWidget {
   const MisProcesosView({Key? key}) : super(key: key);
 
   @override
+  State<MisProcesosView> createState() => _MisProcesosViewState();
+}
+
+class _MisProcesosViewState extends State<MisProcesosView>
+    with AutomaticKeepAliveClientMixin<MisProcesosView> {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final userDetails = Provider.of<UserDetails>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mis procesos'),
-        actions: const [LogoutButton()],
-      ),
       body: BlocProvider<FavoriteProcessesBloc>(
         create: (context) {
           return FavoriteProcessesBloc(
@@ -32,4 +35,7 @@ class MisProcesosView extends StatelessWidget {
       resizeToAvoidBottomInset: false,
     );
   }
+
+  @override
+  final bool wantKeepAlive = true;
 }

@@ -9,7 +9,7 @@
 
 ## Mandatory
 
- - [ ] Checkboxes for terms and conditions
+ - [X] Checkboxes for terms and conditions
  - [ ] Improve authentication views flow
  - [ ] Investigate weird bug when after loging in, the notifications repository
  returns an error.
