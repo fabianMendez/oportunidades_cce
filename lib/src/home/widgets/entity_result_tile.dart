@@ -15,7 +15,10 @@ class EntityResultTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        result.nombre,
+        result.nombre.trim(),
+        style: const TextStyle(
+          letterSpacing: 0.2,
+        ),
       ),
       subtitle: Text(result.nit),
       trailing: const Icon(Icons.open_in_new),

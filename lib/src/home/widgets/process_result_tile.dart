@@ -19,7 +19,10 @@ class ProcessResultTile extends StatelessWidget {
 
     return ExpansionTile(
       title: Text(
-        result.nombreEntidad,
+        result.nombreEntidad.trim(),
+        style: const TextStyle(
+          letterSpacing: 0.2,
+        ),
       ),
       subtitle: Text(
         '\$${moneyFmt.format(result.proceso.tender.value.amount)} ${result.moneda}',
@@ -71,7 +74,12 @@ class ProcessResultTile extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 4),
-              Text(result.descripcion),
+              Text(
+                result.descripcion.trim(),
+                style: const TextStyle(
+                  letterSpacing: 0.3,
+                ),
+              ),
             ],
           ),
         ),
