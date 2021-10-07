@@ -30,6 +30,21 @@ class EntitySearch extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+            if (!state.isEmpty && !isLoading && state.results.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                child: Text(
+                  'Entidades (${state.results.length})',
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             Expanded(
               child: isUninitialized
                   ? const Center(
