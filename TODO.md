@@ -18,4 +18,8 @@
  - [ ] Familiy notification subscriptions
  - [ ] Update user preferences
  - [X] Show entity's processes
- - [ ] Update user information
+ - [X] Update user information
+
+## Bugs
+
+ - [ ] Can not update user preferences for email notifications

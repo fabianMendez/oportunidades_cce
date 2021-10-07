@@ -63,4 +63,21 @@ class UsuarioRepository {
       body: {'correo': correo},
     );
   }
+
+  Future<APIResponse> actualizarUsuario({
+    required String codigo,
+    required String nombres,
+    required String apellidos,
+    required bool recibirCorreos,
+  }) {
+    return apiClient.post(
+      path: '/ServletActualizarUsuario',
+      body: {
+        'codigo': codigo,
+        'nombres': nombres,
+        'apellidos': apellidos,
+        'recibirCorreos': recibirCorreos,
+      },
+    );
+  }
 }

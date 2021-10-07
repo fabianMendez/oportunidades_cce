@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oportunidades_cce/src/home/buscar_procesos_view.dart';
 import 'package:oportunidades_cce/src/home/mis_procesos_view.dart';
-import 'package:oportunidades_cce/src/home/widgets/logout_button.dart';
+import 'package:oportunidades_cce/src/home/user/app_menu_button.dart';
 
 class ProcesosView extends StatelessWidget {
   const ProcesosView({Key? key}) : super(key: key);
@@ -14,7 +14,9 @@ class ProcesosView extends StatelessWidget {
         appBar: AppBar(
           // leading: const Icon(Icons.description),
           title: const Text('Procesos'),
-          actions: const [LogoutButton()],
+          actions: const [
+            AppMenuButton(),
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(text: 'SIGUIENDO'),

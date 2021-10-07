@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oportunidades_cce/src/home/notificacion_listado_view.dart';
-import 'package:oportunidades_cce/src/home/widgets/logout_button.dart';
+import 'package:oportunidades_cce/src/home/user/app_menu_button.dart';
 
 class MisOportunidadesView extends StatelessWidget {
   const MisOportunidadesView({Key? key}) : super(key: key);
@@ -10,7 +10,9 @@ class MisOportunidadesView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mis oportunidades'),
-        actions: const [LogoutButton()],
+        actions: const [
+          AppMenuButton(),
+        ],
       ),
       body: const NotificacionListadoView(),
       primary: true,

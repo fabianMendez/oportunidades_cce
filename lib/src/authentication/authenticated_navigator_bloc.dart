@@ -47,6 +47,8 @@ class AuthenticatedNavigatorBloc
         isProcessDetails: true,
         processDetailsId: event.id,
       );
+    } else if (event is UserInformationPushed) {
+      yield const AuthenticatedNavigatorState(isUserInformation: true);
     }
   }
 
@@ -130,6 +132,10 @@ class ProcessDetailsPushed extends AuthenticatedNavigatorEvent {
   List<Object?> get props => [...super.props, id];
 }
 
+class UserInformationPushed extends AuthenticatedNavigatorEvent {
+  const UserInformationPushed();
+}
+
 class AuthenticatedNavigatorState extends Equatable {
   const AuthenticatedNavigatorState({
     this.isNotificacionesSettings = false,
@@ -141,6 +147,7 @@ class AuthenticatedNavigatorState extends Equatable {
     this.entityDetailsId = 0,
     this.isProcessDetails = false,
     this.processDetailsId = 0,
+    this.isUserInformation = false,
   });
 
   const AuthenticatedNavigatorState.initial()
@@ -152,7 +159,8 @@ class AuthenticatedNavigatorState extends Equatable {
         isEntityDetails = false,
         entityDetailsId = 0,
         isProcessDetails = false,
-        processDetailsId = 0;
+        processDetailsId = 0,
+        isUserInformation = false;
 
   final bool isNotificacionesSettings;
   final bool isNotificacionesSettingsFiltroBienesServicios;
@@ -166,6 +174,8 @@ class AuthenticatedNavigatorState extends Equatable {
   final bool isProcessDetails;
   final int processDetailsId;
 
+  final bool isUserInformation;
+
   @override
   List<Object?> get props => [
         isNotificacionesSettings,
@@ -177,6 +187,7 @@ class AuthenticatedNavigatorState extends Equatable {
         entityDetailsId,
         isProcessDetails,
         processDetailsId,
+        isUserInformation,
       ];
 }
 

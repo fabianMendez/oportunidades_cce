@@ -8,6 +8,7 @@ import 'package:oportunidades_cce/src/home/notificaciones_settings_keyword_view.
 import 'package:oportunidades_cce/src/home/notificaciones_settings_monto_view.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_view.dart';
 import 'package:oportunidades_cce/src/home/process_details_view.dart';
+import 'package:oportunidades_cce/src/home/user/user_information_view.dart';
 
 final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -57,6 +58,8 @@ class AuthenticatedNavigator extends StatelessWidget {
                     id: state.processDetailsId,
                   ),
                 ),
+              if (state.isUserInformation)
+                const MaterialPage(child: UserInformationView()),
             ],
           );
         },

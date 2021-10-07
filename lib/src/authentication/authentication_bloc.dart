@@ -35,6 +35,15 @@ class AuthenticationBloc
         await userDetailsStorage.deleteUserDetails();
         yield const AuthenticationUnauthenticated();
       }
+    } else if (event is UserUpdated) {
+      final userDetails = event.userDetails;
+      try {
+        await userDetailsStorage.saveUserDetails(userDetails);
+        yield AuthenticationSuccessful(userDetails: userDetails);
+      } catch (err, trace) {
+        print(err);
+        print(trace);
+      }
     } else if (event is AppStarted) {
       final hasUserDetails = await userDetailsStorage.hasUserDetails();
       if (!hasUserDetails) {
@@ -79,6 +88,15 @@ class LoggedIn extends AuthenticationEvent {
 
 class LoggedOut extends AuthenticationEvent {
   const LoggedOut();
+}
+
+class UserUpdated extends AuthenticationEvent {
+  const UserUpdated({required this.userDetails});
+
+  final UserDetails userDetails;
+
+  @override
+  List<Object?> get props => [...super.props, userDetails];
 }
 
 abstract class AuthenticationState extends Equatable {

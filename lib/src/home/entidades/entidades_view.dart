@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oportunidades_cce/src/home/buscar_entidades_view.dart';
 import 'package:oportunidades_cce/src/home/mis_entidades_view.dart';
-import 'package:oportunidades_cce/src/home/widgets/logout_button.dart';
+import 'package:oportunidades_cce/src/home/user/app_menu_button.dart';
 
 class EntidadesView extends StatelessWidget {
   const EntidadesView({Key? key}) : super(key: key);
@@ -13,7 +13,9 @@ class EntidadesView extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Entidades'),
-          actions: const [LogoutButton()],
+          actions: const [
+            AppMenuButton(),
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(text: 'SIGUIENDO'),

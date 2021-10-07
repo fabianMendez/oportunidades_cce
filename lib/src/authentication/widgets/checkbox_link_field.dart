@@ -7,13 +7,15 @@ class CheckboxLinkField extends StatefulWidget {
     required this.value,
     required this.onChanged,
     required this.prefixText,
-    required this.linkText,
+    this.linkText,
+    this.enabled,
   }) : super(key: key);
 
   final bool value;
   final ValueChanged<bool> onChanged;
   final String prefixText;
-  final String linkText;
+  final String? linkText;
+  final bool? enabled;
 
   @override
   _CheckboxLinkFieldState createState() => _CheckboxLinkFieldState();
@@ -22,21 +24,23 @@ class CheckboxLinkField extends StatefulWidget {
 class _CheckboxLinkFieldState extends State<CheckboxLinkField> {
   bool hover = false;
 
+  void onChanged() {
+    if (widget.enabled != false) {
+      widget.onChanged(!widget.value);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Checkbox(
           value: widget.value,
-          onChanged: (_) {
-            widget.onChanged(!widget.value);
-          },
+          onChanged: widget.enabled == false ? null : (_) => onChanged,
         ),
         Expanded(
           child: GestureDetector(
-            onTap: () {
-              widget.onChanged(!widget.value);
-            },
+            onTap: onChanged,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: RichText(

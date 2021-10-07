@@ -11,6 +11,9 @@ class XTextField extends StatefulWidget {
     this.textInputType,
     this.label,
     this.prefixIcon,
+    this.textCapitalization = TextCapitalization.none,
+    this.enabled,
+    this.autocorrect = false,
   }) : super(key: key);
 
   final ValueChanged<String>? onChanged;
@@ -21,6 +24,9 @@ class XTextField extends StatefulWidget {
   final TextInputType? textInputType;
   final String? label;
   final Widget? prefixIcon;
+  final TextCapitalization textCapitalization;
+  final bool? enabled;
+  final bool autocorrect;
 
   @override
   State<XTextField> createState() => _XTextFieldState();
@@ -69,7 +75,7 @@ class _XTextFieldState extends State<XTextField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
-      autocorrect: false,
+      autocorrect: widget.autocorrect,
       onChanged: widget.onChanged,
       onSubmitted: widget.onSubmitted,
       autofocus: widget.autofocus,
@@ -81,7 +87,7 @@ class _XTextFieldState extends State<XTextField> {
           animation: _controller,
           builder: (_, child) {
             return Visibility(
-              visible: _controller.text.isNotEmpty,
+              visible: widget.enabled != false && _controller.text.isNotEmpty,
               child: child!,
             );
             // return AnimatedSwitcher(
@@ -101,6 +107,8 @@ class _XTextFieldState extends State<XTextField> {
       ),
       textInputAction: widget.textInputAction,
       keyboardType: widget.textInputType,
+      textCapitalization: widget.textCapitalization,
+      enabled: widget.enabled,
     );
   }
 }

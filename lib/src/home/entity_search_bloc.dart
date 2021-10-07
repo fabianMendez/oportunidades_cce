@@ -116,6 +116,8 @@ class EntitySearchState extends Equatable {
   final String term;
   final List<EntitySearchResult> results;
 
+  bool get isEmpty => term.isEmpty;
+
   @override
   List<Object?> get props => [
         term,
