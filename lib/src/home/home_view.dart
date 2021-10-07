@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oportunidades_cce/src/home/mis_entidades_view.dart';
+import 'package:oportunidades_cce/src/home/entidades/entidades_view.dart';
 import 'package:oportunidades_cce/src/home/mis_oportunidades_view.dart';
 import 'package:oportunidades_cce/src/home/procesos/procesos_view.dart';
 
@@ -20,10 +20,8 @@ class _HomeViewState extends State<HomeView> {
         index: _currentIndex,
         children: const [
           MisOportunidadesView(),
-          // BuscarProcesosView(),
           ProcesosView(),
-          // BuscarEntidadesView(),
-          MisEntidadesView(),
+          EntidadesView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
