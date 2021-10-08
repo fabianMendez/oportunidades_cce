@@ -15,7 +15,7 @@ class ForgotPasswordView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Iniciar sesión'),
+        title: const Text('Recuperar la contraseña'),
       ),
       body: BlocProvider<ForgotPasswordBloc>(
         create: (_) => ForgotPasswordBloc(
@@ -55,25 +55,18 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
           final isLoading = state is ForgotPasswordLoading;
 
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    'Recuperar la contraseña',
-                    style: TextStyle(
-                      fontSize: 24,
-                      height: 1.25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                const SizedBox(height: 4),
                 const Text(
-                  'Escribe tu correo y te llegará un correo con las instrucciones para recuperar tu contraseña',
+                  'Escribe tu correo y te enviaremos las instrucciones para recuperar tu contraseña',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -90,6 +83,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                   },
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
+                  autofocus: true,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(

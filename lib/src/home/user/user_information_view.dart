@@ -133,7 +133,7 @@ class _UserInformationFormState extends State<UserInformationForm> {
                         value: usuario.correo,
                       ),
                       const SizedBox(height: 12),
-                      CheckboxLinkField(
+                      CheckboxField(
                         enabled: !isLoading,
                         value: receiveNotifications,
                         onChanged: (value) {
@@ -141,7 +141,7 @@ class _UserInformationFormState extends State<UserInformationForm> {
                             receiveNotifications = value;
                           });
                         },
-                        prefixText: 'Recibir notificaciones',
+                        child: const Text('Recibir notificaciones'),
                       ),
                     ],
                   ),

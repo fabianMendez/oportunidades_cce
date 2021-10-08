@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
+import 'package:oportunidades_cce/src/authentication/widgets/text_link.dart';
 import 'package:oportunidades_cce/src/home/widgets/submit_button.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
@@ -71,8 +72,10 @@ class _LoginFormState extends State<LoginForm> {
             Positioned.fill(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8) +
-                      const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -103,6 +106,14 @@ class _LoginFormState extends State<LoginForm> {
                         onSubmitted: (_) => _submit(),
                         textInputAction: TextInputAction.done,
                       ),
+                      const SizedBox(height: 4),
+                      const Align(
+                        alignment: Alignment.centerRight,
+                        child: TextLink(
+                          prefixText: '',
+                          linkText: 'Olvidé mi contraseña',
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -111,7 +122,10 @@ class _LoginFormState extends State<LoginForm> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: SubmitButton(
                   onPressed: _submit,
                   isLoading: isLoading,

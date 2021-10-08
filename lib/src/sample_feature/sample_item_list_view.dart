@@ -5,8 +5,6 @@ import 'package:oportunidades_cce/src/authentication/reactivate_account_view.dar
 import 'package:oportunidades_cce/src/authentication/register_view.dart';
 import 'package:oportunidades_cce/src/authentication/remove_account_view.dart';
 
-import '../settings/settings_view.dart';
-
 class SampleItemListView extends StatelessWidget {
   const SampleItemListView({
     Key? key,
@@ -21,14 +19,6 @@ class SampleItemListView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Oportunidades CCE'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              onRouteChanged(SettingsView.routeName);
-            },
-          ),
-        ],
       ),
 
       // To work with lists that may contain a large number of items, it’s best

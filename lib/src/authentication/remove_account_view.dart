@@ -55,25 +55,18 @@ class _RemoveAccountFormState extends State<RemoveAccountForm> {
           final isLoading = state is RemoveAccountLoading;
 
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    'Eliminar cuenta',
-                    style: TextStyle(
-                      fontSize: 24,
-                      height: 1.25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                const SizedBox(height: 4),
                 const Text(
                   'Escribe tu correo y te enviaremos las instrucciones para finalizar este proceso',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -90,6 +83,7 @@ class _RemoveAccountFormState extends State<RemoveAccountForm> {
                   },
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
+                  autofocus: true,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(

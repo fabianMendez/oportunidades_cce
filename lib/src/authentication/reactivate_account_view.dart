@@ -15,7 +15,7 @@ class ReactivateAccountView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Iniciar sesión'),
+        title: const Text('Reactivar cuenta'),
       ),
       body: BlocProvider<ReactivateAccountBloc>(
         create: (_) => ReactivateAccountBloc(
@@ -55,25 +55,18 @@ class _ReactivateAccountFormState extends State<ReactivateAccountForm> {
           final isLoading = state is ReactivateAccountLoading;
 
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    'Reactivar cuenta',
-                    style: TextStyle(
-                      fontSize: 24,
-                      height: 1.25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                const SizedBox(height: 4),
                 const Text(
                   'Escribe tu correo y te enviaremos las instrucciones para reactivar tu cuenta',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
@@ -90,6 +83,7 @@ class _ReactivateAccountFormState extends State<ReactivateAccountForm> {
                   },
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
+                  autofocus: true,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(

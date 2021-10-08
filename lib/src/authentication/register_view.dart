@@ -4,6 +4,7 @@ import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/checkbox_link_field.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
+import 'package:oportunidades_cce/src/authentication/widgets/text_link.dart';
 import 'package:oportunidades_cce/src/home/widgets/submit_button.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
@@ -83,8 +84,10 @@ class _RegisterFormState extends State<RegisterForm> {
             Positioned.fill(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8) +
-                      const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Column(
                     children: [
                       TextField(
@@ -147,9 +150,11 @@ class _RegisterFormState extends State<RegisterForm> {
                         },
                       ),
                       const SizedBox(height: 12),
-                      CheckboxLinkField(
-                        prefixText: 'He leído y acepto los ',
-                        linkText: 'Términos y condiciones',
+                      CheckboxField(
+                        child: const TextLink(
+                          prefixText: 'He leído y acepto los ',
+                          linkText: 'términos y condiciones',
+                        ),
                         value: termsAndConditions,
                         onChanged: (_) {
                           setState(() {
@@ -157,9 +162,11 @@ class _RegisterFormState extends State<RegisterForm> {
                           });
                         },
                       ),
-                      CheckboxLinkField(
-                        prefixText: 'Autorizo el ',
-                        linkText: 'tratamiento de mis datos personales',
+                      CheckboxField(
+                        child: const TextLink(
+                          prefixText: 'Autorizo el ',
+                          linkText: 'tratamiento de mis datos personales',
+                        ),
                         value: privacyPolicy,
                         onChanged: (_) {
                           setState(() {
@@ -176,7 +183,10 @@ class _RegisterFormState extends State<RegisterForm> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: SubmitButton(
                   onPressed: _submit,
                   isLoading: isLoading,
