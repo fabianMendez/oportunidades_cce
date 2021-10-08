@@ -10,11 +10,19 @@ class AuthenticatedNavigatorBloc
       AuthenticatedNavigatorEvent event) async* {
     if (event is AuthenticatedNavigatorPopped) {
       final currState = state;
+      final toEntityDetails =
+          currState.isProcessDetails && currState.isEntityDetails;
+
       final newState = (state.isNotificacionesSettingsFiltroBienesServicios ||
               state.isNotificacionesSettingsMonto ||
               state.isNotificacionesSettingsKeyword)
           ? const AuthenticatedNavigatorState(isNotificacionesSettings: true)
-          : const AuthenticatedNavigatorState.initial();
+          : toEntityDetails
+              ? AuthenticatedNavigatorState(
+                  isEntityDetails: true,
+                  entityDetailsId: state.entityDetailsId,
+                )
+              : const AuthenticatedNavigatorState.initial();
 
       yield AuthenticatedNavigatorResult(
         previous: currState,
@@ -46,6 +54,8 @@ class AuthenticatedNavigatorBloc
       yield AuthenticatedNavigatorState(
         isProcessDetails: true,
         processDetailsId: event.id,
+        isEntityDetails: state.isEntityDetails,
+        entityDetailsId: state.entityDetailsId,
       );
     } else if (event is UserInformationPushed) {
       yield const AuthenticatedNavigatorState(isUserInformation: true);
@@ -202,6 +212,12 @@ class AuthenticatedNavigatorResult extends AuthenticatedNavigatorState {
           isNotificacionesSettingsKeyword:
               state.isNotificacionesSettingsKeyword,
           isNotificacionesSettingsMonto: state.isNotificacionesSettingsMonto,
+          entityDetailsId: state.entityDetailsId,
+          history: state.history,
+          isEntityDetails: state.isEntityDetails,
+          isProcessDetails: state.isProcessDetails,
+          isUserInformation: state.isUserInformation,
+          processDetailsId: state.processDetailsId,
         );
 
   final AuthenticatedNavigatorState previous;
