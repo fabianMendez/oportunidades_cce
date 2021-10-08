@@ -4,7 +4,7 @@ class SubmitButton extends StatelessWidget {
   const SubmitButton({
     Key? key,
     required this.onPressed,
-    required this.isLoading,
+    this.isLoading = false,
     this.child,
   }) : super(key: key);
 

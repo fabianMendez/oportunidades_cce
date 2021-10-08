@@ -201,7 +201,20 @@ class _ScaffoldBuilder extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop(state.familiasSeleccionadas);
                   },
-                  label: const Text('Aceptar'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  extendedPadding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  label: const Text(
+                    'ACEPTAR',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 )
               : null,
           floatingActionButtonLocation:
