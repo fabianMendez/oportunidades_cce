@@ -78,12 +78,14 @@ class ProcessSearch extends StatelessWidget {
                               );
                               if (familiasSeleccionadas is List<GrupoUNSPSC> &&
                                   familiasSeleccionadas.isNotEmpty) {
-                                final newFamilies = families
-                                    .followedBy(familiasSeleccionadas)
-                                    .toList();
+                                final newFamilies = familiasSeleccionadas
+                                    .where((it) => !families.contains(it));
+
+                                final allFamilies =
+                                    families.followedBy(newFamilies).toList();
 
                                 context.read<ProcessSearchBloc>().add(
-                                    ProcessSearchFamiliesChanged(newFamilies));
+                                    ProcessSearchFamiliesChanged(allFamilies));
                               }
                             },
                           ),

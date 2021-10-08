@@ -186,8 +186,8 @@ class _ScaffoldBuilder extends StatelessWidget {
     return BlocBuilder<NotificacionesSettingsFiltroBienesServiciosBloc,
         NotificacionesSettingsFiltroBienesServiciosState>(
       buildWhen: (prev, curr) =>
-          prev.familiasSeleccionadas.isEmpty !=
-          curr.familiasSeleccionadas.isEmpty,
+          prev.familiasSeleccionadas.length !=
+          curr.familiasSeleccionadas.length,
       builder: (context, state) {
         final isVisible = state.familiasSeleccionadas.isNotEmpty;
 
