@@ -4,6 +4,7 @@ import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/checkbox_link_field.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
+import 'package:oportunidades_cce/src/home/widgets/submit_button.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
 
@@ -25,7 +26,9 @@ class RegisterView extends StatelessWidget {
           usuarioRepository: sl.get<UsuarioRepository>(),
           authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
         ),
-        child: const SingleChildScrollView(child: RegisterForm()),
+        child: const RegisterListener(
+          child: RegisterForm(),
+        ),
       ),
     );
   }
@@ -47,10 +50,17 @@ class _RegisterFormState extends State<RegisterForm> {
   bool privacyPolicy = false;
   bool obscurePassword = true;
 
-  Future<void> _submit(BuildContext context) async {
-    FocusScope.of(context).unfocus();
+  late RegisterBloc _bloc;
 
-    BlocProvider.of<RegisterBloc>(context).add(
+  @override
+  void initState() {
+    super.initState();
+
+    _bloc = context.read<RegisterBloc>();
+  }
+
+  Future<void> _submit() async {
+    _bloc.add(
       RegisterSubmitted(
         firstName: firstName,
         lastName: lastName,
@@ -64,107 +74,116 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    return RegisterListener(
-      child: BlocBuilder<RegisterBloc, RegisterState>(
-        builder: (context, state) {
-          final isLoading = state is RegisterLoading;
+    return BlocBuilder<RegisterBloc, RegisterState>(
+      builder: (context, state) {
+        final isLoading = state is RegisterLoading;
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  enabled: !isLoading,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    label: Text('Nombres'),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      firstName = value;
-                    });
-                  },
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.name,
-                  textCapitalization: TextCapitalization.words,
+        return Stack(
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8) +
+                    const EdgeInsets.only(top: 16),
+                child: Column(
+                  children: [
+                    TextField(
+                      autofocus: true,
+                      enabled: !isLoading,
+                      autocorrect: false,
+                      decoration: const InputDecoration(
+                        label: Text('Nombres'),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          firstName = value;
+                        });
+                      },
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      enabled: !isLoading,
+                      autocorrect: false,
+                      decoration: const InputDecoration(
+                        label: Text('Apellidos'),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          lastName = value;
+                        });
+                      },
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      enabled: !isLoading,
+                      autocorrect: false,
+                      decoration: const InputDecoration(
+                        label: Text('Correo'),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 12),
+                    PasswordField(
+                      enabled: !isLoading,
+                      onChanged: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    CheckboxLinkField(
+                      prefixText: 'He leído y acepto los ',
+                      linkText: 'Términos y condiciones',
+                      value: termsAndConditions,
+                      onChanged: (_) {
+                        setState(() {
+                          termsAndConditions = !termsAndConditions;
+                        });
+                      },
+                    ),
+                    CheckboxLinkField(
+                      prefixText: 'Autorizo el ',
+                      linkText: 'tratamiento de mis datos personales',
+                      value: privacyPolicy,
+                      onChanged: (_) {
+                        setState(() {
+                          privacyPolicy = !privacyPolicy;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 48 + 16 * 2),
+                  ],
                 ),
-                const SizedBox(height: 12),
-                TextField(
-                  enabled: !isLoading,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    label: Text('Apellidos'),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      lastName = value;
-                    });
-                  },
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.name,
-                  textCapitalization: TextCapitalization.words,
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  enabled: !isLoading,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    label: Text('Correo'),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      email = value;
-                    });
-                  },
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 12),
-                PasswordField(
-                  enabled: !isLoading,
-                  onChanged: (value) {
-                    setState(() {
-                      password = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 12),
-                CheckboxLinkField(
-                  prefixText: 'He leído y acepto los ',
-                  linkText: 'Términos y condiciones',
-                  value: termsAndConditions,
-                  onChanged: (_) {
-                    setState(() {
-                      termsAndConditions = !termsAndConditions;
-                    });
-                  },
-                ),
-                CheckboxLinkField(
-                  prefixText: 'Autorizo el ',
-                  linkText: 'tratamiento de mis datos personales',
-                  value: privacyPolicy,
-                  onChanged: (_) {
-                    setState(() {
-                      privacyPolicy = !privacyPolicy;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  child: isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('Crear'),
-                  onPressed: isLoading ? null : () => _submit(context),
-                ),
-              ],
+              ),
             ),
-          );
-        },
-      ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SubmitButton(
+                  onPressed: _submit,
+                  isLoading: isLoading,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

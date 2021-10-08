@@ -5,6 +5,7 @@ import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/checkbox_link_field.dart';
 import 'package:oportunidades_cce/src/home/user/user_information_bloc.dart';
+import 'package:oportunidades_cce/src/home/widgets/submit_button.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'package:oportunidades_cce/src/widgets/xtext_field.dart';
@@ -63,9 +64,7 @@ class _UserInformationFormState extends State<UserInformationForm> {
     receiveNotifications = usuario.enviarCorreo;
   }
 
-  Future<void> _update(BuildContext context) async {
-    FocusScope.of(context).unfocus();
-
+  Future<void> _update() async {
     bloc.add(
       UserInformationUpdated(
         firstName: firstName,
@@ -153,38 +152,7 @@ class _UserInformationFormState extends State<UserInformationForm> {
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  height: 48,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (!isLoading) {
-                        _update(context);
-                      }
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      child: isLoading
-                          ? const SizedBox.square(
-                              dimension: 24,
-                              child: CircularProgressIndicator.adaptive(
-                                strokeWidth: 2,
-                                backgroundColor: Colors.white,
-                              ),
-                            )
-                          : const Text(
-                              'ACEPTAR',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
+                child: SubmitButton(onPressed: _update, isLoading: isLoading),
               ),
             ),
           ],
