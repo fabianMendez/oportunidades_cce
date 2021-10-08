@@ -31,10 +31,6 @@ class _HomeViewState extends State<HomeView> {
             _currentIndex = index;
           });
         },
-        // unselectedItemColor: Theme.of(context).primaryColor,
-        // selectedItemColor: Theme.of(context).primaryColor,
-        // showSelectedLabels: false,
-        // showUnselectedLabels: false,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.auto_awesome),

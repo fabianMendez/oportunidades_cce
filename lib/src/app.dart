@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_tailwindcss_defaults/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_builder.dart';
@@ -20,8 +21,11 @@ class OportunidadesCCEApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const primaryColor = TailwindColors.blue;
+    // const primaryColor = Colors.indigo;
     // Glue the SettingsController to the MaterialApp.
     //
+    final colorScheme = ColorScheme.fromSwatch(primarySwatch: primaryColor);
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return BlocProvider<AuthenticationBloc>(
@@ -31,6 +35,7 @@ class OportunidadesCCEApp extends StatelessWidget {
         )..add(const AppStarted());
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: const AuthenticationBuilder(),
         // Providing a restorationScopeId allows the Navigator built by the
         // MaterialApp to restore the navigation stack when a user leaves and
@@ -63,11 +68,19 @@ class OportunidadesCCEApp extends StatelessWidget {
         // preferred ThemeMode (light, dark, or system default) from the
         // SettingsController to display the correct theme.
         theme: ThemeData(
+          primaryColor: primaryColor,
+          colorScheme: colorScheme,
           // textTheme: GoogleFonts.workSansTextTheme(
           //   Theme.of(context).textTheme,
           // ),
           textTheme: GoogleFonts.montserratTextTheme(
             Theme.of(context).textTheme,
+          ),
+          indicatorColor: colorScheme.secondary,
+          tabBarTheme: const TabBarTheme(
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         darkTheme: ThemeData.dark(),
