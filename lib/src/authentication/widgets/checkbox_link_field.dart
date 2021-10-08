@@ -36,7 +36,7 @@ class _CheckboxLinkFieldState extends State<CheckboxLinkField> {
       children: [
         Checkbox(
           value: widget.value,
-          onChanged: widget.enabled == false ? null : (_) => onChanged,
+          onChanged: widget.enabled == false ? null : (_) => onChanged(),
         ),
         Expanded(
           child: GestureDetector(
