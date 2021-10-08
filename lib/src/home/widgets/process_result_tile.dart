@@ -8,9 +8,11 @@ class ProcessResultTile extends StatelessWidget {
   const ProcessResultTile({
     Key? key,
     required this.result,
+    this.contentPadding,
   }) : super(key: key);
 
   final ProcessSearchResult result;
+  final EdgeInsets? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +105,7 @@ class ProcessResultTile extends StatelessWidget {
           ),
         ),
       ],
+      tilePadding: contentPadding,
     );
   }
 }

@@ -34,8 +34,15 @@ class FavoriteEntities extends StatelessWidget {
                           child: ListView.builder(
                             itemCount: state.results.length,
                             itemBuilder: (context, index) {
+                              final contentPadding = index == 0
+                                  ? const EdgeInsets.symmetric(horizontal: 16) +
+                                      const EdgeInsets.only(top: 4)
+                                  : null;
                               final result = state.results[index];
-                              return EntityResultTile(result: result);
+                              return EntityResultTile(
+                                result: result,
+                                contentPadding: contentPadding,
+                              );
                             },
                             // separatorBuilder: (_, __) =>
                             //     const Divider(height: 16),

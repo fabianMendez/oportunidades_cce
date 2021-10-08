@@ -11,48 +11,42 @@ class FavoriteProcesses extends StatelessWidget {
     return BlocBuilder<FavoriteProcessesBloc, FavoriteProcessesState>(
       builder: (context, state) {
         final isLoading = state is FavoriteProcessesLoading;
+        if (isLoading) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // const SizedBox(height: 16),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 16),
-            //   child: Text(
-            //     'Procesos que tú sigues',
-            //     style: Theme.of(context).textTheme.headline5,
-            //     textAlign: TextAlign.left,
-            //   ),
-            // ),
-            // const SizedBox(height: 12),
-            Expanded(
-              child: isLoading
-                  ? const Center(child: CircularProgressIndicator.adaptive())
-                  : state.results.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'Actualmente no sigues ningún proceso',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () async {
-                            context
-                                .read<FavoriteProcessesBloc>()
-                                .add(const FavoriteProcessesStarted());
-                          },
-                          child: ListView.builder(
-                            itemCount: state.results.length,
-                            itemBuilder: (context, index) {
-                              final result = state.results[index];
-                              return ProcessResultTile(result: result);
-                            },
-                            // separatorBuilder: (_, __) =>
-                            //     const Divider(height: 16),
-                          ),
-                        ),
+        if (state.results.isEmpty) {
+          return const Center(
+            child: Text(
+              'Actualmente no sigues ningún proceso',
+              style: TextStyle(fontSize: 16),
             ),
-          ],
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            context
+                .read<FavoriteProcessesBloc>()
+                .add(const FavoriteProcessesStarted());
+          },
+          child: ListView.builder(
+            itemCount: state.results.length,
+            itemBuilder: (context, index) {
+              final contentPadding = index == 0
+                  ? const EdgeInsets.symmetric(horizontal: 16) +
+                      const EdgeInsets.only(top: 4)
+                  : null;
+
+              final result = state.results[index];
+              return ProcessResultTile(
+                result: result,
+                contentPadding: contentPadding,
+              );
+            },
+            // separatorBuilder: (_, __) =>
+            //     const Divider(height: 16),
+          ),
         );
       },
     );

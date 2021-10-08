@@ -7,9 +7,11 @@ class EntityResultTile extends StatelessWidget {
   const EntityResultTile({
     Key? key,
     required this.result,
+    this.contentPadding,
   }) : super(key: key);
 
   final EntitySearchResult result;
+  final EdgeInsets? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class EntityResultTile extends StatelessWidget {
         BlocProvider.of<AuthenticatedNavigatorBloc>(context)
             .add(EntityDetailsPushed(id: result.id));
       },
+      contentPadding: contentPadding,
     );
   }
 }
