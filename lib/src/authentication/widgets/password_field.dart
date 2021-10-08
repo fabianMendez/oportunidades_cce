@@ -5,10 +5,14 @@ class PasswordField extends StatefulWidget {
     Key? key,
     this.enabled,
     this.onChanged,
+    this.onSubmitted,
+    this.textInputAction,
   }) : super(key: key);
 
   final bool? enabled;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final TextInputAction? textInputAction;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
@@ -34,9 +38,14 @@ class _PasswordFieldState extends State<PasswordField> {
           icon: obscureText
               ? const Icon(Icons.visibility)
               : const Icon(Icons.visibility_off),
+          tooltip: obscureText ? 'Mostrar contraseña' : 'Ocultar contraseña',
         ),
       ),
       onChanged: widget.onChanged,
+      keyboardType: obscureText ? null : TextInputType.visiblePassword,
+      autocorrect: false,
+      onSubmitted: widget.onSubmitted,
+      textInputAction: widget.textInputAction,
     );
   }
 }

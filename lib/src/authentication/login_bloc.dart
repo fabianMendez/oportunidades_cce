@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:oportunidades_cce/src/api_client.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 
@@ -52,9 +53,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginFailure(response.message);
         }
       } catch (err, str) {
-        print(err);
-        print(str);
-        yield LoginFailure(err.toString());
+        if (err is APIException) {
+          yield LoginFailure(err.message);
+        } else {
+          print(err);
+          print(str);
+          yield LoginFailure(err.toString());
+        }
       }
     }
   }

@@ -5,10 +5,12 @@ class SubmitButton extends StatelessWidget {
     Key? key,
     required this.onPressed,
     required this.isLoading,
+    this.child,
   }) : super(key: key);
 
   final VoidCallback onPressed;
   final bool isLoading;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +36,12 @@ class SubmitButton extends StatelessWidget {
                     backgroundColor: Colors.white,
                   ),
                 )
-              : const Text(
-                  'ACEPTAR',
-                  style: TextStyle(
+              : DefaultTextStyle.merge(
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
+                  child: child ?? const Text('ACEPTAR'),
                 ),
         ),
       ),

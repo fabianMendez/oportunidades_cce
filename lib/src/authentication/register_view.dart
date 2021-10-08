@@ -80,94 +80,96 @@ class _RegisterFormState extends State<RegisterForm> {
 
         return Stack(
           children: [
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8) +
-                    const EdgeInsets.only(top: 16),
-                child: Column(
-                  children: [
-                    TextField(
-                      autofocus: true,
-                      enabled: !isLoading,
-                      autocorrect: false,
-                      decoration: const InputDecoration(
-                        label: Text('Nombres'),
-                        border: OutlineInputBorder(),
+            Positioned.fill(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8) +
+                      const EdgeInsets.only(top: 16),
+                  child: Column(
+                    children: [
+                      TextField(
+                        autofocus: true,
+                        enabled: !isLoading,
+                        autocorrect: false,
+                        decoration: const InputDecoration(
+                          label: Text('Nombres'),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            firstName = value;
+                          });
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          firstName = value;
-                        });
-                      },
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.name,
-                      textCapitalization: TextCapitalization.words,
-                    ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      enabled: !isLoading,
-                      autocorrect: false,
-                      decoration: const InputDecoration(
-                        label: Text('Apellidos'),
-                        border: OutlineInputBorder(),
+                      const SizedBox(height: 12),
+                      TextField(
+                        enabled: !isLoading,
+                        autocorrect: false,
+                        decoration: const InputDecoration(
+                          label: Text('Apellidos'),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            lastName = value;
+                          });
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          lastName = value;
-                        });
-                      },
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.name,
-                      textCapitalization: TextCapitalization.words,
-                    ),
-                    const SizedBox(height: 12),
-                    TextField(
-                      enabled: !isLoading,
-                      autocorrect: false,
-                      decoration: const InputDecoration(
-                        label: Text('Correo'),
-                        border: OutlineInputBorder(),
+                      const SizedBox(height: 12),
+                      TextField(
+                        enabled: !isLoading,
+                        autocorrect: false,
+                        decoration: const InputDecoration(
+                          label: Text('Correo'),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.emailAddress,
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          email = value;
-                        });
-                      },
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    const SizedBox(height: 12),
-                    PasswordField(
-                      enabled: !isLoading,
-                      onChanged: (value) {
-                        setState(() {
-                          password = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 12),
-                    CheckboxLinkField(
-                      prefixText: 'He leído y acepto los ',
-                      linkText: 'Términos y condiciones',
-                      value: termsAndConditions,
-                      onChanged: (_) {
-                        setState(() {
-                          termsAndConditions = !termsAndConditions;
-                        });
-                      },
-                    ),
-                    CheckboxLinkField(
-                      prefixText: 'Autorizo el ',
-                      linkText: 'tratamiento de mis datos personales',
-                      value: privacyPolicy,
-                      onChanged: (_) {
-                        setState(() {
-                          privacyPolicy = !privacyPolicy;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 48 + 16 * 2),
-                  ],
+                      const SizedBox(height: 12),
+                      PasswordField(
+                        enabled: !isLoading,
+                        onChanged: (value) {
+                          setState(() {
+                            password = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                      CheckboxLinkField(
+                        prefixText: 'He leído y acepto los ',
+                        linkText: 'Términos y condiciones',
+                        value: termsAndConditions,
+                        onChanged: (_) {
+                          setState(() {
+                            termsAndConditions = !termsAndConditions;
+                          });
+                        },
+                      ),
+                      CheckboxLinkField(
+                        prefixText: 'Autorizo el ',
+                        linkText: 'tratamiento de mis datos personales',
+                        value: privacyPolicy,
+                        onChanged: (_) {
+                          setState(() {
+                            privacyPolicy = !privacyPolicy;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 48 + 16 * 2),
+                    ],
+                  ),
                 ),
               ),
             ),
