@@ -21,6 +21,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^4.2.1
+  flutter_svg: ^0.23.0+1
   flutter_tailwindcss_defaults: ^0.2.0
   get_it: ^7.2.0
   google_fonts: ^2.1.0

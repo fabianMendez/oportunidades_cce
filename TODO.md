@@ -7,11 +7,16 @@
  - [X] Sort results
  - [ ] Implement navigator 2.0/autoroute?
  - [ ] Eliminar cuenta
+ - [ ] Use animations when sorting a list and when chaging a view
+ - [ ] Use custom slivers in the search lists and in the entity details view
+ - [ ] Use illustrations for error states
+ - [ ] After registering show a custom view indicating that an email has been sent and an option to
+ resend it and another which says "I've already confirmed my account" which navigates to the login view
 
 ## Mandatory
 
  - [X] Checkboxes for terms and conditions
- - [ ] Improve authentication views flow
+ - [X] Improve authentication views flow
  - [ ] Investigate weird bug when after loging in, the notifications repository
  returns an error.
  - [ ] Use consistent padding
