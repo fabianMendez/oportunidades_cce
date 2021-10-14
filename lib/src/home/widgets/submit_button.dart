@@ -6,17 +6,21 @@ class SubmitButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.child,
+    this.height = 48,
+    this.width = double.infinity,
   }) : super(key: key);
 
   final VoidCallback onPressed;
   final bool isLoading;
   final Widget? child;
+  final double height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
-      width: double.infinity,
+      height: height,
+      width: width,
       child: ElevatedButton(
         onPressed: () {
           if (!isLoading) {
