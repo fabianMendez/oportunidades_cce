@@ -12,6 +12,7 @@
  - [ ] Use illustrations for error states
  - [ ] After registering show a custom view indicating that an email has been sent and an option to
  resend it and another which says "I've already confirmed my account" which navigates to the login view
+ - [ ] Disable/Hide submit button in forms when the information is incomplete
 
 ## Mandatory
 
