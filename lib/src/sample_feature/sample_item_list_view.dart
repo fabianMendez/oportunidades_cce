@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:oportunidades_cce/src/authentication/forgot_password_view.dart';
-import 'package:oportunidades_cce/src/authentication/login_view.dart';
-import 'package:oportunidades_cce/src/authentication/reactivate_account_view.dart';
-import 'package:oportunidades_cce/src/authentication/register_view.dart';
-import 'package:oportunidades_cce/src/authentication/remove_account_view.dart';
+import 'package:oportunidades_cce/src/authentication/unauthenticated_navigator_bloc.dart';
+import 'package:provider/src/provider.dart';
 
 class SampleItemListView extends StatelessWidget {
   const SampleItemListView({
     Key? key,
-    required this.onRouteChanged,
   }) : super(key: key);
 
   static const routeName = '/';
-  final ValueChanged<String> onRouteChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -37,38 +32,41 @@ class SampleItemListView extends StatelessWidget {
             title: const Text('Iniciar sesión'),
             leading: const Icon(Icons.login),
             onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              onRouteChanged(LoginView.routeName);
+              context
+                  .read<UnauthenticatedNavigatorBloc>()
+                  .add(const LoginViewPushed());
             },
           ),
           ListTile(
             title: const Text('Crear cuenta'),
             leading: const Icon(Icons.app_registration),
             onTap: () {
-              onRouteChanged(RegisterView.routeName);
+              context
+                  .read<UnauthenticatedNavigatorBloc>()
+                  .add(const RegisterViewPushed());
             },
           ),
           ListTile(
             title: const Text('¿Olvidaste tu contraseña?'),
             leading: const Icon(Icons.password),
             onTap: () {
-              onRouteChanged(ForgotPasswordView.routeName);
+              context
+                  .read<UnauthenticatedNavigatorBloc>()
+                  .add(const ForgotPasswordViewPushed());
             },
           ),
           ListTile(
             title: const Text('Reactivar cuenta'),
             leading: const Icon(Icons.account_box),
             onTap: () {
-              onRouteChanged(ReactivateAccountView.routeName);
+              // onRouteChanged(ReactivateAccountView.routeName);
             },
           ),
           ListTile(
             title: const Text('Eliminar cuenta'),
             leading: const Icon(Icons.delete_forever),
             onTap: () {
-              onRouteChanged(RemoveAccountView.routeName);
+              // onRouteChanged(RemoveAccountView.routeName);
             },
           ),
         ],

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/forgot_password_view.dart';
 import 'package:oportunidades_cce/src/authentication/login_view.dart';
 import 'package:oportunidades_cce/src/authentication/register_view.dart';
+import 'package:oportunidades_cce/src/authentication/unauthenticated_navigator_bloc.dart';
+import 'package:provider/src/provider.dart';
 
 import '../sample_feature/sample_item_list_view.dart';
-import 'reactivate_account_view.dart';
-import 'remove_account_view.dart';
 
 final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -24,45 +25,45 @@ class _UnauthenticatedNavigatorState extends State<UnauthenticatedNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => !await _navigatorKey.currentState!.maybePop(),
-      child: Navigator(
-        key: _navigatorKey,
-        onPopPage: (route, result) {
-          if (!route.didPop(result)) {
-            return false;
-          }
+    return BlocProvider(
+      create: (context) => UnauthenticatedNavigatorBloc(),
+      child: WillPopScope(
+        onWillPop: () async => !await _navigatorKey.currentState!.maybePop(),
+        child: BlocBuilder<UnauthenticatedNavigatorBloc,
+            UnauthenticatedNavigatorState>(
+          builder: (context, state) {
+            return Navigator(
+              key: _navigatorKey,
+              onPopPage: (route, result) {
+                if (!route.didPop(result)) {
+                  return false;
+                }
 
-          setState(() {
-            routeName = SampleItemListView.routeName;
-          });
+                context
+                    .read<UnauthenticatedNavigatorBloc>()
+                    .add(const UnauthenticatedNavigatorPopped());
 
-          return true;
-        },
-        pages: [
-          MaterialPage(
-            child: SampleItemListView(
-              onRouteChanged: (newRoute) {
-                setState(() {
-                  routeName = newRoute;
-                });
+                return true;
               },
-            ),
-          ),
-          if (routeName == LoginView.routeName)
-            const MaterialPage(child: LoginView()),
-          if (routeName == RegisterView.routeName)
-            const MaterialPage(child: RegisterView()),
-          if (routeName == ForgotPasswordView.routeName)
-            const MaterialPage(child: ForgotPasswordView()),
-          if (routeName == ReactivateAccountView.routeName)
-            const MaterialPage(child: ReactivateAccountView()),
-          if (routeName == RemoveAccountView.routeName)
-            const MaterialPage(child: RemoveAccountView()),
-          // if (routeName == SettingsView.routeName)
-          //   MaterialPage(
-          //       child: SettingsView(controller: widget.settingsController)),
-        ],
+              pages: [
+                const MaterialPage(child: SampleItemListView()),
+                if (state.isLoginView) const MaterialPage(child: LoginView()),
+                if (state.isRegisterView)
+                  const MaterialPage(child: RegisterView()),
+                if (state.isForgotPasswordView)
+                  const MaterialPage(child: ForgotPasswordView()),
+
+                // if (routeName == ReactivateAccountView.routeName)
+                //   const MaterialPage(child: ReactivateAccountView()),
+                // if (routeName == RemoveAccountView.routeName)
+                //   const MaterialPage(child: RemoveAccountView()),
+                // if (routeName == SettingsView.routeName)
+                //   MaterialPage(
+                //       child: SettingsView(controller: widget.settingsController)),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

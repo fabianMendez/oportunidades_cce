@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
+import 'package:oportunidades_cce/src/authentication/unauthenticated_navigator_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/text_link.dart';
@@ -107,11 +108,16 @@ class _LoginFormState extends State<LoginForm> {
                         textInputAction: TextInputAction.done,
                       ),
                       const SizedBox(height: 4),
-                      const Align(
+                      Align(
                         alignment: Alignment.centerRight,
                         child: TextLink(
                           prefixText: '',
                           linkText: 'Olvidé mi contraseña',
+                          onTap: () {
+                            context
+                                .read<UnauthenticatedNavigatorBloc>()
+                                .add(const ForgotPasswordViewPushed());
+                          },
                         ),
                       )
                     ],

@@ -6,6 +6,7 @@
  - [ ] Check server availability (ie: a HEAD request returns 200)
  - [X] Sort results
  - [ ] Implement navigator 2.0/autoroute?
+ - [ ] Eliminar cuenta
 
 ## Mandatory
 
@@ -16,7 +17,6 @@
  - [ ] Use consistent padding
  - [X] Refresh listings
  - [ ] Familiy notification subscriptions
- - [ ] Update user preferences
  - [X] Show entity's processes
  - [X] Update user information
 

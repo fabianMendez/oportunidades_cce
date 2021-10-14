@@ -6,10 +6,12 @@ class TextLink extends StatefulWidget {
     Key? key,
     this.prefixText = '',
     this.linkText,
+    this.onTap,
   }) : super(key: key);
 
   final String prefixText;
   final String? linkText;
+  final GestureTapCallback? onTap;
 
   @override
   State<TextLink> createState() => _TextLinkState();
@@ -54,9 +56,7 @@ class _TextLinkState extends State<TextLink> {
                   _hover = false;
                 });
               }
-              ..onTap = () {
-                print('hello');
-              },
+              ..onTap = widget.onTap,
           ),
         ],
       ),
