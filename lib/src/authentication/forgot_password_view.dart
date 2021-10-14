@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
+import 'package:oportunidades_cce/src/home/widgets/submit_button.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
 
@@ -21,7 +22,7 @@ class ForgotPasswordView extends StatelessWidget {
         create: (_) => ForgotPasswordBloc(
           usuarioRepository: sl.get<UsuarioRepository>(),
         ),
-        child: const SingleChildScrollView(child: ForgotPasswordForm()),
+        child: const ForgotPasswordForm(),
       ),
     );
   }
@@ -37,14 +38,17 @@ class ForgotPasswordForm extends StatefulWidget {
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   String email = '';
 
-  Future<void> _submit(BuildContext context) async {
-    FocusScope.of(context).unfocus();
+  late ForgotPasswordBloc _bloc;
 
-    BlocProvider.of<ForgotPasswordBloc>(context).add(
-      ForgotPasswordSubmitted(
-        email: email,
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
+
+    _bloc = context.read<ForgotPasswordBloc>();
+  }
+
+  Future<void> _submit() async {
+    _bloc.add(ForgotPasswordSubmitted(email: email));
   }
 
   @override
@@ -54,46 +58,61 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         builder: (context, state) {
           final isLoading = state is ForgotPasswordLoading;
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Escribe tu correo y te enviaremos las instrucciones para recuperar tu contraseña',
-                  style: TextStyle(
-                    fontSize: 15,
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Escribe tu correo y te enviaremos las instrucciones para recuperar tu contraseña',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          enabled: !isLoading,
+                          autocorrect: false,
+                          decoration: const InputDecoration(
+                            label: Text('Correo'),
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              email = value;
+                            });
+                          },
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.emailAddress,
+                          autofocus: true,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  enabled: !isLoading,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                    label: Text('Correo'),
-                    border: OutlineInputBorder(),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      email = value;
-                    });
-                  },
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.emailAddress,
-                  autofocus: true,
+                  child: SubmitButton(
+                    onPressed: _submit,
+                    isLoading: isLoading,
+                    child: const Text('RECUPERAR'),
+                  ),
                 ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  child: isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('Recuperar'),
-                  onPressed: isLoading ? null : () => _submit(context),
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),
