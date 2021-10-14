@@ -139,15 +139,6 @@ class NotificacionListado extends StatelessWidget {
                   ),
                 ),
               ),
-            // const SizedBox(height: 16),
-            // ElevatedButton.icon(
-            //   icon: const Icon(Icons.settings),
-            //   label: const Text('Configurar suscripciones'),
-            //   onPressed: () {
-            //     BlocProvider.of<AuthenticatedNavigatorBloc>(context)
-            //         .add(const NotificacionesSettingsViewPushed());
-            //   },
-            // ),
           ],
         );
       },
