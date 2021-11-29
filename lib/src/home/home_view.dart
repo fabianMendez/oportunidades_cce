@@ -11,7 +11,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int _currentIndex = 1;
+  int _currentIndex = _showOportunitiesView ? 1 : 0;
   static const _showOportunitiesView = false;
 
   @override
