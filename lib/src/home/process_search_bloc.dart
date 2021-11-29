@@ -35,7 +35,11 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
         if (stt.term.isNotEmpty) {
           final termLowerCase = stt.term.toLowerCase();
           results = results.where((it) {
-            return it.nombreEntidad.toLowerCase().contains(termLowerCase) ||
+            final matchesNit =
+                it.nitEntidad?.toLowerCase().contains(termLowerCase) ?? false;
+
+            return matchesNit ||
+                it.nombreEntidad.toLowerCase().contains(termLowerCase) ||
                 it.descripcion.toLowerCase().contains(termLowerCase);
           }).toList();
         }
