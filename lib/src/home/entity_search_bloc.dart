@@ -117,6 +117,10 @@ class EntitySearchState extends Equatable {
   final List<EntitySearchResult> results;
 
   bool get isEmpty => term.isEmpty;
+  bool get isNotEmpty => term.isNotEmpty;
+
+  bool get isLoading => this is EntitySearchLoading;
+  bool get isUninitialized => this is EntitySearchUninitialized;
 
   @override
   List<Object?> get props => [

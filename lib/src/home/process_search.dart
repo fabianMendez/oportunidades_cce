@@ -16,7 +16,6 @@ class ProcessSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProcessSearchBloc, ProcessSearchState>(
       builder: (context, state) {
-        final canRefresh = state.isNotEmpty && !state.isLoading;
         final hasResults = state.results.isNotEmpty;
 
         if (!hasResults) {
@@ -61,7 +60,10 @@ class ProcessSearch extends StatelessWidget {
               ),
             ),
           ],
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         );
+
+        final canRefresh = state.isNotEmpty && !state.isLoading;
 
         if (canRefresh) {
           return RefreshIndicator(
