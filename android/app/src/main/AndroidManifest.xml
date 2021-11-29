@@ -2,7 +2,7 @@
     package="com.example.oportunidades_cce">
   <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="oportunidades_cce"
+        android:label="Oportunidades"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="false">
         <activity
