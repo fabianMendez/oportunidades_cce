@@ -1,30 +1,21 @@
-# oportunidades_cce
 
-A new Flutter project.
+# Oportunidades CCE
 
-## Getting Started
+Improved version of the [Oportunidades CCE](https://play.google.com/store/apps/details?id=co.gov.colombiacompra.oprtunidadescce) mobile application developed with [Flutter](https://flutter.dev).
 
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
+## Features
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Search processes and entities
+- Bookmark processes and entities
+- Sort processes by date or value
+- Share processes
+- Cross platform
 
-## Assets
+## Screenshots
 
-The `assets` directory houses images, fonts, and any other files you want to
-include with your application.
+<img width="240px" style="display: inline-block" src="https://user-images.githubusercontent.com/32204060/143939576-037e7dff-f4d6-44b5-9b7a-85ca8318e2fe.png" alt="Application welcome page"/>
 
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
+<img width="240px" style="display: inline-block" src="https://user-images.githubusercontent.com/32204060/143940023-e55d4fe6-a138-40c8-a76b-ae4fdc9d6a22.png" alt="Application search processes view"/>
 
-## Localization
 
-This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
-
-To support additional languages, please visit the tutorial on
-[Internationalizing Flutter
-apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+<img width="240px" style="display: inline-block" src="https://user-images.githubusercontent.com/32204060/143940281-ecf74f0c-f0a7-47ad-82f3-7d460bbdbe02.png" alt="Application search entities view"/>
