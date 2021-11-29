@@ -288,6 +288,8 @@ class ProcessSearchState extends Equatable {
   final ProcessSort sort;
 
   bool get isEmpty => term.isEmpty && filter.isEmpty;
+  bool get isNotEmpty => !isEmpty;
+  bool get isLoading => this is ProcessSearchLoading;
 
   List<ProcessSearchResult> get sortedResults {
     final copy = List<ProcessSearchResult>.from(results);
