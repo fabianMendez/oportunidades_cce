@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/home/entity_details_bloc.dart';
 import 'package:oportunidades_cce/src/home/widgets/favorite_entity_button.dart';
@@ -20,100 +19,103 @@ class EntityDetails extends StatelessWidget {
             appBar: AppBar(
               title: Text(details.nombre),
             ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        details.nombre,
-                        style: Theme.of(context).textTheme.headline6,
-                        textAlign: TextAlign.left,
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          const Text(
-                            'NIT: ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontSize,
+            body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          details.nombre,
+                          style: Theme.of(context).textTheme.headline6,
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            const Text(
+                              'NIT: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontSize,
+                              ),
                             ),
-                          ),
-                          Text(
-                            details.nit,
-                            style: const TextStyle(
-                              fontSize: fontSize,
+                            Text(
+                              details.nit,
+                              style: const TextStyle(
+                                fontSize: fontSize,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          const Text(
-                            'Departamento: ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontSize,
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            const Text(
+                              'Departamento: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontSize,
+                              ),
                             ),
-                          ),
-                          Text(
-                            details.departamento,
-                            style: const TextStyle(
-                              fontSize: fontSize,
+                            Text(
+                              details.departamento,
+                              style: const TextStyle(
+                                fontSize: fontSize,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          const Text(
-                            'Municipio: ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: fontSize,
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            const Text(
+                              'Municipio: ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontSize,
+                              ),
                             ),
-                          ),
-                          Text(
-                            details.municipio,
-                            style: const TextStyle(
-                              fontSize: fontSize,
+                            Text(
+                              details.municipio,
+                              style: const TextStyle(
+                                fontSize: fontSize,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      FavoriteEntityButton(idEntidad: state.id),
-                      const SizedBox(height: 4),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  child: Text(
-                    'Procesos (${state.procesos.length})',
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        FavoriteEntityButton(idEntidad: state.id),
+                        const SizedBox(height: 4),
+                      ],
                     ),
                   ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.procesos.length,
-                    itemBuilder: (context, index) {
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
+                    child: Text(
+                      'Procesos (${state.procesos.length})',
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
                       final result = state.procesos[index];
                       return ProcessResultTile(result: result);
                     },
+                    childCount: state.procesos.length,
                   ),
                 ),
               ],
