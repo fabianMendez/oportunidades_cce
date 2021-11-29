@@ -12,6 +12,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _currentIndex = 1;
+  static const _showOportunitiesView = false;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
       body: IndexedStack(
         index: _currentIndex,
         children: const [
-          MisOportunidadesView(),
+          if (_showOportunitiesView) MisOportunidadesView(),
           ProcesosView(),
           EntidadesView(),
         ],
@@ -32,10 +33,11 @@ class _HomeViewState extends State<HomeView> {
           });
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.auto_awesome),
-            label: 'Oportunidades',
-          ),
+          if (_showOportunitiesView)
+            BottomNavigationBarItem(
+              icon: Icon(Icons.auto_awesome),
+              label: 'Oportunidades',
+            ),
           BottomNavigationBarItem(
             icon: Icon(Icons.description),
             label: 'Procesos',
