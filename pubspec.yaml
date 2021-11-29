@@ -39,6 +39,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^1.0.0
+  flutter_launcher_icons: ^0.9.2
 
 flutter:
   uses-material-design: true
@@ -49,3 +50,10 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon-1024x1024.png"
+  image_path_ios: "assets/icon/icon-1024x1024-ios.png"
+  remove_alpha_ios: true
