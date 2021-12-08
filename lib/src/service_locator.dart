@@ -9,6 +9,7 @@ import 'package:oportunidades_cce/src/home/filtro_repository.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/notificacion_repository.dart';
 import 'package:oportunidades_cce/src/home/proceso_repository.dart';
+import 'package:oportunidades_cce/src/home/texto_repository.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -29,4 +30,6 @@ void setupServiceLocator() {
   sl.registerSingleton(EntidadRepository(apiClient: apiClient));
 
   sl.registerSingleton(FiltroRepository(apiClient: apiClient));
+
+  sl.registerSingleton(TextoRepository(apiClient: apiClient));
 }

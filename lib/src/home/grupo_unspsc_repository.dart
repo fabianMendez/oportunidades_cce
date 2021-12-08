@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:html/parser.dart' show parse, parseFragment;
+import 'package:html/parser.dart' show parseFragment;
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:intl/intl.dart';
 import 'package:oportunidades_cce/src/api_client.dart';

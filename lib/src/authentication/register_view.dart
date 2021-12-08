@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
+import 'package:oportunidades_cce/src/authentication/terms_and_conditions_page.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/checkbox_link_field.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/password_field.dart';
@@ -151,9 +152,15 @@ class _RegisterFormState extends State<RegisterForm> {
                       ),
                       const SizedBox(height: 12),
                       CheckboxField(
-                        child: const TextLink(
+                        child: TextLink(
                           prefixText: 'He leído y acepto los ',
                           linkText: 'términos y condiciones',
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (_) {
+                              return const TermsAndConditionsPage();
+                            }));
+                          },
                         ),
                         value: termsAndConditions,
                         onChanged: (_) {

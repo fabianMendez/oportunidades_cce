@@ -18,6 +18,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^7.3.0
+  flutter_html: ^2.2.0
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^4.2.1
