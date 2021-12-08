@@ -1,5 +1,5 @@
 
-# Oportunidades CCE
+# Oportunidades COL
 
 Improved version of the [Oportunidades CCE](https://play.google.com/store/apps/details?id=co.gov.colombiacompra.oprtunidadescce) mobile application developed with [Flutter](https://flutter.dev).
 

@@ -48,7 +48,7 @@ class SampleItemListView extends StatelessWidget {
                 ),
               ),
               Text(
-                'CCE',
+                'COL',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,
