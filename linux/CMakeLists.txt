@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
 set(BINARY_NAME "oportunidades_cce")
-set(APPLICATION_ID "com.example.oportunidades_cce")
+set(APPLICATION_ID "dev.fabianmendez.oportunidades_col")
 
 cmake_policy(SET CMP0063 NEW)
 
