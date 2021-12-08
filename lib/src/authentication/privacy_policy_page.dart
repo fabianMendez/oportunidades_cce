@@ -5,19 +5,19 @@ import 'package:oportunidades_cce/src/home/texto_repository.dart';
 import 'package:oportunidades_cce/src/home/widgets/html_text_view.dart';
 import 'package:oportunidades_cce/src/service_locator.dart';
 
-class TermsAndConditionsPage extends StatelessWidget {
-  const TermsAndConditionsPage({Key? key}) : super(key: key);
+class PrivacyPolicyPage extends StatelessWidget {
+  const PrivacyPolicyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Términos y condiciones'),
+        title: const Text('Política de privacidad'),
       ),
       body: BlocProvider<HTMLTextBloc>(
         create: (BuildContext context) {
           return HTMLTextBloc(
-            textCode: 'terminosCondiciones',
+            textCode: 'tratamientoDatos',
             textoRepository: sl.get<TextoRepository>(),
           )..add(const HTMLTextStarted());
         },

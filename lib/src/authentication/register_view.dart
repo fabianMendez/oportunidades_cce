@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/authentication_bloc.dart';
+import 'package:oportunidades_cce/src/authentication/privacy_policy_page.dart';
 import 'package:oportunidades_cce/src/authentication/terms_and_conditions_page.dart';
 import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 import 'package:oportunidades_cce/src/authentication/widgets/checkbox_link_field.dart';
@@ -156,10 +157,13 @@ class _RegisterFormState extends State<RegisterForm> {
                           prefixText: 'He leído y acepto los ',
                           linkText: 'términos y condiciones',
                           onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) {
-                              return const TermsAndConditionsPage();
-                            }));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return const TermsAndConditionsPage();
+                                },
+                              ),
+                            );
                           },
                         ),
                         value: termsAndConditions,
@@ -170,9 +174,18 @@ class _RegisterFormState extends State<RegisterForm> {
                         },
                       ),
                       CheckboxField(
-                        child: const TextLink(
+                        child: TextLink(
                           prefixText: 'Autorizo el ',
                           linkText: 'tratamiento de mis datos personales',
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return const PrivacyPolicyPage();
+                                },
+                              ),
+                            );
+                          },
                         ),
                         value: privacyPolicy,
                         onChanged: (_) {
