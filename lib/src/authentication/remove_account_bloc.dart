@@ -6,22 +6,17 @@ import 'package:oportunidades_cce/src/authentication/user_repository.dart';
 class RemoveAccountBloc extends Bloc<RemoveAccountEvent, RemoveAccountState> {
   RemoveAccountBloc({
     required this.usuarioRepository,
-  }) : super(const RemoveAccountInitial());
-
-  final UsuarioRepository usuarioRepository;
-
-  @override
-  Stream<RemoveAccountState> mapEventToState(event) async* {
-    if (event is RemoveAccountSubmitted) {
-      yield const RemoveAccountLoading();
+  }) : super(const RemoveAccountInitial()) {
+    on<RemoveAccountSubmitted>((event, emit) async {
+      emit(const RemoveAccountLoading());
 
       if (event.email.trim().isEmpty) {
-        yield const RemoveAccountFailure('Correo requerido');
+        emit(const RemoveAccountFailure('Correo requerido'));
         return;
       }
 
       if (!EmailValidator.validate(event.email)) {
-        yield const RemoveAccountFailure('El correo no es válido');
+        emit(const RemoveAccountFailure('El correo no es válido'));
         return;
       }
 
@@ -31,17 +26,19 @@ class RemoveAccountBloc extends Bloc<RemoveAccountEvent, RemoveAccountState> {
         );
 
         if (response.successful) {
-          yield const RemoveAccountSuccess();
+          emit(const RemoveAccountSuccess());
         } else {
-          yield RemoveAccountFailure(response.message);
+          emit(RemoveAccountFailure(response.message));
         }
       } catch (err, str) {
         print(err);
         print(str);
-        yield RemoveAccountFailure(err.toString());
+        emit(RemoveAccountFailure(err.toString()));
       }
-    }
+    });
   }
+
+  final UsuarioRepository usuarioRepository;
 }
 
 abstract class RemoveAccountEvent extends Equatable {

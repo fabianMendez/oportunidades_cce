@@ -10,14 +10,14 @@ environment:
   sdk: ">=2.15.0 <3.0.0"
 
 dependencies:
-  bloc: ^7.2.0
+  bloc: ^8.0.0
   connectivity_plus: ^1.1.0
   device_info_plus: ^2.1.0
   email_validator: ^2.0.1
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.3.0
+  flutter_bloc: ^8.0.0
   flutter_html: ^2.2.0
   flutter_localizations:
     sdk: flutter

@@ -8,19 +8,36 @@ class EntitySearchBloc extends Bloc<EntitySearchEvent, EntitySearchState> {
   EntitySearchBloc({
     required this.userDetails,
     required this.entidadRepository,
-  }) : super(const EntitySearchUninitialized());
+  }) : super(const EntitySearchUninitialized()) {
+    on<EntitySearchStarted>((event, emit) {
+      // _searchByTerm(state, emit);
+    });
+
+    on<EntitySearchTermChanged>(
+      (event, emit) => _searchByTerm(
+        EntitySearchState(
+          results: state.results,
+          term: event.term,
+        ),
+        emit,
+      ),
+    );
+
+    on<EntitySearchRefreshed>((event, emit) => _searchByTerm(state, emit));
+  }
 
   final UserDetails userDetails;
   final EntidadRepository entidadRepository;
 
-  Stream<EntitySearchState> _searchByTerm(EntitySearchState state) async* {
+  Future<void> _searchByTerm(
+      EntitySearchState state, Emitter<EntitySearchState> emit) async {
     try {
       if (state.term.isEmpty) {
-        yield const EntitySearchUninitialized();
+        emit(const EntitySearchUninitialized());
         return;
       }
 
-      yield EntitySearchLoading(term: state.term);
+      emit(EntitySearchLoading(term: state.term));
       final results = await entidadRepository.buscarEntidades(
         codigo: userDetails.codigo,
         texto: state.term,
@@ -28,31 +45,17 @@ class EntitySearchBloc extends Bloc<EntitySearchEvent, EntitySearchState> {
 
       print(results.length);
 
-      yield EntitySearchReady(
+      emit(EntitySearchReady(
         term: state.term,
         results: results,
-      );
+      ));
     } catch (err, str) {
       print(err);
       print(str);
-      yield EntitySearchFailure(
+      emit(EntitySearchFailure(
         err.toString(),
         term: state.term,
-      );
-    }
-  }
-
-  @override
-  Stream<EntitySearchState> mapEventToState(EntitySearchEvent event) async* {
-    if (event is EntitySearchStarted) {
-      // yield* _searchByTerm(state);
-    } else if (event is EntitySearchTermChanged) {
-      yield* _searchByTerm(EntitySearchState(
-        results: state.results,
-        term: event.term,
       ));
-    } else if (event is EntitySearchRefreshed) {
-      yield* _searchByTerm(state);
     }
   }
 }

@@ -9,34 +9,28 @@ class FavoriteProcessesBloc
   FavoriteProcessesBloc({
     required this.userDetails,
     required this.procesoRepository,
-  }) : super(const FavoriteProcessesUninitialized());
+  }) : super(const FavoriteProcessesUninitialized()) {
+    on<FavoriteProcessesStarted>((_, emit) => _load(emit));
+    on<FavoriteProcessesRefreshed>((_, emit) => _load(emit));
+  }
 
   final UserDetails userDetails;
   final ProcesoRepository procesoRepository;
 
-  @override
-  Stream<FavoriteProcessesState> mapEventToState(
-      FavoriteProcessesEvent event) async* {
-    if (event is FavoriteProcessesStarted ||
-        event is FavoriteProcessesRefreshed) {
-      try {
-        yield const FavoriteProcessesLoading();
-        final results = await procesoRepository.getMisProcesos(
-          codigo: userDetails.codigo,
-        );
+  Future<void> _load(Emitter<FavoriteProcessesState> emit) async {
+    try {
+      emit(const FavoriteProcessesLoading());
+      final results = await procesoRepository.getMisProcesos(
+        codigo: userDetails.codigo,
+      );
 
-        print(results.length);
+      print(results.length);
 
-        yield FavoriteProcessesReady(
-          results: results,
-        );
-      } catch (err, str) {
-        print(err);
-        print(str);
-        yield FavoriteProcessesFailure(
-          err.toString(),
-        );
-      }
+      emit(FavoriteProcessesReady(results: results));
+    } catch (err, str) {
+      print(err);
+      print(str);
+      emit(FavoriteProcessesFailure(err.toString()));
     }
   }
 }

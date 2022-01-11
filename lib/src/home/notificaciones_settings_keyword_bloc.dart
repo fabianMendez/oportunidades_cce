@@ -8,43 +8,39 @@ class NotificacionesSettingsKeywordBloc extends Bloc<
   NotificacionesSettingsKeywordBloc({
     required this.userDetails,
     required this.grupoUNSPSCRepository,
-  }) : super(const NotificacionesSettingsKeywordInitial());
-
-  final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
-
-  @override
-  Stream<NotificacionesSettingsKeywordState> mapEventToState(
-      NotificacionesSettingsKeywordEvent event) async* {
-    if (event is NotificacionesSettingsKeywordSubmitted) {
-      yield const NotificacionesSettingsKeywordLoading();
+  }) : super(const NotificacionesSettingsKeywordInitial()) {
+    on<NotificacionesSettingsKeywordSubmitted>((event, emit) async {
+      emit(const NotificacionesSettingsKeywordLoading());
 
       final texto = event.texto.trim();
       if (texto.isEmpty) {
-        yield const NotificacionesSettingsKeywordFailure(
-            'El texto es requerido');
+        emit(const NotificacionesSettingsKeywordFailure(
+            'El texto es requerido'));
         return;
       }
 
       try {
-        yield const NotificacionesSettingsKeywordLoading();
+        emit(const NotificacionesSettingsKeywordLoading());
         final response = await grupoUNSPSCRepository.insertarTextoContratacion(
           codigo: userDetails.codigo,
           texto: texto,
         );
 
         if (response.successful) {
-          yield const NotificacionesSettingsKeywordSuccess();
+          emit(const NotificacionesSettingsKeywordSuccess());
         } else {
-          yield NotificacionesSettingsKeywordFailure(response.message);
+          emit(NotificacionesSettingsKeywordFailure(response.message));
         }
       } catch (err, str) {
         print(err);
         print(str);
-        yield NotificacionesSettingsKeywordFailure(err.toString());
+        emit(NotificacionesSettingsKeywordFailure(err.toString()));
       }
-    }
+    });
   }
+
+  final UserDetails userDetails;
+  final GrupoUNSPSCRepository grupoUNSPSCRepository;
 }
 
 abstract class NotificacionesSettingsKeywordEvent extends Equatable {

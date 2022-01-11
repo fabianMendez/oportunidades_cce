@@ -11,16 +11,123 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
     required this.userDetails,
     required this.procesoRepository,
     required this.filtroRepository,
-  }) : super(const ProcessSearchUninitialized());
+  }) : super(const ProcessSearchUninitialized()) {
+    on<ProcessSearchStarted>((event, emit) {
+      // final filters =
+      //     await filtroRepository.getFiltros(codigo: userDetails.codigo);
+      // print(filters);
+      // yield* _searchByTerm(state);
+    });
+
+    on<ProcessSearchTermChanged>(
+      (event, emit) => _search(
+        ProcessSearchState(
+          results: state.results,
+          term: event.term,
+          filter: state.filter,
+          sort: state.sort,
+        ),
+        emit,
+      ),
+    );
+
+    on<ProcessSearchKeywordsChanged>((event, emit) async {
+      final filter = SavedFilter(
+        id: state.filter.id,
+        familias: state.filter.familias,
+        nombre: state.filter.nombre,
+        rangos: state.filter.rangos,
+        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
+        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
+        textos: event.keywords.map((keyword) {
+          return KeywordNotificationSetting(estado: 0, id: 0, texto: keyword);
+        }).toList(),
+      );
+
+      await _search(
+          ProcessSearchState(
+            filter: filter,
+            results: state.results,
+            term: state.term,
+            sort: state.sort,
+          ),
+          emit);
+    });
+
+    on<ProcessSearchRangesChanged>((event, emit) async {
+      final filter = SavedFilter(
+        id: state.filter.id,
+        familias: state.filter.familias,
+        nombre: state.filter.nombre,
+        textos: state.filter.textos,
+        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
+        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
+        rangos: event.ranges.map((range) {
+          return ValueNotificationSetting(
+            estado: 0,
+            id: 0,
+            montoInferior: '${range.min.toInt()}',
+            montoSuperior: '${range.max.toInt()}',
+          );
+        }).toList(),
+      );
+
+      await _search(
+        ProcessSearchState(
+          filter: filter,
+          results: state.results,
+          term: state.term,
+          sort: state.sort,
+        ),
+        emit,
+      );
+    });
+
+    on<ProcessSearchFamiliesChanged>((event, emit) async {
+      final filter = SavedFilter(
+        id: state.filter.id,
+        nombre: state.filter.nombre,
+        textos: state.filter.textos,
+        rangos: state.filter.rangos,
+        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
+        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
+        familias: event.families,
+      );
+
+      await _search(
+        ProcessSearchState(
+          filter: filter,
+          results: state.results,
+          term: state.term,
+          sort: state.sort,
+        ),
+        emit,
+      );
+    });
+
+    on<ProcessSearchRefreshed>((event, emit) => _search(state, emit));
+
+    on<ProcessSearchSortChanged>(
+      (event, emit) => emit(
+        ProcessSearchState(
+          filter: state.filter,
+          results: state.results,
+          term: state.term,
+          sort: event.sort,
+        ),
+      ),
+    );
+  }
 
   final UserDetails userDetails;
   final ProcesoRepository procesoRepository;
   final FiltroRepository filtroRepository;
 
-  Stream<ProcessSearchState> _search(ProcessSearchState stt) async* {
+  Future<void> _search(
+      ProcessSearchState stt, Emitter<ProcessSearchState> emit) async {
     try {
       final nstt = stt.loading();
-      yield nstt;
+      emit(nstt);
 
       List<ProcessSearchResult> results;
 
@@ -55,97 +162,11 @@ class ProcessSearchBloc extends Bloc<ProcessSearchEvent, ProcessSearchState> {
       print(results.length);
 
       final nstt2 = stt.ready(results: results);
-      yield nstt2;
+      emit(nstt2);
     } catch (err, str) {
       print(err);
       print(str);
-      yield stt.failure(err.toString());
-    }
-  }
-
-  @override
-  Stream<ProcessSearchState> mapEventToState(ProcessSearchEvent event) async* {
-    if (event is ProcessSearchStarted) {
-      // final filters =
-      //     await filtroRepository.getFiltros(codigo: userDetails.codigo);
-      // print(filters);
-      // yield* _searchByTerm(state);
-    } else if (event is ProcessSearchTermChanged) {
-      yield* _search(ProcessSearchState(
-        results: state.results,
-        term: event.term,
-        filter: state.filter,
-        sort: state.sort,
-      ));
-    } else if (event is ProcessSearchKeywordsChanged) {
-      final filter = SavedFilter(
-        id: state.filter.id,
-        familias: state.filter.familias,
-        nombre: state.filter.nombre,
-        rangos: state.filter.rangos,
-        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
-        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
-        textos: event.keywords.map((keyword) {
-          return KeywordNotificationSetting(estado: 0, id: 0, texto: keyword);
-        }).toList(),
-      );
-
-      yield* _search(ProcessSearchState(
-        filter: filter,
-        results: state.results,
-        term: state.term,
-        sort: state.sort,
-      ));
-    } else if (event is ProcessSearchRangesChanged) {
-      final filter = SavedFilter(
-        id: state.filter.id,
-        familias: state.filter.familias,
-        nombre: state.filter.nombre,
-        textos: state.filter.textos,
-        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
-        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
-        rangos: event.ranges.map((range) {
-          return ValueNotificationSetting(
-            estado: 0,
-            id: 0,
-            montoInferior: '${range.min.toInt()}',
-            montoSuperior: '${range.max.toInt()}',
-          );
-        }).toList(),
-      );
-
-      yield* _search(ProcessSearchState(
-        filter: filter,
-        results: state.results,
-        term: state.term,
-        sort: state.sort,
-      ));
-    } else if (event is ProcessSearchFamiliesChanged) {
-      final filter = SavedFilter(
-        id: state.filter.id,
-        nombre: state.filter.nombre,
-        textos: state.filter.textos,
-        rangos: state.filter.rangos,
-        recibirNotificacionesApp: state.filter.recibirNotificacionesApp,
-        recibirNotificacionesCorreo: state.filter.recibirNotificacionesCorreo,
-        familias: event.families,
-      );
-
-      yield* _search(ProcessSearchState(
-        filter: filter,
-        results: state.results,
-        term: state.term,
-        sort: state.sort,
-      ));
-    } else if (event is ProcessSearchRefreshed) {
-      yield* _search(state);
-    } else if (event is ProcessSearchSortChanged) {
-      yield ProcessSearchState(
-        filter: state.filter,
-        results: state.results,
-        term: state.term,
-        sort: event.sort,
-      );
+      emit(stt.failure(err.toString()));
     }
   }
 }

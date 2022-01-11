@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:equatable/equatable.dart';
@@ -7,22 +9,17 @@ class ForgotPasswordBloc
     extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   ForgotPasswordBloc({
     required this.usuarioRepository,
-  }) : super(const ForgotPasswordInitial());
-
-  final UsuarioRepository usuarioRepository;
-
-  @override
-  Stream<ForgotPasswordState> mapEventToState(event) async* {
-    if (event is ForgotPasswordSubmitted) {
-      yield const ForgotPasswordLoading();
+  }) : super(const ForgotPasswordInitial()) {
+    on<ForgotPasswordSubmitted>((event, emit) async {
+      emit(const ForgotPasswordLoading());
 
       if (event.email.trim().isEmpty) {
-        yield const ForgotPasswordFailure('Correo requerido');
+        emit(const ForgotPasswordFailure('Correo requerido'));
         return;
       }
 
       if (!EmailValidator.validate(event.email)) {
-        yield const ForgotPasswordFailure('El correo no es válido');
+        emit(const ForgotPasswordFailure('El correo no es válido'));
         return;
       }
 
@@ -32,17 +29,19 @@ class ForgotPasswordBloc
         );
 
         if (response.successful) {
-          yield const ForgotPasswordSuccess();
+          emit(const ForgotPasswordSuccess());
         } else {
-          yield ForgotPasswordFailure(response.message);
+          emit(ForgotPasswordFailure(response.message));
         }
       } catch (err, str) {
-        print(err);
-        print(str);
-        yield ForgotPasswordFailure(err.toString());
+        log('$err');
+        log('$str');
+        emit(ForgotPasswordFailure(err.toString()));
       }
-    }
+    });
   }
+
+  final UsuarioRepository usuarioRepository;
 }
 
 abstract class ForgotPasswordEvent extends Equatable {

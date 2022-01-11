@@ -9,34 +9,28 @@ class FavoriteEntitiesBloc
   FavoriteEntitiesBloc({
     required this.userDetails,
     required this.entidadRepository,
-  }) : super(const FavoriteEntitiesLoading());
+  }) : super(const FavoriteEntitiesLoading()) {
+    on<FavoriteEntitiesStarted>((event, emit) => _load(emit));
+    on<FavoriteEntitiesRefreshed>((event, emit) => _load(emit));
+  }
 
   final UserDetails userDetails;
   final EntidadRepository entidadRepository;
 
-  @override
-  Stream<FavoriteEntitiesState> mapEventToState(
-      FavoriteEntitiesEvent event) async* {
-    if (event is FavoriteEntitiesStarted ||
-        event is FavoriteEntitiesRefreshed) {
-      try {
-        yield const FavoriteEntitiesLoading();
-        final results = await entidadRepository.getMisEntidades(
-          codigo: userDetails.codigo,
-        );
+  Future<void> _load(Emitter<FavoriteEntitiesState> emit) async {
+    try {
+      emit(const FavoriteEntitiesLoading());
+      final results = await entidadRepository.getMisEntidades(
+        codigo: userDetails.codigo,
+      );
 
-        print(results.length);
+      print(results.length);
 
-        yield FavoriteEntitiesReady(
-          results: results,
-        );
-      } catch (err, str) {
-        print(err);
-        print(str);
-        yield FavoriteEntitiesFailure(
-          err.toString(),
-        );
-      }
+      emit(FavoriteEntitiesReady(results: results));
+    } catch (err, str) {
+      print(err);
+      print(str);
+      emit(FavoriteEntitiesFailure(err.toString()));
     }
   }
 }

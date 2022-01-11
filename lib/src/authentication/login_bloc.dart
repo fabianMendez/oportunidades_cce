@@ -12,18 +12,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
     required this.usuarioRepository,
     required this.authenticationBloc,
-  }) : super(const LoginInitial());
-
-  final UsuarioRepository usuarioRepository;
-  final AuthenticationBloc authenticationBloc;
-
-  @override
-  Stream<LoginState> mapEventToState(event) async* {
-    if (event is LoginSubmitted) {
-      yield const LoginLoading();
+  }) : super(const LoginInitial()) {
+    on<LoginSubmitted>((event, emit) async {
+      emit(const LoginLoading());
 
       if (event.username.trim().isEmpty || event.password.trim().isEmpty) {
-        yield const LoginFailure('Correo y contraseña requeridos');
+        emit(const LoginFailure('Correo y contraseña requeridos'));
         return;
       }
 
@@ -48,21 +42,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             userDetails: userDetails,
           ));
 
-          yield const LoginInitial();
+          emit(const LoginInitial());
         } else {
-          yield LoginFailure(response.message);
+          emit(LoginFailure(response.message));
         }
       } catch (err, str) {
         if (err is APIException) {
-          yield LoginFailure(err.message);
+          emit(LoginFailure(err.message));
         } else {
           print(err);
           print(str);
-          yield LoginFailure(err.toString());
+          emit(LoginFailure(err.toString()));
         }
       }
-    }
+    });
   }
+
+  final UsuarioRepository usuarioRepository;
+  final AuthenticationBloc authenticationBloc;
 }
 
 abstract class LoginEvent extends Equatable {

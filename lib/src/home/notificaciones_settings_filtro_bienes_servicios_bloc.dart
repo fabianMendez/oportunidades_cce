@@ -9,42 +9,8 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
   NotificacionesSettingsFiltroBienesServiciosBloc({
     required this.userDetails,
     required this.grupoUNSPSCRepository,
-  }) : super(const NotificacionesSettingsFiltroBienesServiciosUninitialized());
-
-  final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
-
-  Stream<NotificacionesSettingsFiltroBienesServiciosState> _onGrupoChanged(
-      NotificacionesSettingsFiltroBienesServiciosState state) async* {
-    final idGrupo = state.grupoSeleccionado;
-
-    // segmentos y familias del grupo seleccionado
-    final segmentos = await grupoUNSPSCRepository.buscarFamiliasUNSPSC(
-      codigo: userDetails.codigo,
-      idGrupo: idGrupo,
-      texto: '',
-    );
-
-    yield NotificacionesSettingsFiltroBienesServiciosState(
-      grupoSeleccionado: state.grupoSeleccionado,
-      gruposUNSPSC: state.gruposUNSPSC,
-      segmentos: segmentos,
-      termino: state.termino,
-      familiasSeleccionadas: state.familiasSeleccionadas,
-    );
-
-    // las que están marcadas
-    // final familias =
-    //     await grupoUNSPSCRepository.getFamiliasClasesUsuarioGrupoUNSPSC(
-    //   codigo: userDetails.codigo,
-    //   idGrupo: idGrupo,
-    // );
-  }
-
-  @override
-  Stream<NotificacionesSettingsFiltroBienesServiciosState> mapEventToState(
-      NotificacionesSettingsFiltroBienesServiciosEvent event) async* {
-    if (event is NotificacionesSettingsFiltroStarted) {
+  }) : super(const NotificacionesSettingsFiltroBienesServiciosUninitialized()) {
+    on<NotificacionesSettingsFiltroStarted>((event, emit) async {
       final gruposUNSPSC = await grupoUNSPSCRepository.getGruposUNSPSC(
         codigo: userDetails.codigo,
       );
@@ -55,29 +21,34 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
         familiasSeleccionadas: state.familiasSeleccionadas,
         termino: state.termino,
       );
-      yield newState;
+      emit(newState);
 
-      yield* _onGrupoChanged(newState);
-    } else if (event
-        is NotificacionesSettingsFiltroBienesServiciosGrupoChanged) {
+      await _onGrupoChanged(newState, emit);
+    });
+
+    on<NotificacionesSettingsFiltroBienesServiciosGrupoChanged>(
+        (event, emit) async {
       final newState = NotificacionesSettingsFiltroBienesServiciosLoading(
         grupoSeleccionado: event.grupo,
         gruposUNSPSC: state.gruposUNSPSC,
         familiasSeleccionadas: state.familiasSeleccionadas,
         termino: state.termino,
       );
-      yield newState;
-      yield* _onGrupoChanged(newState);
-    } else if (event
-        is NotificacionesSettingsFiltroBienesServiciosTermChanged) {
-      yield NotificacionesSettingsFiltroBienesServiciosState(
+      emit(newState);
+      await _onGrupoChanged(newState, emit);
+    });
+
+    on<NotificacionesSettingsFiltroBienesServiciosTermChanged>((event, emit) {
+      emit(NotificacionesSettingsFiltroBienesServiciosState(
         grupoSeleccionado: state.grupoSeleccionado,
         gruposUNSPSC: state.gruposUNSPSC,
         segmentos: state.segmentos,
         familiasSeleccionadas: state.familiasSeleccionadas,
         termino: event.term,
-      );
-    } else if (event is NotificacionesSettingsFamiliaSeleccionada) {
+      ));
+    });
+
+    on<NotificacionesSettingsFamiliaSeleccionada>((event, emit) {
       final isSelected = state.familiasSeleccionadas.contains(event.familia);
       final familiasSeleccionadas = isSelected
           ? state.familiasSeleccionadas
@@ -92,14 +63,45 @@ class NotificacionesSettingsFiltroBienesServiciosBloc extends Bloc<
       //   inscribirse: !isSelected,
       // );
 
-      yield NotificacionesSettingsFiltroBienesServiciosState(
+      emit(NotificacionesSettingsFiltroBienesServiciosState(
         grupoSeleccionado: state.grupoSeleccionado,
         gruposUNSPSC: state.gruposUNSPSC,
         segmentos: state.segmentos,
         termino: state.termino,
         familiasSeleccionadas: familiasSeleccionadas,
-      );
-    }
+      ));
+    });
+  }
+
+  final UserDetails userDetails;
+  final GrupoUNSPSCRepository grupoUNSPSCRepository;
+
+  Future<void> _onGrupoChanged(
+      NotificacionesSettingsFiltroBienesServiciosState state,
+      Emitter<NotificacionesSettingsFiltroBienesServiciosState> emit) async {
+    final idGrupo = state.grupoSeleccionado;
+
+    // segmentos y familias del grupo seleccionado
+    final segmentos = await grupoUNSPSCRepository.buscarFamiliasUNSPSC(
+      codigo: userDetails.codigo,
+      idGrupo: idGrupo,
+      texto: '',
+    );
+
+    emit(NotificacionesSettingsFiltroBienesServiciosState(
+      grupoSeleccionado: state.grupoSeleccionado,
+      gruposUNSPSC: state.gruposUNSPSC,
+      segmentos: segmentos,
+      termino: state.termino,
+      familiasSeleccionadas: state.familiasSeleccionadas,
+    ));
+
+    // las que están marcadas
+    // final familias =
+    //     await grupoUNSPSCRepository.getFamiliasClasesUsuarioGrupoUNSPSC(
+    //   codigo: userDetails.codigo,
+    //   idGrupo: idGrupo,
+    // );
   }
 }
 

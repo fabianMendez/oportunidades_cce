@@ -9,55 +9,49 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc({
     required this.usuarioRepository,
     required this.authenticationBloc,
-  }) : super(const RegisterInitial());
-
-  final UsuarioRepository usuarioRepository;
-  final AuthenticationBloc authenticationBloc;
-
-  @override
-  Stream<RegisterState> mapEventToState(event) async* {
-    if (event is RegisterSubmitted) {
-      yield const RegisterLoading();
+  }) : super(const RegisterInitial()) {
+    on<RegisterSubmitted>((event, emit) async {
+      emit(const RegisterLoading());
 
       if (event.firstName.trim().isEmpty) {
-        yield const RegisterFailure('Nombres requeridos');
+        emit(const RegisterFailure('Nombres requeridos'));
         return;
       }
 
       if (event.lastName.trim().isEmpty) {
-        yield const RegisterFailure('Apellidos requeridos');
+        emit(const RegisterFailure('Apellidos requeridos'));
         return;
       }
 
       if (event.email.trim().isEmpty) {
-        yield const RegisterFailure('Correo requerido');
+        emit(const RegisterFailure('Correo requerido'));
         return;
       }
 
       if (!EmailValidator.validate(event.email)) {
-        yield const RegisterFailure('El correo no es válido');
+        emit(const RegisterFailure('El correo no es válido'));
         return;
       }
 
       if (event.password.trim().isEmpty) {
-        yield const RegisterFailure('Contraseña requerida');
+        emit(const RegisterFailure('Contraseña requerida'));
         return;
       }
 
       if (event.password.trim().length < 8) {
-        yield const RegisterFailure(
-            'La contraseña debe tener por lo menos 8 caracteres');
+        emit(const RegisterFailure(
+            'La contraseña debe tener por lo menos 8 caracteres'));
         return;
       }
 
       if (!event.termsAndConditions) {
-        yield const RegisterFailure('Debes aceptar los términos y condiciones');
+        emit(const RegisterFailure('Debes aceptar los términos y condiciones'));
         return;
       }
 
       if (!event.privacyPolicy) {
-        yield const RegisterFailure(
-            'Debe autorizar la política de tratamiento de datos');
+        emit(const RegisterFailure(
+            'Debe autorizar la política de tratamiento de datos'));
         return;
       }
 
@@ -71,17 +65,20 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
         if (response.successful) {
           // authenticationBloc.add(const LoggedIn());
-          yield const RegisterSuccess();
+          emit(const RegisterSuccess());
         } else {
-          yield RegisterFailure(response.message);
+          emit(RegisterFailure(response.message));
         }
       } catch (err, str) {
         print(err);
         print(str);
-        yield RegisterFailure(err.toString());
+        emit(RegisterFailure(err.toString()));
       }
-    }
+    });
   }
+
+  final UsuarioRepository usuarioRepository;
+  final AuthenticationBloc authenticationBloc;
 }
 
 abstract class RegisterEvent extends Equatable {

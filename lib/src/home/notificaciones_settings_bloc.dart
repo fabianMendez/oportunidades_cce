@@ -13,6 +13,51 @@ class NotificacionesSettingsBloc
     required this.authenticatedNavigatorBloc,
     required this.grupoUNSPSCRepository,
   }) : super(const NotificacionesSettingsState.initial()) {
+    on<NotificacionesSettingsStarted>((event, emit) async {
+      await _loadSavedSettingsFromCache(
+        state.notificationSettingsCache,
+        state.selectedFilter,
+        emit,
+      );
+    });
+
+    on<NotificacionesSettingsFilterChanged>((event, emit) async {
+      await _loadSavedSettingsFromCache(
+        state.notificationSettingsCache,
+        event.selected,
+        emit,
+      );
+    });
+
+    on<NotificacionesSettingsUpdated>((event, emit) async {
+      await _loadSavedSettings(
+        state.notificationSettingsCache,
+        state.selectedFilter,
+        emit,
+      );
+    });
+
+    on<NotificacionesSettingsFilterPressed>((event, emit) {
+      if (state.selectedFilter == kFiltroBienesServicios) {
+        authenticatedNavigatorBloc
+            .add(const NotificacionesSettingsFiltroBienesServiciosViewPushed());
+      } else if (state.selectedFilter == kFiltroValores) {
+        authenticatedNavigatorBloc
+            .add(const NotificacionesSettingsMontoViewPushed());
+      } else if (state.selectedFilter == kFiltroPalabrasClave) {
+        authenticatedNavigatorBloc
+            .add(const NotificacionesSettingsKeywordViewPushed());
+      }
+
+      emit(NotificacionesSettingsSelecting(
+        notificationSettingsCache: state.notificationSettingsCache,
+        selectedFilter: state.selectedFilter,
+        valueNotificationSettings: state.valueNotificationSettings,
+        familyNotificationSettings: state.familyNotificationSettings,
+        keywordNotificationSettings: state.keywordNotificationSettings,
+      ));
+    });
+
     authenticatedNavigatorSubscription = authenticatedNavigatorBloc.stream
         .listen(_authenticatedNavigatorListener);
   }
@@ -53,10 +98,11 @@ class NotificacionesSettingsBloc
     // }
   }
 
-  Stream<NotificacionesSettingsState> _loadSavedSettingsFromCache(
+  Future<void> _loadSavedSettingsFromCache(
     Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
     NotificacionesSettingsFiltro selectedFilter,
-  ) async* {
+    Emitter<NotificacionesSettingsState> emit,
+  ) async {
     if (cache.containsKey(selectedFilter)) {
       final valueNotificationSettings = selectedFilter == kFiltroValores
           ? cache[selectedFilter]! as List<ValueNotificationSetting>
@@ -71,24 +117,25 @@ class NotificacionesSettingsBloc
           ? cache[selectedFilter]! as List<KeywordNotificationSetting>
           : state.keywordNotificationSettings;
 
-      yield NotificacionesSettingsReady(
+      emit(NotificacionesSettingsReady(
         selectedFilter: selectedFilter,
         valueNotificationSettings: valueNotificationSettings,
         familyNotificationSettings: familyNotificationSettings,
         keywordNotificationSettings: keywordNotificationSettings,
         cache: cache,
-      );
+      ));
     } else {
-      yield* _loadSavedSettings(cache, selectedFilter);
+      await _loadSavedSettings(cache, selectedFilter, emit);
     }
   }
 
-  Stream<NotificacionesSettingsState> _loadSavedSettings(
+  Future<void> _loadSavedSettings(
     Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
     NotificacionesSettingsFiltro selectedFilter,
-  ) async* {
+    Emitter<NotificacionesSettingsState> emit,
+  ) async {
     try {
-      yield NotificacionesSettingsLoading(selectedFilter: selectedFilter);
+      emit(NotificacionesSettingsLoading(selectedFilter: selectedFilter));
 
       final valueNotificationSettings = selectedFilter == kFiltroValores
           ? await grupoUNSPSCRepository.getMontosConfiguracion(
@@ -119,60 +166,20 @@ class NotificacionesSettingsBloc
           Map<NotificacionesSettingsFiltro, List<dynamic>>.from(cache)
             ..addAll({selectedFilter: cacheValue});
 
-      yield NotificacionesSettingsReady(
+      emit(NotificacionesSettingsReady(
         selectedFilter: selectedFilter,
         valueNotificationSettings: valueNotificationSettings,
         cache: newCache,
         familyNotificationSettings: familyNotificationSettings,
         keywordNotificationSettings: keywordNotificationSettings,
-      );
+      ));
     } catch (err, str) {
       print(err);
       print(str);
-      yield NotificacionesSettingsFailure(
+      emit(NotificacionesSettingsFailure(
         err.toString(),
         selectedFilter: selectedFilter,
-      );
-    }
-  }
-
-  @override
-  Stream<NotificacionesSettingsState> mapEventToState(
-      NotificacionesSettingsEvent event) async* {
-    if (event is NotificacionesSettingsStarted) {
-      yield* _loadSavedSettingsFromCache(
-        state.notificationSettingsCache,
-        state.selectedFilter,
-      );
-    } else if (event is NotificacionesSettingsFilterChanged) {
-      yield* _loadSavedSettingsFromCache(
-        state.notificationSettingsCache,
-        event.selected,
-      );
-    } else if (event is NotificacionesSettingsUpdated) {
-      yield* _loadSavedSettings(
-        state.notificationSettingsCache,
-        state.selectedFilter,
-      );
-    } else if (event is NotificacionesSettingsFilterPressed) {
-      if (state.selectedFilter == kFiltroBienesServicios) {
-        authenticatedNavigatorBloc
-            .add(const NotificacionesSettingsFiltroBienesServiciosViewPushed());
-      } else if (state.selectedFilter == kFiltroValores) {
-        authenticatedNavigatorBloc
-            .add(const NotificacionesSettingsMontoViewPushed());
-      } else if (state.selectedFilter == kFiltroPalabrasClave) {
-        authenticatedNavigatorBloc
-            .add(const NotificacionesSettingsKeywordViewPushed());
-      }
-
-      yield NotificacionesSettingsSelecting(
-        notificationSettingsCache: state.notificationSettingsCache,
-        selectedFilter: state.selectedFilter,
-        valueNotificationSettings: state.valueNotificationSettings,
-        familyNotificationSettings: state.familyNotificationSettings,
-        keywordNotificationSettings: state.keywordNotificationSettings,
-      );
+      ));
     }
   }
 }

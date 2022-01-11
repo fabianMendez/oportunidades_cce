@@ -9,37 +9,35 @@ class NotificacionListadoBloc
   NotificacionListadoBloc({
     required this.userDetails,
     required this.notificacionRepository,
-  }) : super(const NotificacionListadoUninitialized());
+  }) : super(const NotificacionListadoUninitialized()) {
+    on<NotificacionListadoStarted>((_, emit) => _load(emit));
+    on<NotificacionListadoRefreshed>((_, emit) => _load(emit));
+  }
 
   final UserDetails userDetails;
   final NotificacionRepository notificacionRepository;
 
-  @override
-  Stream<NotificacionListadoState> mapEventToState(
-      NotificacionListadoEvent event) async* {
-    if (event is NotificacionListadoStarted ||
-        event is NotificacionListadoRefreshed) {
-      try {
-        yield const NotificacionListadoLoading();
+  Future<void> _load(Emitter<NotificacionListadoState> emit) async {
+    try {
+      emit(const NotificacionListadoLoading());
 
-        final notificaciones = await notificacionRepository.getNotificaciones(
-          codigo: userDetails.codigo,
-          // tipoNotificacion: 'Todos',
-          // tipoNotificacion: 'CreacionProceso',
-          // tipoNotificacion: 'CreacionProcesoEntidad',
-          tipoNotificacion: 'ActualizacionProceso',
-        );
+      final notificaciones = await notificacionRepository.getNotificaciones(
+        codigo: userDetails.codigo,
+        // tipoNotificacion: 'Todos',
+        // tipoNotificacion: 'CreacionProceso',
+        // tipoNotificacion: 'CreacionProcesoEntidad',
+        tipoNotificacion: 'ActualizacionProceso',
+      );
 
-        yield NotificacionListadoSuccess(notificaciones);
-      } catch (err, str) {
-        print(err);
-        print(str);
+      emit(NotificacionListadoSuccess(notificaciones));
+    } catch (err, str) {
+      print(err);
+      print(str);
 
-        if (err is APIException) {
-          yield NotificacionListadoFailure(err.message);
-        } else {
-          yield NotificacionListadoFailure(err.toString());
-        }
+      if (err is APIException) {
+        emit(NotificacionListadoFailure(err.message));
+      } else {
+        emit(NotificacionListadoFailure(err.toString()));
       }
     }
   }

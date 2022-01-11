@@ -10,31 +10,27 @@ class ProcessDetailsBloc
     required this.userDetails,
     required this.procesoRepository,
     required this.id,
-  }) : super(ProcessDetailsLoading(id: id));
-
-  final UserDetails userDetails;
-  final ProcesoRepository procesoRepository;
-  final int id;
-
-  @override
-  Stream<ProcessDetailsState> mapEventToState(
-      ProcessDetailsEvent event) async* {
-    if (event is ProcessDetailsStarted) {
+  }) : super(ProcessDetailsLoading(id: id)) {
+    on<ProcessDetailsStarted>((event, emit) async {
       try {
-        yield ProcessDetailsLoading(id: id);
+        emit(ProcessDetailsLoading(id: id));
         final proceso = await procesoRepository.getProceso(
           codigo: userDetails.codigo,
           idProceso: id,
         );
 
-        yield ProcessDetailsReady(id: id, details: proceso);
+        emit(ProcessDetailsReady(id: id, details: proceso));
       } catch (err, str) {
         print(err);
         print(str);
-        yield ProcessDetailsFailure(err.toString(), id: id);
+        emit(ProcessDetailsFailure(err.toString(), id: id));
       }
-    }
+    });
   }
+
+  final UserDetails userDetails;
+  final ProcesoRepository procesoRepository;
+  final int id;
 }
 
 abstract class ProcessDetailsEvent extends Equatable {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
@@ -7,63 +9,65 @@ class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc({
     required this.userDetailsStorage,
-  }) : super(const AuthenticationUninitialized());
-
-  final UserDetailsStorage userDetailsStorage;
-
-  @override
-  Stream<AuthenticationState> mapEventToState(
-      AuthenticationEvent event) async* {
-    if (event is LoggedOut) {
+  }) : super(const AuthenticationUninitialized()) {
+    on<LoggedOut>((event, emit) async {
       try {
-        yield const AuthenticationLoading();
+        emit(const AuthenticationLoading());
 
         await userDetailsStorage.deleteUserDetails();
       } finally {
-        yield const AuthenticationUnauthenticated();
+        emit(const AuthenticationUnauthenticated());
       }
-    } else if (event is LoggedIn) {
+    });
+
+    on<LoggedIn>((event, emit) async {
       final userDetails = event.userDetails;
       try {
-        yield const AuthenticationLoading();
+        emit(const AuthenticationLoading());
 
         await userDetailsStorage.saveUserDetails(userDetails);
-        yield AuthenticationSuccessful(userDetails: userDetails);
+        emit(AuthenticationSuccessful(userDetails: userDetails));
       } catch (err, trace) {
-        print(err);
-        print(trace);
+        log('$err');
+        log('$trace');
         await userDetailsStorage.deleteUserDetails();
-        yield const AuthenticationUnauthenticated();
+        emit(const AuthenticationUnauthenticated());
       }
-    } else if (event is UserUpdated) {
+    });
+
+    on<UserUpdated>((event, emit) async {
       final userDetails = event.userDetails;
       try {
         await userDetailsStorage.saveUserDetails(userDetails);
-        yield AuthenticationSuccessful(userDetails: userDetails);
+        emit(AuthenticationSuccessful(userDetails: userDetails));
       } catch (err, trace) {
-        print(err);
-        print(trace);
+        log('$err');
+        log('$trace');
       }
-    } else if (event is AppStarted) {
+    });
+
+    on<AppStarted>((event, emit) async {
       final hasUserDetails = await userDetailsStorage.hasUserDetails();
       if (!hasUserDetails) {
-        yield const AuthenticationUnauthenticated();
+        emit(const AuthenticationUnauthenticated());
         return;
       }
 
       try {
-        yield const AuthenticationLoading();
+        emit(const AuthenticationLoading());
 
         final userDetails = await userDetailsStorage.getUserDetails();
-        yield AuthenticationSuccessful(userDetails: userDetails);
+        emit(AuthenticationSuccessful(userDetails: userDetails));
       } catch (err, trace) {
-        print(err);
-        print(trace);
+        log('$err');
+        log('$trace');
         await userDetailsStorage.deleteUserDetails();
-        yield const AuthenticationUnauthenticated();
+        emit(const AuthenticationUnauthenticated());
       }
-    }
+    });
   }
+
+  final UserDetailsStorage userDetailsStorage;
 }
 
 abstract class AuthenticationEvent extends Equatable {

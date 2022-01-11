@@ -4,11 +4,8 @@ import 'package:equatable/equatable.dart';
 class AuthenticatedNavigatorBloc
     extends Bloc<AuthenticatedNavigatorEvent, AuthenticatedNavigatorState> {
   AuthenticatedNavigatorBloc()
-      : super(const AuthenticatedNavigatorState.initial());
-
-  Stream<AuthenticatedNavigatorState> mapEventToStateInternal(
-      AuthenticatedNavigatorEvent event) async* {
-    if (event is AuthenticatedNavigatorPopped) {
+      : super(const AuthenticatedNavigatorState.initial()) {
+    on<AuthenticatedNavigatorPopped>((event, emit) {
       final currState = state;
       final toEntityDetails =
           currState.isProcessDetails && currState.isEntityDetails;
@@ -24,62 +21,55 @@ class AuthenticatedNavigatorBloc
                 )
               : const AuthenticatedNavigatorState.initial();
 
-      yield AuthenticatedNavigatorResult(
+      emit(AuthenticatedNavigatorResult(
         previous: currState,
         state: newState,
-      );
-    } else if (event is NotificacionesSettingsViewPushed) {
-      yield const AuthenticatedNavigatorState(isNotificacionesSettings: true);
-    } else if (event is NotificacionesSettingsFiltroBienesServiciosViewPushed) {
-      yield const AuthenticatedNavigatorState(
+      ));
+    });
+
+    on<NotificacionesSettingsViewPushed>((event, emit) {
+      emit(const AuthenticatedNavigatorState(isNotificacionesSettings: true));
+    });
+
+    on<NotificacionesSettingsFiltroBienesServiciosViewPushed>((event, emit) {
+      emit(const AuthenticatedNavigatorState(
         isNotificacionesSettings: true,
         isNotificacionesSettingsFiltroBienesServicios: true,
-      );
-    } else if (event is NotificacionesSettingsMontoViewPushed) {
-      yield const AuthenticatedNavigatorState(
+      ));
+    });
+
+    on<NotificacionesSettingsMontoViewPushed>((event, emit) {
+      emit(const AuthenticatedNavigatorState(
         isNotificacionesSettings: true,
         isNotificacionesSettingsMonto: true,
-      );
-    } else if (event is NotificacionesSettingsKeywordViewPushed) {
-      yield const AuthenticatedNavigatorState(
+      ));
+    });
+
+    on<NotificacionesSettingsKeywordViewPushed>((event, emit) {
+      emit(const AuthenticatedNavigatorState(
         isNotificacionesSettings: true,
         isNotificacionesSettingsKeyword: true,
-      );
-    } else if (event is EntityDetailsPushed) {
-      yield AuthenticatedNavigatorState(
+      ));
+    });
+
+    on<EntityDetailsPushed>((event, emit) {
+      emit(AuthenticatedNavigatorState(
         isEntityDetails: true,
         entityDetailsId: event.id,
-      );
-    } else if (event is ProcessDetailsPushed) {
-      yield AuthenticatedNavigatorState(
+      ));
+    });
+    on<ProcessDetailsPushed>((event, emit) {
+      emit(AuthenticatedNavigatorState(
         isProcessDetails: true,
         processDetailsId: event.id,
         isEntityDetails: state.isEntityDetails,
         entityDetailsId: state.entityDetailsId,
-      );
-    } else if (event is UserInformationPushed) {
-      yield const AuthenticatedNavigatorState(isUserInformation: true);
-    }
-  }
+      ));
+    });
 
-  @override
-  Stream<AuthenticatedNavigatorState> mapEventToState(
-      AuthenticatedNavigatorEvent event) async* {
-    // var prevState = state;
-    yield* mapEventToStateInternal(
-            event) /*.map((state) {
-      state = AuthenticatedNavigatorState(
-        history: state.history.followedBy([prevState]).toList(),
-        isNotificacionesSettings: state.isNotificacionesSettings,
-        isNotificacionesSettingsFiltroBienesServicios:
-            state.isNotificacionesSettingsFiltroBienesServicios,
-        isNotificacionesSettingsKeyword: state.isNotificacionesSettingsKeyword,
-        isNotificacionesSettingsMonto: state.isNotificacionesSettingsMonto,
-      );
-      prevState = state;
-      return state;
-    })*/
-        ;
+    on<UserInformationPushed>((event, emit) {
+      emit(const AuthenticatedNavigatorState(isUserInformation: true));
+    });
   }
 }
 

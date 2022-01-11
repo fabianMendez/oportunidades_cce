@@ -8,44 +8,37 @@ class NotificacionesSettingsMontoBloc extends Bloc<
   NotificacionesSettingsMontoBloc({
     required this.userDetails,
     required this.grupoUNSPSCRepository,
-  }) : super(const NotificacionesSettingsMontoInitial());
-
-  final UserDetails userDetails;
-  final GrupoUNSPSCRepository grupoUNSPSCRepository;
-
-  @override
-  Stream<NotificacionesSettingsMontoState> mapEventToState(
-      NotificacionesSettingsMontoEvent event) async* {
-    if (event is NotificacionesSettingsMontoSubmitted) {
-      yield const NotificacionesSettingsMontoLoading();
+  }) : super(const NotificacionesSettingsMontoInitial()) {
+    on<NotificacionesSettingsMontoSubmitted>((event, emit) async {
+      emit(const NotificacionesSettingsMontoLoading());
 
       if (event.montoInferior.trim().isEmpty) {
-        yield const NotificacionesSettingsMontoFailure(
-            'El monto inferior es requerido');
+        emit(const NotificacionesSettingsMontoFailure(
+            'El monto inferior es requerido'));
         return;
       }
 
       final montoInferiorValue = double.tryParse(event.montoInferior.trim());
       if (montoInferiorValue == null || montoInferiorValue < 0) {
-        yield const NotificacionesSettingsMontoFailure(
-            'El monto inferior no es válido');
+        emit(const NotificacionesSettingsMontoFailure(
+            'El monto inferior no es válido'));
         return;
       }
       if (event.montoSuperior.trim().isEmpty) {
-        yield const NotificacionesSettingsMontoFailure(
-            'El monto superior es requerido');
+        emit(const NotificacionesSettingsMontoFailure(
+            'El monto superior es requerido'));
         return;
       }
 
       final montoSuperiorValue = double.tryParse(event.montoSuperior.trim());
       if (montoSuperiorValue == null ||
           montoSuperiorValue <= montoInferiorValue) {
-        yield const NotificacionesSettingsMontoFailure(
-            'El monto superior no es válido');
+        emit(const NotificacionesSettingsMontoFailure(
+            'El monto superior no es válido'));
         return;
       }
       try {
-        yield const NotificacionesSettingsMontoLoading();
+        emit(const NotificacionesSettingsMontoLoading());
         final response =
             await grupoUNSPSCRepository.insertarMontosConfiguracion(
           codigo: userDetails.codigo,
@@ -54,17 +47,20 @@ class NotificacionesSettingsMontoBloc extends Bloc<
         );
 
         if (response.successful) {
-          yield const NotificacionesSettingsMontoSuccess();
+          emit(const NotificacionesSettingsMontoSuccess());
         } else {
-          yield NotificacionesSettingsMontoFailure(response.message);
+          emit(NotificacionesSettingsMontoFailure(response.message));
         }
       } catch (err, str) {
         print(err);
         print(str);
-        yield NotificacionesSettingsMontoFailure(err.toString());
+        emit(NotificacionesSettingsMontoFailure(err.toString()));
       }
-    }
+    });
   }
+
+  final UserDetails userDetails;
+  final GrupoUNSPSCRepository grupoUNSPSCRepository;
 }
 
 abstract class NotificacionesSettingsMontoEvent extends Equatable {

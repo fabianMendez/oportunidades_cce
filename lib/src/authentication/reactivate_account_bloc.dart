@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:equatable/equatable.dart';
@@ -7,22 +9,17 @@ class ReactivateAccountBloc
     extends Bloc<ReactivateAccountEvent, ReactivateAccountState> {
   ReactivateAccountBloc({
     required this.usuarioRepository,
-  }) : super(const ReactivateAccountInitial());
-
-  final UsuarioRepository usuarioRepository;
-
-  @override
-  Stream<ReactivateAccountState> mapEventToState(event) async* {
-    if (event is ReactivateAccountSubmitted) {
-      yield const ReactivateAccountLoading();
+  }) : super(const ReactivateAccountInitial()) {
+    on<ReactivateAccountSubmitted>((event, emit) async {
+      emit(const ReactivateAccountLoading());
 
       if (event.email.trim().isEmpty) {
-        yield const ReactivateAccountFailure('Correo requerido');
+        emit(const ReactivateAccountFailure('Correo requerido'));
         return;
       }
 
       if (!EmailValidator.validate(event.email)) {
-        yield const ReactivateAccountFailure('El correo no es válido');
+        emit(const ReactivateAccountFailure('El correo no es válido'));
         return;
       }
 
@@ -32,17 +29,19 @@ class ReactivateAccountBloc
         );
 
         if (response.successful) {
-          yield const ReactivateAccountSuccess();
+          emit(const ReactivateAccountSuccess());
         } else {
-          yield ReactivateAccountFailure(response.message);
+          emit(ReactivateAccountFailure(response.message));
         }
       } catch (err, str) {
-        print(err);
-        print(str);
-        yield ReactivateAccountFailure(err.toString());
+        log('$err');
+        log('$str');
+        emit(ReactivateAccountFailure(err.toString()));
       }
-    }
+    });
   }
+
+  final UsuarioRepository usuarioRepository;
 }
 
 abstract class ReactivateAccountEvent extends Equatable {

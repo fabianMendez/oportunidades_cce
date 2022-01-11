@@ -12,18 +12,10 @@ class EntityDetailsBloc extends Bloc<EntityDetailsEvent, EntityDetailsState> {
     required this.entidadRepository,
     required this.procesoRepository,
     required this.id,
-  }) : super(EntityDetailsLoading(id: id));
-
-  final UserDetails userDetails;
-  final EntidadRepository entidadRepository;
-  final ProcesoRepository procesoRepository;
-  final int id;
-
-  @override
-  Stream<EntityDetailsState> mapEventToState(EntityDetailsEvent event) async* {
-    if (event is EntityDetailsStarted) {
+  }) : super(EntityDetailsLoading(id: id)) {
+    on<EntityDetailsStarted>((event, emit) async {
       try {
-        yield EntityDetailsLoading(id: id);
+        emit(EntityDetailsLoading(id: id));
         final entidad = await entidadRepository.getEntidad(
           codigo: userDetails.codigo,
           idEntidad: id,
@@ -34,17 +26,22 @@ class EntityDetailsBloc extends Bloc<EntityDetailsEvent, EntityDetailsState> {
           idEntidad: id,
         );
 
-        yield EntityDetailsReady(
+        emit(EntityDetailsReady(
           details: entidad,
           procesos: procesos,
-        );
+        ));
       } catch (err, str) {
         print(err);
         print(str);
-        yield EntityDetailsFailure(err.toString(), id: id);
+        emit(EntityDetailsFailure(err.toString(), id: id));
       }
-    }
+    });
   }
+
+  final UserDetails userDetails;
+  final EntidadRepository entidadRepository;
+  final ProcesoRepository procesoRepository;
+  final int id;
 }
 
 abstract class EntityDetailsEvent extends Equatable {
