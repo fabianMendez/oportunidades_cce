@@ -17,6 +17,7 @@
 ## Mandatory
 
  - [X] Checkboxes for terms and conditions
+ - [ ] Show terms and conditions
  - [X] Improve authentication views flow
  - [ ] Investigate weird bug when after loging in, the notifications repository
  returns an error.
@@ -29,3 +30,7 @@
 ## Bugs
 
  - [ ] Can not update user preferences for email notifications
+
+## TODO
+ - [ ] Tests for the client
+ - [ ] Use freezed in blocs events/states

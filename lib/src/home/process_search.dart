@@ -9,6 +9,8 @@ import 'package:oportunidades_cce/src/home/widgets/process_result_tile.dart';
 import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'package:oportunidades_cce/src/widgets/search_field.dart';
 
+final _headerKey = GlobalKey();
+
 class ProcessSearch extends StatelessWidget {
   const ProcessSearch({Key? key}) : super(key: key);
 
@@ -21,7 +23,10 @@ class ProcessSearch extends StatelessWidget {
         if (!hasResults) {
           return Column(
             children: [
-              _Header(state: state),
+              _Header(
+                key: _headerKey,
+                state: state,
+              ),
               Expanded(
                 child: Center(
                   child: state.isEmpty
@@ -45,7 +50,10 @@ class ProcessSearch extends StatelessWidget {
         final child = CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: _Header(state: state),
+              child: _Header(
+                key: _headerKey,
+                state: state,
+              ),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
