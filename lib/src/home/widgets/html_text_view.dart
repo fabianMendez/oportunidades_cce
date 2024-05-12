@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:oportunidades_cce/src/home/blocs/html_text_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,7 +14,8 @@ class HTMLTextView extends StatelessWidget {
         if (state is HTMLTextReady) {
           return Scrollbar(
             child: SingleChildScrollView(
-              child: Html(
+              child: /*
+Html(
                 data: '''
                 <style>
                 html, body {
@@ -33,7 +34,9 @@ class HTMLTextView extends StatelessWidget {
                     launch(urlString);
                   }
                 },
-              ),
+              )
+              */
+                  Text(state.data),
             ),
           );
         }
