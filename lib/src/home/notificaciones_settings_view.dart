@@ -9,7 +9,7 @@ import 'package:oportunidades_cce/src/widgets/dropdown_field.dart';
 import 'package:provider/provider.dart';
 
 class NotificacionesSettingsView extends StatelessWidget {
-  const NotificacionesSettingsView({Key? key}) : super(key: key);
+  const NotificacionesSettingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class NotificacionesSettingsView extends StatelessWidget {
 }
 
 class NotificacionesSettings extends StatelessWidget {
-  const NotificacionesSettings({Key? key}) : super(key: key);
+  const NotificacionesSettings({super.key});
 
   static const _kPadding = EdgeInsets.all(16);
 
@@ -98,9 +98,9 @@ class NotificacionesSettings extends StatelessWidget {
 
 class NotificacionesSettingsListing extends StatelessWidget {
   const NotificacionesSettingsListing({
-    Key? key,
+    super.key,
     required this.settingsState,
-  }) : super(key: key);
+  });
 
   final NotificacionesSettingsState settingsState;
 
@@ -132,7 +132,7 @@ class NotificacionesSettingsListing extends StatelessWidget {
 }
 
 class EmptyNotificationSettings extends StatelessWidget {
-  const EmptyNotificationSettings({Key? key}) : super(key: key);
+  const EmptyNotificationSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +142,9 @@ class EmptyNotificationSettings extends StatelessWidget {
 
 class ValueNotificationSettingsListing extends StatelessWidget {
   const ValueNotificationSettingsListing({
-    Key? key,
+    super.key,
     required this.settingsState,
-  }) : super(key: key);
+  });
 
   final NotificacionesSettingsState settingsState;
 
@@ -169,9 +169,9 @@ class ValueNotificationSettingsListing extends StatelessWidget {
 
 class KeywordNotificationSettingsListing extends StatelessWidget {
   const KeywordNotificationSettingsListing({
-    Key? key,
+    super.key,
     required this.settingsState,
-  }) : super(key: key);
+  });
 
   final NotificacionesSettingsState settingsState;
 

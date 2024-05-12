@@ -75,10 +75,8 @@ class FavoriteProcessesLoading extends FavoriteProcessesState {
 
 class FavoriteProcessesReady extends FavoriteProcessesState {
   const FavoriteProcessesReady({
-    required List<ProcessSearchResult> results,
-  }) : super(
-          results: results,
-        );
+    required super.results,
+  });
 }
 
 class FavoriteProcessesFailure extends FavoriteProcessesState {

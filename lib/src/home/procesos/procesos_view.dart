@@ -4,7 +4,7 @@ import 'package:oportunidades_cce/src/home/mis_procesos_view.dart';
 import 'package:oportunidades_cce/src/home/user/app_menu_button.dart';
 
 class ProcesosView extends StatelessWidget {
-  const ProcesosView({Key? key}) : super(key: key);
+  const ProcesosView({super.key});
 
   @override
   Widget build(BuildContext context) {

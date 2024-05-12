@@ -7,7 +7,7 @@ import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'remove_account_bloc.dart';
 
 class RemoveAccountView extends StatelessWidget {
-  const RemoveAccountView({Key? key}) : super(key: key);
+  const RemoveAccountView({super.key});
 
   static const routeName = '/auth/remove_account';
 
@@ -28,7 +28,7 @@ class RemoveAccountView extends StatelessWidget {
 }
 
 class RemoveAccountForm extends StatefulWidget {
-  const RemoveAccountForm({Key? key}) : super(key: key);
+  const RemoveAccountForm({super.key});
 
   @override
   State<RemoveAccountForm> createState() => _RemoveAccountFormState();
@@ -87,10 +87,10 @@ class _RemoveAccountFormState extends State<RemoveAccountForm> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
+                  onPressed: isLoading ? null : () => _submit(context),
                   child: isLoading
                       ? const CircularProgressIndicator()
                       : const Text('Recuperar'),
-                  onPressed: isLoading ? null : () => _submit(context),
                 ),
               ],
             ),
@@ -103,9 +103,9 @@ class _RemoveAccountFormState extends State<RemoveAccountForm> {
 
 class RemoveAccountListener extends StatelessWidget {
   const RemoveAccountListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

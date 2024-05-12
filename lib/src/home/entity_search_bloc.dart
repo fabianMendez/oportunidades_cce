@@ -138,29 +138,22 @@ class EntitySearchUninitialized extends EntitySearchState {
 
 class EntitySearchLoading extends EntitySearchState {
   const EntitySearchLoading({
-    String term = '',
-  }) : super(
-          term: term,
-        );
+    super.term,
+  });
 }
 
 class EntitySearchReady extends EntitySearchState {
   const EntitySearchReady({
-    String term = '',
-    required List<EntitySearchResult> results,
-  }) : super(
-          term: term,
-          results: results,
-        );
+    super.term,
+    required super.results,
+  });
 }
 
 class EntitySearchFailure extends EntitySearchState {
   const EntitySearchFailure(
     this.error, {
-    String term = '',
-  }) : super(
-          term: term,
-        );
+    super.term,
+  });
   final String error;
 
   @override

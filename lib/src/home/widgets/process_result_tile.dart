@@ -6,10 +6,10 @@ import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 
 class ProcessResultTile extends StatelessWidget {
   const ProcessResultTile({
-    Key? key,
+    super.key,
     required this.result,
     this.contentPadding,
-  }) : super(key: key);
+  });
 
   final ProcessSearchResult result;
   final EdgeInsets? contentPadding;
@@ -29,6 +29,7 @@ class ProcessResultTile extends StatelessWidget {
       subtitle: Text(
         '\$${moneyFmt.format(result.proceso.tender.value.amount)} ${result.moneda}',
       ),
+      tilePadding: contentPadding,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -105,7 +106,6 @@ class ProcessResultTile extends StatelessWidget {
           ),
         ),
       ],
-      tilePadding: contentPadding,
     );
   }
 }

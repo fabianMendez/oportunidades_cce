@@ -35,6 +35,7 @@ dependencies:
   share_plus: ^2.1.4
   url_launcher: ^6.0.11
 
+  flutter_gen: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -8,7 +8,7 @@ import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'forgot_password_bloc.dart';
 
 class ForgotPasswordView extends StatelessWidget {
-  const ForgotPasswordView({Key? key}) : super(key: key);
+  const ForgotPasswordView({super.key});
 
   static const routeName = '/auth/forgot_password';
 
@@ -29,7 +29,7 @@ class ForgotPasswordView extends StatelessWidget {
 }
 
 class ForgotPasswordForm extends StatefulWidget {
-  const ForgotPasswordForm({Key? key}) : super(key: key);
+  const ForgotPasswordForm({super.key});
 
   @override
   State<ForgotPasswordForm> createState() => _ForgotPasswordFormState();
@@ -122,9 +122,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
 class ForgotPasswordListener extends StatelessWidget {
   const ForgotPasswordListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

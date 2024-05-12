@@ -4,7 +4,7 @@ import 'package:oportunidades_cce/src/home/favorite_entities_bloc.dart';
 import 'package:oportunidades_cce/src/home/widgets/entity_result_tile.dart';
 
 class FavoriteEntities extends StatelessWidget {
-  const FavoriteEntities({Key? key}) : super(key: key);
+  const FavoriteEntities({super.key});
 
   @override
   Widget build(BuildContext context) {

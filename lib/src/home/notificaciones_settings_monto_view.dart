@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
@@ -10,7 +9,7 @@ import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'package:provider/provider.dart';
 
 class NotificacionesSettingsMontoView extends StatelessWidget {
-  const NotificacionesSettingsMontoView({Key? key}) : super(key: key);
+  const NotificacionesSettingsMontoView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,9 @@ class NotificacionesSettingsMontoView extends StatelessWidget {
 
 class NotificacionesSettingsMonto extends StatefulWidget {
   const NotificacionesSettingsMonto({
-    Key? key,
+    super.key,
     this.contentPadding = const EdgeInsets.all(16),
-  }) : super(key: key);
+  });
 
   final EdgeInsets contentPadding;
 
@@ -104,10 +103,10 @@ class _NotificacionesSettingsMontoState
               ),
               const SizedBox(height: 16),
               ElevatedButton(
+                onPressed: isLoading ? null : () => _submit(context),
                 child: isLoading
                     ? const CircularProgressIndicator.adaptive()
                     : const Text('Insertar'),
-                onPressed: isLoading ? null : () => _submit(context),
               ),
             ],
           ),
@@ -119,9 +118,9 @@ class _NotificacionesSettingsMontoState
 
 class NotificacionesSettingsMontoListener extends StatelessWidget {
   const NotificacionesSettingsMontoListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

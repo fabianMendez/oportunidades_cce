@@ -288,35 +288,27 @@ class NotificacionesSettingsState extends Equatable {
 
 class NotificacionesSettingsLoading extends NotificacionesSettingsState {
   const NotificacionesSettingsLoading({
-    required NotificacionesSettingsFiltro selectedFilter,
-  }) : super(
-          selectedFilter: selectedFilter,
-        );
+    required super.selectedFilter,
+  });
 }
 
 class NotificacionesSettingsReady extends NotificacionesSettingsState {
   const NotificacionesSettingsReady({
-    required NotificacionesSettingsFiltro selectedFilter,
-    required List<ValueNotificationSetting> valueNotificationSettings,
+    required super.selectedFilter,
+    required super.valueNotificationSettings,
     required Map<NotificacionesSettingsFiltro, List<dynamic>> cache,
-    required List<FamiliaUNSPSC> familyNotificationSettings,
-    required List<KeywordNotificationSetting> keywordNotificationSettings,
+    required super.familyNotificationSettings,
+    required super.keywordNotificationSettings,
   }) : super(
-          selectedFilter: selectedFilter,
-          valueNotificationSettings: valueNotificationSettings,
           notificationSettingsCache: cache,
-          familyNotificationSettings: familyNotificationSettings,
-          keywordNotificationSettings: keywordNotificationSettings,
         );
 }
 
 class NotificacionesSettingsFailure extends NotificacionesSettingsState {
   const NotificacionesSettingsFailure(
     this.error, {
-    required NotificacionesSettingsFiltro selectedFilter,
-  }) : super(
-          selectedFilter: selectedFilter,
-        );
+    required super.selectedFilter,
+  });
 
   final String error;
 
@@ -326,17 +318,10 @@ class NotificacionesSettingsFailure extends NotificacionesSettingsState {
 
 class NotificacionesSettingsSelecting extends NotificacionesSettingsState {
   const NotificacionesSettingsSelecting({
-    required NotificacionesSettingsFiltro selectedFilter,
-    required List<ValueNotificationSetting> valueNotificationSettings,
-    required List<FamiliaUNSPSC> familyNotificationSettings,
-    required List<KeywordNotificationSetting> keywordNotificationSettings,
-    required Map<NotificacionesSettingsFiltro, List<dynamic>>
-        notificationSettingsCache,
-  }) : super(
-          selectedFilter: selectedFilter,
-          notificationSettingsCache: notificationSettingsCache,
-          valueNotificationSettings: valueNotificationSettings,
-          familyNotificationSettings: familyNotificationSettings,
-          keywordNotificationSettings: keywordNotificationSettings,
-        );
+    required super.selectedFilter,
+    required super.valueNotificationSettings,
+    required super.familyNotificationSettings,
+    required super.keywordNotificationSettings,
+    required super.notificationSettingsCache,
+  });
 }

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 enum _AppMenuOption { userInfo, logout }
 
 class AppMenuButton extends StatelessWidget {
-  const AppMenuButton({Key? key}) : super(key: key);
+  const AppMenuButton({super.key});
 
   @override
   Widget build(BuildContext context) {

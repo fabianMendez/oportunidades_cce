@@ -212,14 +212,9 @@ class NotificacionesSettingsFiltroBienesServiciosUninitialized
 class NotificacionesSettingsFiltroBienesServiciosLoading
     extends NotificacionesSettingsFiltroBienesServiciosState {
   const NotificacionesSettingsFiltroBienesServiciosLoading({
-    required int grupoSeleccionado,
-    required List<GrupoUNSPSC> gruposUNSPSC,
-    String termino = '',
-    List<GrupoUNSPSC> familiasSeleccionadas = const [],
-  }) : super(
-          grupoSeleccionado: grupoSeleccionado,
-          gruposUNSPSC: gruposUNSPSC,
-          termino: termino,
-          familiasSeleccionadas: familiasSeleccionadas,
-        );
+    required super.grupoSeleccionado,
+    required super.gruposUNSPSC,
+    super.termino,
+    super.familiasSeleccionadas,
+  });
 }

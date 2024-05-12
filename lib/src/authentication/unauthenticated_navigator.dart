@@ -4,7 +4,6 @@ import 'package:oportunidades_cce/src/authentication/forgot_password_view.dart';
 import 'package:oportunidades_cce/src/authentication/login_view.dart';
 import 'package:oportunidades_cce/src/authentication/register_view.dart';
 import 'package:oportunidades_cce/src/authentication/unauthenticated_navigator_bloc.dart';
-import 'package:provider/src/provider.dart';
 
 import '../sample_feature/sample_item_list_view.dart';
 
@@ -12,8 +11,8 @@ final _navigatorKey = GlobalKey<NavigatorState>();
 
 class UnauthenticatedNavigator extends StatefulWidget {
   const UnauthenticatedNavigator({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<UnauthenticatedNavigator> createState() =>

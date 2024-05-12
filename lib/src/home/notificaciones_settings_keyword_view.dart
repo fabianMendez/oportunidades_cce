@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
@@ -10,7 +9,7 @@ import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'package:provider/provider.dart';
 
 class NotificacionesSettingsKeywordView extends StatelessWidget {
-  const NotificacionesSettingsKeywordView({Key? key}) : super(key: key);
+  const NotificacionesSettingsKeywordView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,9 @@ class NotificacionesSettingsKeywordView extends StatelessWidget {
 
 class NotificacionesSettingsKeyword extends StatefulWidget {
   const NotificacionesSettingsKeyword({
-    Key? key,
+    super.key,
     this.contentPadding = const EdgeInsets.all(16),
-  }) : super(key: key);
+  });
 
   final EdgeInsets contentPadding;
 
@@ -84,10 +83,10 @@ class _NotificacionesSettingsKeywordState
               ),
               const SizedBox(height: 16),
               ElevatedButton(
+                onPressed: isLoading ? null : () => _submit(context),
                 child: isLoading
                     ? const CircularProgressIndicator.adaptive()
                     : const Text('Insertar'),
-                onPressed: isLoading ? null : () => _submit(context),
               ),
             ],
           ),
@@ -99,9 +98,9 @@ class _NotificacionesSettingsKeywordState
 
 class NotificacionesSettingsKeywordListener extends StatelessWidget {
   const NotificacionesSettingsKeywordListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

@@ -8,7 +8,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class MisEntidadesView extends StatefulWidget {
-  const MisEntidadesView({Key? key}) : super(key: key);
+  const MisEntidadesView({super.key});
 
   @override
   State<MisEntidadesView> createState() => _MisEntidadesViewState();

@@ -9,7 +9,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class BuscarProcesosView extends StatefulWidget {
-  const BuscarProcesosView({Key? key}) : super(key: key);
+  const BuscarProcesosView({super.key});
 
   @override
   State<BuscarProcesosView> createState() => _BuscarProcesosViewState();

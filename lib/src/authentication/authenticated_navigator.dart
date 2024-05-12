@@ -13,7 +13,7 @@ import 'package:oportunidades_cce/src/home/user/user_information_view.dart';
 final _navigatorKey = GlobalKey<NavigatorState>();
 
 class AuthenticatedNavigator extends StatelessWidget {
-  const AuthenticatedNavigator({Key? key}) : super(key: key);
+  const AuthenticatedNavigator({super.key});
 
   @override
   Widget build(BuildContext context) {

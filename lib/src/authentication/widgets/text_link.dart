@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class TextLink extends StatefulWidget {
   const TextLink({
-    Key? key,
+    super.key,
     this.prefixText = '',
     this.linkText,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final String prefixText;
   final String? linkText;
@@ -25,11 +25,11 @@ class _TextLinkState extends State<TextLink> {
     return RichText(
       text: TextSpan(
         text: widget.prefixText,
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
         children: [
           TextSpan(
             text: widget.linkText,
-            style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.w600,
                   backgroundColor:

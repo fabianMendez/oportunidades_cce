@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 
 class SampleItemListView extends StatelessWidget {
   const SampleItemListView({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   static const routeName = '/';
 
@@ -57,13 +57,13 @@ class SampleItemListView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               SubmitButton(
-                child: const Text('Iniciar sesión'),
                 onPressed: () {
                   context
                       .read<UnauthenticatedNavigatorBloc>()
                       .add(const LoginViewPushed());
                 },
                 width: null,
+                child: const Text('Iniciar sesión'),
               ),
               const SizedBox(height: 12),
               TextLink(

@@ -8,7 +8,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class ProcessDetailsView extends StatelessWidget {
-  const ProcessDetailsView({Key? key, required this.id}) : super(key: key);
+  const ProcessDetailsView({super.key, required this.id});
 
   final int id;
 

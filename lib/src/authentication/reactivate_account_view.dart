@@ -7,7 +7,7 @@ import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'reactivate_account_bloc.dart';
 
 class ReactivateAccountView extends StatelessWidget {
-  const ReactivateAccountView({Key? key}) : super(key: key);
+  const ReactivateAccountView({super.key});
 
   static const routeName = '/auth/reactivate_account';
 
@@ -28,7 +28,7 @@ class ReactivateAccountView extends StatelessWidget {
 }
 
 class ReactivateAccountForm extends StatefulWidget {
-  const ReactivateAccountForm({Key? key}) : super(key: key);
+  const ReactivateAccountForm({super.key});
 
   @override
   State<ReactivateAccountForm> createState() => _ReactivateAccountFormState();
@@ -87,10 +87,10 @@ class _ReactivateAccountFormState extends State<ReactivateAccountForm> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
+                  onPressed: isLoading ? null : () => _submit(context),
                   child: isLoading
                       ? const CircularProgressIndicator()
                       : const Text('Recuperar'),
-                  onPressed: isLoading ? null : () => _submit(context),
                 ),
               ],
             ),
@@ -103,9 +103,9 @@ class _ReactivateAccountFormState extends State<ReactivateAccountForm> {
 
 class ReactivateAccountListener extends StatelessWidget {
   const ReactivateAccountListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

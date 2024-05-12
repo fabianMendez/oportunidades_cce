@@ -5,7 +5,7 @@ import 'package:oportunidades_cce/src/home/widgets/favorite_entity_button.dart';
 import 'package:oportunidades_cce/src/home/widgets/process_result_tile.dart';
 
 class EntityDetails extends StatelessWidget {
-  const EntityDetails({Key? key}) : super(key: key);
+  const EntityDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class EntityDetails extends StatelessWidget {
                       children: [
                         Text(
                           details.nombre,
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(context).textTheme.titleLarge,
                           textAlign: TextAlign.left,
                         ),
                         const SizedBox(height: 12),

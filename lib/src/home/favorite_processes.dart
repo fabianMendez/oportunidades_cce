@@ -4,7 +4,7 @@ import 'package:oportunidades_cce/src/home/favorite_processes_bloc.dart';
 import 'package:oportunidades_cce/src/home/widgets/process_result_tile.dart';
 
 class FavoriteProcesses extends StatelessWidget {
-  const FavoriteProcesses({Key? key}) : super(key: key);
+  const FavoriteProcesses({super.key});
 
   @override
   Widget build(BuildContext context) {

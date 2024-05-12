@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class XTextField extends StatefulWidget {
   const XTextField({
-    Key? key,
+    super.key,
     this.onChanged,
     this.onSubmitted,
     required this.value,
@@ -14,7 +14,7 @@ class XTextField extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     this.enabled,
     this.autocorrect = false,
-  }) : super(key: key);
+  });
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;

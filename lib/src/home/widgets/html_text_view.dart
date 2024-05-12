@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_html/flutter_html.dart';
 import 'package:oportunidades_cce/src/home/blocs/html_text_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HTMLTextView extends StatelessWidget {
-  const HTMLTextView({Key? key}) : super(key: key);
+  const HTMLTextView({super.key});
 
   @override
   Widget build(BuildContext context) {

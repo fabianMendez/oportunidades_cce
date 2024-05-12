@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
@@ -12,7 +11,7 @@ import 'package:oportunidades_cce/src/widgets/search_field.dart';
 final _headerKey = GlobalKey();
 
 class ProcessSearch extends StatelessWidget {
-  const ProcessSearch({Key? key}) : super(key: key);
+  const ProcessSearch({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +97,9 @@ List<T> removeAt<T>(List<T> list, int index) {
 
 class _Header extends StatelessWidget {
   const _Header({
-    Key? key,
+    super.key,
     required this.state,
-  }) : super(key: key);
+  });
 
   final ProcessSearchState state;
 

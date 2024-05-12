@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class CheckboxField extends StatefulWidget {
   const CheckboxField({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChanged,
     required this.child,
     this.enabled,
-  }) : super(key: key);
+  });
 
   final bool value;
   final ValueChanged<bool> onChanged;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class SearchField extends StatefulWidget {
   const SearchField({
-    Key? key,
+    super.key,
     this.onChanged,
     this.onSubmitted,
     required this.value,
-  }) : super(key: key);
+  });
 
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;

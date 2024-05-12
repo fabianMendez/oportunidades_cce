@@ -4,7 +4,7 @@ import 'package:oportunidades_cce/src/home/mis_oportunidades_view.dart';
 import 'package:oportunidades_cce/src/home/procesos/procesos_view.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();

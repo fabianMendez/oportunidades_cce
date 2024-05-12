@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({
-    Key? key,
+    super.key,
     this.enabled,
     this.onChanged,
     this.onSubmitted,
     this.textInputAction,
-  }) : super(key: key);
+  });
 
   final bool? enabled;
   final ValueChanged<String>? onChanged;

@@ -5,7 +5,7 @@ import 'package:oportunidades_cce/src/home/widgets/entity_result_tile.dart';
 import 'package:oportunidades_cce/src/widgets/search_field.dart';
 
 class EntitySearch extends StatelessWidget {
-  const EntitySearch({Key? key}) : super(key: key);
+  const EntitySearch({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +78,8 @@ class EntitySearch extends StatelessWidget {
 
 class _Header extends StatelessWidget {
   const _Header({
-    Key? key,
     required this.state,
-  }) : super(key: key);
+  });
 
   final EntitySearchState state;
 
@@ -102,7 +101,7 @@ class _Header extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        if (!state.isEmpty && !state.isLoading && state.results.isNotEmpty)
+        if (state.isNotEmpty && !state.isLoading && state.results.isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,

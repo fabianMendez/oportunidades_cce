@@ -12,7 +12,7 @@ import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'login_bloc.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   static const routeName = '/auth/login';
 
@@ -34,7 +34,7 @@ class LoginView extends StatelessWidget {
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  const LoginForm({super.key});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -148,9 +148,9 @@ class _LoginFormState extends State<LoginForm> {
 
 class LoginListener extends StatelessWidget {
   const LoginListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

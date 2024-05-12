@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class SubmitButton extends StatelessWidget {
   const SubmitButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     this.isLoading = false,
     this.child,
     this.height = 48,
     this.width = double.infinity,
-  }) : super(key: key);
+  });
 
   final VoidCallback onPressed;
   final bool isLoading;

@@ -49,9 +49,7 @@ class APIClient {
   String _encodeUrlParameters(Map<String, Object?> parameters) {
     final List<String> parts = <String>[];
     for (String key in parameters.keys) {
-      final String part = Uri.encodeComponent(key) +
-          '=' +
-          Uri.encodeComponent(parameters[key]?.toString() ?? '');
+      final String part = '${Uri.encodeComponent(key)}=${Uri.encodeComponent(parameters[key]?.toString() ?? '')}';
       parts.add(part);
     }
 

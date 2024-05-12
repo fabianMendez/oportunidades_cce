@@ -3,7 +3,7 @@ import 'package:oportunidades_cce/src/authentication/authenticated_navigator_blo
 import 'package:provider/provider.dart';
 
 class NotificationsSettingsButton extends StatelessWidget {
-  const NotificationsSettingsButton({Key? key}) : super(key: key);
+  const NotificationsSettingsButton({super.key});
 
   @override
   Widget build(BuildContext context) {

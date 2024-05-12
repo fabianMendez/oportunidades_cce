@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/blocs/favorite_entity_button_bloc.dart';
@@ -9,10 +8,10 @@ import 'package:provider/provider.dart';
 
 class FavoriteEntityButton extends StatelessWidget {
   const FavoriteEntityButton({
-    Key? key,
+    super.key,
     required this.idEntidad,
     this.initial,
-  }) : super(key: key);
+  });
 
   final int idEntidad;
   final bool? initial;
@@ -35,7 +34,7 @@ class FavoriteEntityButton extends StatelessWidget {
 }
 
 class FavoriteEntityButtonBuilder extends StatelessWidget {
-  const FavoriteEntityButtonBuilder({Key? key}) : super(key: key);
+  const FavoriteEntityButtonBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {

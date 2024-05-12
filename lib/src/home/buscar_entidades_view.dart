@@ -8,7 +8,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class BuscarEntidadesView extends StatefulWidget {
-  const BuscarEntidadesView({Key? key}) : super(key: key);
+  const BuscarEntidadesView({super.key});
 
   @override
   State<BuscarEntidadesView> createState() => _BuscarEntidadesViewState();

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
@@ -10,7 +9,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProcessDetails extends StatelessWidget {
-  const ProcessDetails({Key? key}) : super(key: key);
+  const ProcessDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class ProcessDetails extends StatelessWidget {
                   children: [
                     Text(
                       details.buyer.name,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleLarge,
                       textAlign: TextAlign.left,
                     ),
                     const SizedBox(height: 12),

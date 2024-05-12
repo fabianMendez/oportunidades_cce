@@ -365,41 +365,28 @@ class ProcessSearchUninitialized extends ProcessSearchState {
 
 class ProcessSearchLoading extends ProcessSearchState {
   const ProcessSearchLoading({
-    String term = '',
-    required SavedFilter filter,
-    required ProcessSort sort,
-  }) : super(
-          term: term,
-          filter: filter,
-          sort: sort,
-        );
+    super.term,
+    required super.filter,
+    required super.sort,
+  });
 }
 
 class ProcessSearchReady extends ProcessSearchState {
   const ProcessSearchReady({
-    String term = '',
-    required SavedFilter filter,
-    required List<ProcessSearchResult> results,
-    required ProcessSort sort,
-  }) : super(
-          term: term,
-          filter: filter,
-          results: results,
-          sort: sort,
-        );
+    super.term,
+    required super.filter,
+    required super.results,
+    required super.sort,
+  });
 }
 
 class ProcessSearchFailure extends ProcessSearchState {
   const ProcessSearchFailure(
     this.error, {
-    String term = '',
-    required SavedFilter filter,
-    required ProcessSort sort,
-  }) : super(
-          term: term,
-          filter: filter,
-          sort: sort,
-        );
+    super.term,
+    required super.filter,
+    required super.sort,
+  });
 
   final String error;
 

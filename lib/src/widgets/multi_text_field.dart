@@ -3,10 +3,10 @@ import 'package:oportunidades_cce/src/widgets/xtext_field.dart';
 
 class MultiTextField extends StatelessWidget {
   const MultiTextField({
-    Key? key,
+    super.key,
     required this.values,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final List<String> values;
   final ValueChanged<List<String>> onChanged;

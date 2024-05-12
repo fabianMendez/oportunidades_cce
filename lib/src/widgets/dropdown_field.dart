@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DropdownField<T> extends StatelessWidget {
   const DropdownField({
-    Key? key,
+    super.key,
     required this.value,
     required this.items,
     required this.onChanged,
@@ -12,7 +12,7 @@ class DropdownField<T> extends StatelessWidget {
     this.enabled = true,
     this.required = false,
     this.isDense = true,
-  }) : super(key: key);
+  });
 
   final T? value;
   final Map<T, String> items;

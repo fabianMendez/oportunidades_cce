@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
@@ -13,8 +11,7 @@ import 'package:oportunidades_cce/src/widgets/search_field.dart';
 import 'package:provider/provider.dart';
 
 class NotificacionesSettingsFiltroBienesServiciosView extends StatelessWidget {
-  const NotificacionesSettingsFiltroBienesServiciosView({Key? key})
-      : super(key: key);
+  const NotificacionesSettingsFiltroBienesServiciosView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +31,9 @@ class NotificacionesSettingsFiltroBienesServiciosView extends StatelessWidget {
 
 class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
   const NotificacionesSettingsFiltroBienesServicios({
-    Key? key,
+    super.key,
     this.contentPadding = const EdgeInsets.all(8),
-  }) : super(key: key);
+  });
 
   final EdgeInsets contentPadding;
 
@@ -179,7 +176,7 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
 }
 
 class _ScaffoldBuilder extends StatelessWidget {
-  const _ScaffoldBuilder({Key? key}) : super(key: key);
+  const _ScaffoldBuilder();
 
   @override
   Widget build(BuildContext context) {
@@ -227,11 +224,11 @@ class _ScaffoldBuilder extends StatelessWidget {
 
 class FamiliaCard extends StatelessWidget {
   const FamiliaCard({
-    Key? key,
+    super.key,
     required this.familia,
     this.selected = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final GrupoUNSPSC familia;
   final bool selected;

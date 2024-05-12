@@ -63,15 +63,15 @@ class ProcessDetailsUninitialized extends ProcessDetailsState {
 
 class ProcessDetailsLoading extends ProcessDetailsState {
   const ProcessDetailsLoading({
-    required int id,
-  }) : super(id: id);
+    required super.id,
+  });
 }
 
 class ProcessDetailsReady extends ProcessDetailsState {
   const ProcessDetailsReady({
-    required int id,
+    required super.id,
     required this.details,
-  }) : super(id: id);
+  });
 
   final Proceso details;
 }
@@ -79,8 +79,8 @@ class ProcessDetailsReady extends ProcessDetailsState {
 class ProcessDetailsFailure extends ProcessDetailsState {
   const ProcessDetailsFailure(
     this.error, {
-    required int id,
-  }) : super(id: id);
+    required super.id,
+  });
   final String error;
 
   @override

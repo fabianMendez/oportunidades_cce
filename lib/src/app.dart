@@ -14,7 +14,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 
 /// The Widget that configures your application.
 class OportunidadesCCEApp extends StatelessWidget {
-  OportunidadesCCEApp({Key? key}) : super(key: key);
+  OportunidadesCCEApp({super.key});
 
   final routerDelegate = OportunidadesCCERouterDelegate();
   final routeInformationParser = OportunidadesCCERouteInformationParser();

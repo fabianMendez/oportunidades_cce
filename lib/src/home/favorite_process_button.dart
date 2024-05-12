@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/favorite_process_button_bloc.dart';
@@ -9,10 +8,10 @@ import 'package:provider/provider.dart';
 
 class FavoriteProcessButton extends StatelessWidget {
   const FavoriteProcessButton({
-    Key? key,
+    super.key,
     required this.idProceso,
     this.initial,
-  }) : super(key: key);
+  });
 
   final int idProceso;
   final bool? initial;
@@ -35,7 +34,7 @@ class FavoriteProcessButton extends StatelessWidget {
 }
 
 class FavoriteProcessButtonBuilder extends StatelessWidget {
-  const FavoriteProcessButtonBuilder({Key? key}) : super(key: key);
+  const FavoriteProcessButtonBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class MisProcesosView extends StatefulWidget {
-  const MisProcesosView({Key? key}) : super(key: key);
+  const MisProcesosView({super.key});
 
   @override
   State<MisProcesosView> createState() => _MisProcesosViewState();

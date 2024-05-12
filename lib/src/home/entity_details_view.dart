@@ -9,7 +9,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class EntityDetailsView extends StatelessWidget {
-  const EntityDetailsView({Key? key, required this.id}) : super(key: key);
+  const EntityDetailsView({super.key, required this.id});
 
   final int id;
 

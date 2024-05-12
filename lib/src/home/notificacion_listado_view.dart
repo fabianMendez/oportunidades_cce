@@ -8,7 +8,7 @@ import 'package:oportunidades_cce/src/service_locator.dart';
 import 'package:provider/provider.dart';
 
 class NotificacionListadoView extends StatelessWidget {
-  const NotificacionListadoView({Key? key}) : super(key: key);
+  const NotificacionListadoView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class NotificacionListadoView extends StatelessWidget {
 }
 
 class NotificacionListado extends StatelessWidget {
-  const NotificacionListado({Key? key}) : super(key: key);
+  const NotificacionListado({super.key});
 
   void _refresh(BuildContext context) {
     context
@@ -55,8 +55,8 @@ class NotificacionListado extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
-                    children: const [
+                  const Column(
+                    children: [
                       Text(
                         'No hay oportunidades nuevas',
                         textAlign: TextAlign.center,

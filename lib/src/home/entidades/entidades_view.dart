@@ -4,7 +4,7 @@ import 'package:oportunidades_cce/src/home/mis_entidades_view.dart';
 import 'package:oportunidades_cce/src/home/user/app_menu_button.dart';
 
 class EntidadesView extends StatelessWidget {
-  const EntidadesView({Key? key}) : super(key: key);
+  const EntidadesView({super.key});
 
   @override
   Widget build(BuildContext context) {

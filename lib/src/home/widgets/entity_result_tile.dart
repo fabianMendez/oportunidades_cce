@@ -5,10 +5,10 @@ import 'package:oportunidades_cce/src/home/models/entity_search_result.dart';
 
 class EntityResultTile extends StatelessWidget {
   const EntityResultTile({
-    Key? key,
+    super.key,
     required this.result,
     this.contentPadding,
-  }) : super(key: key);
+  });
 
   final EntitySearchResult result;
   final EdgeInsets? contentPadding;

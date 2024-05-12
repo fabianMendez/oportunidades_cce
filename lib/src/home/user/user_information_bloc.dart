@@ -110,27 +110,27 @@ abstract class UserInformationState extends Equatable {
 
 class UserInformationInitial extends UserInformationState {
   const UserInformationInitial({
-    required UserDetails userDetails,
-  }) : super(userDetails: userDetails);
+    required super.userDetails,
+  });
 }
 
 class UserInformationLoading extends UserInformationState {
   const UserInformationLoading({
-    required UserDetails userDetails,
-  }) : super(userDetails: userDetails);
+    required super.userDetails,
+  });
 }
 
 class UserInformationSuccess extends UserInformationState {
   const UserInformationSuccess({
-    required UserDetails userDetails,
-  }) : super(userDetails: userDetails);
+    required super.userDetails,
+  });
 }
 
 class UserInformationFailure extends UserInformationState {
   const UserInformationFailure(
     this.error, {
-    required UserDetails userDetails,
-  }) : super(userDetails: userDetails);
+    required super.userDetails,
+  });
 
   final String error;
 

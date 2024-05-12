@@ -12,7 +12,7 @@ import 'package:oportunidades_cce/src/widgets/xtext_field.dart';
 import 'package:provider/provider.dart';
 
 class UserInformationView extends StatelessWidget {
-  const UserInformationView({Key? key}) : super(key: key);
+  const UserInformationView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class UserInformationView extends StatelessWidget {
 }
 
 class UserInformationForm extends StatefulWidget {
-  const UserInformationForm({Key? key}) : super(key: key);
+  const UserInformationForm({super.key});
 
   @override
   State<UserInformationForm> createState() => _UserInformationFormState();
@@ -164,9 +164,9 @@ class _UserInformationFormState extends State<UserInformationForm> {
 
 class UserInformationListener extends StatelessWidget {
   const UserInformationListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

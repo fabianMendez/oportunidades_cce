@@ -74,8 +74,8 @@ class EntityDetailsUninitialized extends EntityDetailsState {
 
 class EntityDetailsLoading extends EntityDetailsState {
   const EntityDetailsLoading({
-    required int id,
-  }) : super(id: id);
+    required super.id,
+  });
 }
 
 class EntityDetailsReady extends EntityDetailsState {
@@ -94,8 +94,8 @@ class EntityDetailsReady extends EntityDetailsState {
 class EntityDetailsFailure extends EntityDetailsState {
   const EntityDetailsFailure(
     this.error, {
-    required int id,
-  }) : super(id: id);
+    required super.id,
+  });
   final String error;
 
   @override

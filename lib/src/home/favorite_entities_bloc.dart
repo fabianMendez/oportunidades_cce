@@ -73,8 +73,8 @@ class FavoriteEntitiesLoading extends FavoriteEntitiesState {
 
 class FavoriteEntitiesReady extends FavoriteEntitiesState {
   const FavoriteEntitiesReady({
-    required List<EntitySearchResult> results,
-  }) : super(results: results);
+    required super.results,
+  });
 }
 
 class FavoriteEntitiesFailure extends FavoriteEntitiesState {

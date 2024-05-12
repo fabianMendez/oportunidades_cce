@@ -9,7 +9,7 @@ import 'package:oportunidades_cce/src/authentication/unauthenticated_navigator.d
 import 'package:provider/provider.dart';
 
 class AuthenticationBuilder extends StatelessWidget {
-  const AuthenticationBuilder({Key? key}) : super(key: key);
+  const AuthenticationBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {

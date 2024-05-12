@@ -14,7 +14,7 @@ import 'package:oportunidades_cce/src/utils/dialogs.dart';
 import 'register_bloc.dart';
 
 class RegisterView extends StatelessWidget {
-  const RegisterView({Key? key}) : super(key: key);
+  const RegisterView({super.key});
 
   static const routeName = '/auth/register';
 
@@ -38,7 +38,7 @@ class RegisterView extends StatelessWidget {
 }
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({Key? key}) : super(key: key);
+  const RegisterForm({super.key});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -153,6 +153,12 @@ class _RegisterFormState extends State<RegisterForm> {
                       ),
                       const SizedBox(height: 12),
                       CheckboxField(
+                        value: termsAndConditions,
+                        onChanged: (_) {
+                          setState(() {
+                            termsAndConditions = !termsAndConditions;
+                          });
+                        },
                         child: TextLink(
                           prefixText: 'He leído y acepto los ',
                           linkText: 'términos y condiciones',
@@ -166,14 +172,14 @@ class _RegisterFormState extends State<RegisterForm> {
                             );
                           },
                         ),
-                        value: termsAndConditions,
-                        onChanged: (_) {
-                          setState(() {
-                            termsAndConditions = !termsAndConditions;
-                          });
-                        },
                       ),
                       CheckboxField(
+                        value: privacyPolicy,
+                        onChanged: (_) {
+                          setState(() {
+                            privacyPolicy = !privacyPolicy;
+                          });
+                        },
                         child: TextLink(
                           prefixText: 'Autorizo el ',
                           linkText: 'tratamiento de mis datos personales',
@@ -187,12 +193,6 @@ class _RegisterFormState extends State<RegisterForm> {
                             );
                           },
                         ),
-                        value: privacyPolicy,
-                        onChanged: (_) {
-                          setState(() {
-                            privacyPolicy = !privacyPolicy;
-                          });
-                        },
                       ),
                       const SizedBox(height: 48 + 16 * 2),
                     ],
@@ -222,9 +222,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
 class RegisterListener extends StatelessWidget {
   const RegisterListener({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 
