@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
-import 'package:implicitly_animated_reorderable_list/transitions.dart';
+// import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+// import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:oportunidades_cce/src/authentication/user_details.dart';
 import 'package:oportunidades_cce/src/home/grupo_unspsc_repository.dart';
 import 'package:oportunidades_cce/src/home/notificaciones_settings_filtro_bienes_servicios_bloc.dart';
@@ -52,18 +52,18 @@ class NotificacionesSettingsFiltroBienesServicios extends StatelessWidget {
 
         final segmentos = state.segmentosParaTermino;
 
-        ImplicitlyAnimatedList<SegmentoUNSPSC>(
-          items: segmentos,
-          itemBuilder: (context, animation, SegmentoUNSPSC segmento, int i) {
-            return SizeFadeTransition(
-              key: ValueKey(segmento),
-              sizeFraction: 0.7,
-              animation: animation,
-              child: Text(segmento.nombre),
-            );
-          },
-          areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
-        );
+        // ImplicitlyAnimatedList<SegmentoUNSPSC>(
+        //   items: segmentos,
+        //   itemBuilder: (context, animation, SegmentoUNSPSC segmento, int i) {
+        //     return SizeFadeTransition(
+        //       key: ValueKey(segmento),
+        //       sizeFraction: 0.7,
+        //       animation: animation,
+        //       child: Text(segmento.nombre),
+        //     );
+        //   },
+        //   areItemsTheSame: (oldItem, newItem) => oldItem == newItem,
+        // );
 
         return Column(
           children: [

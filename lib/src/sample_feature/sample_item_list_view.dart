@@ -35,7 +35,8 @@ class SampleItemListView extends StatelessWidget {
 </svg>
                   ''',
                   width: constraints.maxWidth * 0.7,
-                  currentColor: Theme.of(context).primaryColor,
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).primaryColor, BlendMode.srcIn),
                 );
               }),
               const SizedBox(height: 12),

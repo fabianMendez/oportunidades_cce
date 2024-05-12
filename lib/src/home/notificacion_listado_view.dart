@@ -112,7 +112,8 @@ class NotificacionListado extends StatelessWidget {
 </svg>
                ''',
                       width: constraints.maxWidth,
-                      currentColor: Theme.of(context).primaryColor,
+                      colorFilter: ColorFilter.mode(
+                          Theme.of(context).primaryColor, BlendMode.srcIn),
                       alignment: Alignment.topCenter,
                       allowDrawingOutsideViewBox: false,
                       clipBehavior: Clip.antiAlias,
@@ -194,7 +195,8 @@ class NotificacionListado extends StatelessWidget {
   <path d="M247.71 108.003h-12a7 7 0 0 1 0-14h12a7 7 0 0 1 0 14ZM329.71 137.503h-12a7 7 0 0 1 0-14h12a7 7 0 0 1 0 14ZM367.71 137.503h-12a7 7 0 0 1 0-14h12a7 7 0 0 1 0 14ZM405.71 137.503h-12a7 7 0 0 1 0-14h12a7 7 0 0 1 0 14ZM330.71 108.503h-56a7 7 0 0 1 0-14h56a7 7 0 0 1 0 14ZM291.71 136.503h-56a7 7 0 0 1 0-14h56a7 7 0 0 1 0 14ZM401.71 108.503h-43a7 7 0 0 1 0-14h43a7 7 0 0 1 0 14ZM247.71 167.003h-12a7 7 0 0 1 0-14h12a7 7 0 0 1 0 14ZM330.71 167.503h-56a7 7 0 0 1 0-14h56a7 7 0 0 1 0 14ZM401.71 167.503h-43a7 7 0 0 1 0-14h43a7 7 0 0 1 0 14ZM382.71 191.003a7.008 7.008 0 0 1 7-7h12a7 7 0 0 1 0 14h-12a7.008 7.008 0 0 1-7-7ZM299.71 191.503a7.008 7.008 0 0 1 7-7h56a7 7 0 0 1 0 14h-56a7.008 7.008 0 0 1-7-7ZM228.71 191.503a7.008 7.008 0 0 1 7-7h43a7 7 0 0 1 0 14h-43a7.008 7.008 0 0 1-7-7Z" fill="#ccc"/>
 </svg>
 ''',
-                    currentColor: Theme.of(context).primaryColor,
+                    colorFilter: ColorFilter.mode(
+                        Theme.of(context).primaryColor, BlendMode.srcIn),
                   ),
                   TextButton(
                     onPressed: () => _refresh(context),
